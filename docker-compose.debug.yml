@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  pgwl:
+    image: pgwl
+    build:
+      context: .
+      dockerfile: ./Dockerfile
