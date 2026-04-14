@@ -910,6 +910,87 @@
                 left: 10px;
             }
         }
+
+        /* ===== MOBILE RESPONSIVE TAMBAHAN (tidak menghapus apapun di atas) ===== */
+        @media (max-width: 767px) {
+            /* Hero peta */
+            .peta-hero { padding: 1.5rem 0; }
+            .peta-hero h1 { font-size: 1.5rem; }
+            .peta-hero p { font-size: 0.95rem; }
+
+            /* Map lebih pendek */
+            #map { height: 420px; border-radius: 14px; }
+
+            /* Toolbar kiri: ukuran lebih kecil */
+            .map-toolbar { top: 8px; left: 8px; gap: 6px; }
+            .toolbar-btn { width: 36px; height: 36px; font-size: 13px; }
+
+            /* KUNCI: Search panel dipindah ke kiri (bawah toolbar)
+               agar tidak BERTABRAKAN dengan layer panel di kanan */
+            .search-panel {
+                top: 8px;
+                left: 52px;
+                transform: none;
+                width: calc(100% - 175px);
+                min-width: 130px;
+            }
+            .search-inner select { padding: 8px 7px; font-size: 11px; }
+            .search-btn { padding: 8px 10px; font-size: 11px; }
+
+            /* Layer panel kanan: dipersempit agar tidak tumpang tindih */
+            .layer-panel { top: 8px; right: 8px; width: 150px; }
+            .layer-panel-toggle { padding: 8px 10px; }
+            .layer-panel-toggle span { font-size: 11px; gap: 5px; }
+            .layer-panel-body.open { max-height: 360px; }
+            .layer-panel-body-inner { padding: 10px; max-height: calc(100vh - 120px); }
+            .layer-item { gap: 6px; padding: 5px 6px; margin-bottom: 2px; }
+            .layer-item-label { font-size: 10px; }
+            .legend-box { width: 12px; height: 12px; }
+            .panel-section-hdr { padding: 6px 8px; }
+            .panel-section-hdr .title { font-size: 10px; }
+            .basemap-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+            .basemap-icon { width: 27px; height: 21px; }
+            .basemap-label { font-size: 8px; }
+
+            /* Info panel */
+            .info-panel { padding: 1rem; border-radius: 14px; margin-bottom: 1.25rem; }
+            .info-panel h5 { font-size: 0.95rem; }
+            .info-panel p { font-size: 0.84rem; }
+
+            /* KUNCI: Tabs scroll horizontal — tidak bertumpuk / tidak terpotong */
+            .nav-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding: 0.4rem 0.5rem 0;
+            }
+            .nav-tabs .nav-item { flex-shrink: 0; }
+            .nav-tabs .nav-link {
+                padding: 0.65rem 0.9rem;
+                font-size: 0.82rem;
+                white-space: nowrap;
+                margin-right: 0.3rem;
+            }
+            .tab-content { padding: 1rem; overflow-x: auto; }
+
+            /* Tabel */
+            .table thead th { padding: 0.7rem 0.5rem; font-size: 0.79rem; }
+            .table tbody td { padding: 0.7rem 0.5rem; font-size: 0.8rem; }
+
+            /* Detail modal lebih kompak di HP */
+            .detail-modal-content { width: 96%; border-radius: 16px; }
+            .detail-modal-header { padding: 1.25rem 1.5rem; border-radius: 16px 16px 0 0; }
+            .detail-modal-header h3 { font-size: 1.2rem; }
+            .detail-modal-body { padding: 1.25rem; }
+            .detail-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+            .detail-item { padding: 0.85rem; }
+        }
+        @media (max-width: 420px) {
+            .search-panel { width: calc(100% - 165px); min-width: 110px; }
+            .layer-panel { width: 132px; }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+
     </style>
 @endsection
 
@@ -1105,15 +1186,9 @@
                                         <span class="layer-item-label" style="font-weight:700;">Kerawanan Longsor</span>
                                     </div>
                                     <div style="display:flex;gap:3px;margin-top:3px;padding-left:2px;">
-                                        <span
-                                            style="width:14px;height:10px;background:#10b981;border-radius:2px;flex-shrink:0;"></span><span
-                                            style="font-size:9px;color:#64748b;align-self:center;">Rendah</span>
-                                        <span
-                                            style="width:14px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;align-self:center;">Sedang</span>
-                                        <span
-                                            style="width:14px;height:10px;background:#ef4444;border-radius:2px;flex-shrink:0;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;align-self:center;">Tinggi</span>
+                                        <span style="width:14px;height:10px;background:#10b981;border-radius:2px;flex-shrink:0;"></span><span style="font-size:9px;color:#64748b;align-self:center;">Rendah</span>
+                                        <span style="width:14px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;align-self:center;">Sedang</span>
+                                        <span style="width:14px;height:10px;background:#ef4444;border-radius:2px;flex-shrink:0;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;align-self:center;">Tinggi</span>
                                     </div>
                                 </div>
                             </label>
@@ -1124,18 +1199,10 @@
                                 <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Kemiringan Lereng</span>
                                     <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#ffffcc;border:1px solid #ccc;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Datar</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#a1dab4;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Landai</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#41b6c4;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Sedang</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#225ea8;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Curam</span>
+                                        <span style="width:12px;height:10px;background:#ffffcc;border:1px solid #ccc;border-radius:2px;"></span><span style="font-size:9px;color:#64748b;">Datar</span>
+                                        <span style="width:12px;height:10px;background:#a1dab4;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Landai</span>
+                                        <span style="width:12px;height:10px;background:#41b6c4;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Sedang</span>
+                                        <span style="width:12px;height:10px;background:#225ea8;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Curam</span>
                                     </div>
                                 </div>
                             </label>
@@ -1146,15 +1213,9 @@
                                 <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Curah Hujan</span>
                                     <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#deebf7;border:1px solid #ccc;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&lt;1500</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#9ecae1;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Sedang</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#2171b5;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&gt;3000mm</span>
+                                        <span style="width:12px;height:10px;background:#deebf7;border:1px solid #ccc;border-radius:2px;"></span><span style="font-size:9px;color:#64748b;">&lt;1500</span>
+                                        <span style="width:12px;height:10px;background:#9ecae1;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Sedang</span>
+                                        <span style="width:12px;height:10px;background:#2171b5;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">&gt;3000mm</span>
                                     </div>
                                 </div>
                             </label>
@@ -1165,15 +1226,9 @@
                                 <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Penggunaan Lahan</span>
                                     <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#33a02c;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Hutan</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#b2df8a;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Sawah</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#ff7f00;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Permukiman</span>
+                                        <span style="width:12px;height:10px;background:#33a02c;border-radius:2px;"></span><span style="font-size:9px;color:#64748b;">Hutan</span>
+                                        <span style="width:12px;height:10px;background:#b2df8a;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Sawah</span>
+                                        <span style="width:12px;height:10px;background:#ff7f00;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Permukiman</span>
                                     </div>
                                 </div>
                             </label>
@@ -1184,15 +1239,9 @@
                                 <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Jenis Tanah</span>
                                     <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#d9b38c;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Alluvial</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#a07850;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Regosol</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#7b5c38;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Latosol</span>
+                                        <span style="width:12px;height:10px;background:#d9b38c;border-radius:2px;"></span><span style="font-size:9px;color:#64748b;">Alluvial</span>
+                                        <span style="width:12px;height:10px;background:#a07850;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Regosol</span>
+                                        <span style="width:12px;height:10px;background:#7b5c38;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">Latosol</span>
                                     </div>
                                 </div>
                             </label>
@@ -1203,15 +1252,9 @@
                                 <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Jarak dari Sungai</span>
                                     <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#08519c;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&lt;100m</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#6baed6;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">100-300m</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#deebf7;border:1px solid #ccc;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&gt;500m</span>
+                                        <span style="width:12px;height:10px;background:#08519c;border-radius:2px;"></span><span style="font-size:9px;color:#64748b;">&lt;100m</span>
+                                        <span style="width:12px;height:10px;background:#6baed6;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">100-300m</span>
+                                        <span style="width:12px;height:10px;background:#deebf7;border:1px solid #ccc;border-radius:2px;margin-left:4px;"></span><span style="font-size:9px;color:#64748b;">&gt;500m</span>
                                     </div>
                                 </div>
                             </label>
@@ -1401,68 +1444,39 @@
                 <div class="detail-section">
                     <h4 class="detail-section-title"><i class="fas fa-info-circle"></i> Informasi Laporan</h4>
                     <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-item-label">ID Laporan</div>
-                            <div class="detail-item-value" id="detail-id">-</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-item-label">Tanggal & Waktu</div>
-                            <div class="detail-item-value" id="detail-waktu">-</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-item-label">Status</div>
-                            <div class="detail-item-value" id="detail-status">-</div>
-                        </div>
+                        <div class="detail-item"><div class="detail-item-label">ID Laporan</div><div class="detail-item-value" id="detail-id">-</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Tanggal & Waktu</div><div class="detail-item-value" id="detail-waktu">-</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Status</div><div class="detail-item-value" id="detail-status">-</div></div>
                     </div>
                 </div>
                 <div class="detail-section">
                     <h4 class="detail-section-title"><i class="fas fa-user"></i> Data Pelapor</h4>
                     <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-item-label">Nama Pelapor</div>
-                            <div class="detail-item-value" id="detail-pelapor">-</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-item-label">No. Telepon</div>
-                            <div class="detail-item-value" id="detail-telp">-</div>
-                        </div>
+                        <div class="detail-item"><div class="detail-item-label">Nama Pelapor</div><div class="detail-item-value" id="detail-pelapor">-</div></div>
+                        <div class="detail-item"><div class="detail-item-label">No. Telepon</div><div class="detail-item-value" id="detail-telp">-</div></div>
                     </div>
                 </div>
                 <div class="detail-section">
                     <h4 class="detail-section-title"><i class="fas fa-map-marker-alt"></i> Lokasi Banjir</h4>
                     <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-item-label">Kecamatan</div>
-                            <div class="detail-item-value" id="detail-kecamatan">-</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-item-label">Desa</div>
-                            <div class="detail-item-value" id="detail-desa">-</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-item-label">Koordinat</div>
-                            <div class="detail-item-value" id="detail-koordinat">-</div>
-                        </div>
+                        <div class="detail-item"><div class="detail-item-label">Kecamatan</div><div class="detail-item-value" id="detail-kecamatan">-</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Desa</div><div class="detail-item-value" id="detail-desa">-</div></div>
+                        <div class="detail-item"><div class="detail-item-label">Koordinat</div><div class="detail-item-value" id="detail-koordinat">-</div></div>
                     </div>
                 </div>
                 <div class="detail-section">
                     <h4 class="detail-section-title"><i class="fas fa-water"></i> Kondisi Banjir</h4>
                     <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-item-label">Kedalaman Air</div>
-                            <div class="detail-item-value" id="detail-kedalaman">-</div>
-                        </div>
+                        <div class="detail-item"><div class="detail-item-label">Kedalaman Air</div><div class="detail-item-value" id="detail-kedalaman">-</div></div>
                     </div>
                     <div class="detail-item mt-3">
                         <div class="detail-item-label">Deskripsi</div>
-                        <div class="detail-item-value" id="detail-deskripsi" style="font-weight:500;line-height:1.6;">-
-                        </div>
+                        <div class="detail-item-value" id="detail-deskripsi" style="font-weight:500;line-height:1.6;">-</div>
                     </div>
                 </div>
                 <div class="detail-section">
                     <h4 class="detail-section-title"><i class="fas fa-camera"></i> Dokumentasi Foto</h4>
-                    <div id="detail-foto-container" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-                    </div>
+                    <div id="detail-foto-container" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;"></div>
                 </div>
             </div>
         </div>
