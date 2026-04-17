@@ -1236,7 +1236,7 @@
                                 </div>
                             </label>
                             <div style="padding:8px 4px 4px;font-size:10px;color:#94a3b8;font-style:italic;">
-                                * File GeoJSON tematik perlu disiapkan di /storage/geojson/
+                                * File GeoJSON tematik perlu disiapkan di /geojson/
                             </div>
                         </div>
 
@@ -1809,7 +1809,7 @@
 
         // ── LOAD LAYERS ────────────────────────────────────────────────────
         function loadZonaKerawanan() {
-            return fetch('/storage/geojson/bantul_dummy.geojson')
+            return fetch('/geojson/bantul_dummy.geojson')
                 .then(r => r.json())
                 .then(data => {
                     L.geoJSON(data, {
@@ -1845,7 +1845,7 @@
         }
 
         function loadBatasAdministrasi() {
-            return fetch('/storage/geojson/bantul.geojson')
+            return fetch('/geojson/bantul.geojson')
                 .then(r => r.json())
                 .then(data => {
                     bantulGeoJSON = data;
@@ -1960,7 +1960,7 @@
 
         // ── FIX 1: loadTitikHistoris memanggil renderHistorisPage(1) ──────
         function loadTitikHistoris() {
-            return fetch('/storage/geojson/titikbanjir.geojson')
+            return fetch('/geojson/titikbanjir.geojson')
                 .then(r => r.json())
                 .then(data => {
                     historisData = data.features;
@@ -2130,7 +2130,7 @@
         const tematikLayers = {};
         const tematikConfig = {
             longsor: {
-                file: '/storage/geojson/kerawanan_longsor.geojson',
+                file: '/geojson/kerawanan_longsor.geojson',
                 key: 'KELAS',
                 colors: {
                     'Rendah': '#10b981',
@@ -2140,7 +2140,7 @@
                 def: '#94a3b8'
             },
             slope: {
-                file: '/storage/geojson/klkl.geojson',
+                file: '/geojson/klkl.geojson',
                 key: 'kemiringan',
                 skorLabels: {
                     1: 'Sangat Rendah',
@@ -2164,7 +2164,7 @@
 
             },
             rain: {
-                file: '/storage/geojson/curah_hujan.geojson',
+                file: '/geojson/curah_hujan.geojson',
                 key: 'KELAS',
                 colors: {
                     'Sangat Rendah': '#deebf7',
@@ -2176,7 +2176,7 @@
                 def: '#deebf7'
             },
             landuse: {
-                file: '/storage/geojson/plpl.geojson',
+                file: '/geojson/plpl.geojson',
                 key: 'Peng_Tanah',
                 skorLabels: {
                     1: 'Sangat Rendah',
@@ -2216,7 +2216,7 @@
                 def: '#d9d9d9'
             },
             soil: {
-                file: '/storage/geojson/jtjt.geojson',
+                file: '/geojson/jtjt.geojson',
                 key: 'KETERANGAN',
                 skorLabels: {
                     1: 'Sangat Rendah',
@@ -2243,7 +2243,7 @@
                 def: '#d9d9d9'
             },
             river: {
-                file: '/storage/geojson/jarak_sungai.geojson',
+                file: '/geojson/jarak_sungai.geojson',
                 key: 'KELAS',
                 colors: {
                     '0-100m': '#08519c',
@@ -2385,7 +2385,7 @@
                     const chk = document.getElementById('chk-' + name);
                     if (chk) chk.checked = false;
                     alert('⚠️ File GeoJSON "' + cfg.file +
-                        '" belum tersedia.\nSiapkan file di /storage/geojson/ terlebih dahulu.');
+                        '" belum tersedia.\nSiapkan file di /geojson/ terlebih dahulu.');
                 });
         }
 

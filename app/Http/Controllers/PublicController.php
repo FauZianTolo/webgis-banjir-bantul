@@ -36,7 +36,7 @@ class PublicController extends Controller
         });
 
         // Hitung total historis dari GeoJSON
-        $geojsonPath = public_path('storage/geojson/titikbanjir.geojson');
+        $geojsonPath = public_path('geojson/titikbanjir.geojson');
         $totalHistoris = 0;
 
         if (file_exists($geojsonPath)) {
@@ -130,8 +130,8 @@ public function route(Request $request)
 {
     try {
         // ========== LOAD DATA HISTORIS DARI GEOJSON ==========
-        $titikBanjirPath = public_path('storage/geojson/titikbanjir.geojson');
-        $batasAdminPath = public_path('storage/geojson/bantul.geojson');
+        $titikBanjirPath = public_path('geojson/titikbanjir.geojson');
+        $batasAdminPath = public_path('geojson/bantul.geojson');
 
         $historisFeatures = [];
         $kecamatanPolygons = [];
