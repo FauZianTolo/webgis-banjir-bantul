@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
     libzip-dev zip unzip curl libpng-dev \
@@ -9,10 +9,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy SEMUA file dulu
 COPY . .
 
-# Baru install composer
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
