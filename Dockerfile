@@ -9,13 +9,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy composer files dulu sebelum yang lain
-COPY composer.json composer.lock ./
-
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
-
-# Baru copy semua file project
+# Copy SEMUA file dulu
 COPY . .
+
+# Baru install composer
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
