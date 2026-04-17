@@ -8,9 +8,14 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
-COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Copy composer files dulu sebelum yang lain
+COPY composer.json composer.lock ./
+
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+
+# Baru copy semua file project
+COPY . .
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
