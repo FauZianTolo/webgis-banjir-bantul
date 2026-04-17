@@ -19,7 +19,8 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/sites-available/*.conf \
-    && a2enmod rewrite
+    && a2dismod mpm_event mpm_worker || true \
+    && a2enmod mpm_prefork rewrite
 
 EXPOSE 80
 CMD ["apache2-foreground"]
