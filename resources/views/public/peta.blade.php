@@ -910,6 +910,217 @@
                 left: 10px;
             }
         }
+
+        /* ===== MOBILE RESPONSIVE TAMBAHAN (tidak menghapus apapun di atas) ===== */
+        @media (max-width: 767px) {
+
+            /* Hero peta */
+            .peta-hero {
+                padding: 1.5rem 0;
+            }
+
+            .peta-hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .peta-hero p {
+                font-size: 0.95rem;
+            }
+
+            /* Map lebih pendek */
+            #map {
+                height: 420px;
+                border-radius: 14px;
+            }
+
+            /* Toolbar kiri: ukuran lebih kecil */
+            .map-toolbar {
+                top: 8px;
+                left: 8px;
+                gap: 6px;
+            }
+
+            .toolbar-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 13px;
+            }
+
+            /* KUNCI: Search panel dipindah ke kiri (bawah toolbar)
+                                           agar tidak BERTABRAKAN dengan layer panel di kanan */
+            .search-panel {
+                top: 8px;
+                left: 52px;
+                transform: none;
+                width: calc(100% - 175px);
+                min-width: 130px;
+            }
+
+            .search-inner select {
+                padding: 8px 7px;
+                font-size: 11px;
+            }
+
+            .search-btn {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+
+            /* Layer panel kanan: dipersempit agar tidak tumpang tindih */
+            .layer-panel {
+                top: 8px;
+                right: 8px;
+                width: 150px;
+            }
+
+            .layer-panel-toggle {
+                padding: 8px 10px;
+            }
+
+            .layer-panel-toggle span {
+                font-size: 11px;
+                gap: 5px;
+            }
+
+            .layer-panel-body.open {
+                max-height: 360px;
+            }
+
+            .layer-panel-body-inner {
+                padding: 10px;
+                max-height: calc(100vh - 120px);
+            }
+
+            .layer-item {
+                gap: 6px;
+                padding: 5px 6px;
+                margin-bottom: 2px;
+            }
+
+            .layer-item-label {
+                font-size: 10px;
+            }
+
+            .legend-box {
+                width: 12px;
+                height: 12px;
+            }
+
+            .panel-section-hdr {
+                padding: 6px 8px;
+            }
+
+            .panel-section-hdr .title {
+                font-size: 10px;
+            }
+
+            .basemap-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+
+            .basemap-icon {
+                width: 27px;
+                height: 21px;
+            }
+
+            .basemap-label {
+                font-size: 8px;
+            }
+
+            /* Info panel */
+            .info-panel {
+                padding: 1rem;
+                border-radius: 14px;
+                margin-bottom: 1.25rem;
+            }
+
+            .info-panel h5 {
+                font-size: 0.95rem;
+            }
+
+            .info-panel p {
+                font-size: 0.84rem;
+            }
+
+            /* KUNCI: Tabs scroll horizontal — tidak bertumpuk / tidak terpotong */
+            .nav-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding: 0.4rem 0.5rem 0;
+            }
+
+            .nav-tabs .nav-item {
+                flex-shrink: 0;
+            }
+
+            .nav-tabs .nav-link {
+                padding: 0.65rem 0.9rem;
+                font-size: 0.82rem;
+                white-space: nowrap;
+                margin-right: 0.3rem;
+            }
+
+            .tab-content {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+
+            /* Tabel */
+            .table thead th {
+                padding: 0.7rem 0.5rem;
+                font-size: 0.79rem;
+            }
+
+            .table tbody td {
+                padding: 0.7rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            /* Detail modal lebih kompak di HP */
+            .detail-modal-content {
+                width: 96%;
+                border-radius: 16px;
+            }
+
+            .detail-modal-header {
+                padding: 1.25rem 1.5rem;
+                border-radius: 16px 16px 0 0;
+            }
+
+            .detail-modal-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .detail-modal-body {
+                padding: 1.25rem;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+
+            .detail-item {
+                padding: 0.85rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .search-panel {
+                width: calc(100% - 165px);
+                min-width: 110px;
+            }
+
+            .layer-panel {
+                width: 132px;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 @endsection
 
@@ -1119,24 +1330,54 @@
                             </label>
                             <hr class="panel-divider">
                             <!-- Kemiringan Lereng -->
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-slope" onchange="toggleTematik('slope',this.checked)">
-                                <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
+                            <label class="layer-item" style="align-items:flex-start;">
+                                <input type="checkbox" id="chk-slope" onchange="toggleTematik('slope',this.checked)"
+                                    style="margin-top:3px;">
+                                <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Kemiringan Lereng</span>
-                                    <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#ffffcc;border:1px solid #ccc;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Datar</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#a1dab4;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Landai</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#41b6c4;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Sedang</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#225ea8;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Curam</span>
+                                    <!-- Skor 1 -->
+                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:2px;">● Skor 1 —
+                                        Sangat Rendah</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">&gt;40°</span></div>
                                     </div>
+                                    <!-- Skor 2 -->
+                                    <div style="font-size:9px;font-weight:800;color:#84cc16;margin-top:2px;">● Skor 2 —
+                                        Rendah</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">25–40°</span></div>
+                                    </div>
+                                    <!-- Skor 3 -->
+                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;margin-top:2px;">● Skor 3 —
+                                        Sedang</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">15–25°</span></div>
+                                    </div>
+                                    <!-- Skor 4 -->
+                                    <div style="font-size:9px;font-weight:800;color:#ef4444;margin-top:2px;">● Skor 4 —
+                                        Tinggi</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#ef4444;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">2–15°</span></div>
+                                    </div>
+                                    <!-- Skor 5 -->
+                                    <div style="font-size:9px;font-weight:800;color:#991b1b;margin-top:2px;">● Skor 5 —
+                                        Sangat Tinggi</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#991b1b;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">0–2° (Datar)</span></div>
+                                    </div>
+                                    <div
+                                        style="font-size:8px;color:#94a3b8;padding-left:4px;margin-top:2px;font-style:italic;">
+                                        Makin datar = makin rawan genangan</div>
                                 </div>
                             </label>
                             <hr class="panel-divider">
@@ -1160,39 +1401,156 @@
                             </label>
                             <hr class="panel-divider">
                             <!-- Penggunaan Lahan -->
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-landuse" onchange="toggleTematik('landuse',this.checked)">
-                                <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
+                            <label class="layer-item" style="align-items:flex-start;">
+                                <input type="checkbox" id="chk-landuse" onchange="toggleTematik('landuse',this.checked)"
+                                    style="margin-top:3px;">
+                                <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Penggunaan Lahan</span>
-                                    <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#33a02c;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Hutan</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#b2df8a;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Sawah</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#ff7f00;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Permukiman</span>
+                                    <!-- Skor 1 -->
+                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:2px;">● Skor 1 —
+                                        Sangat Rendah</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#1a6b1a;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Hutan Lebat</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#2d8a2d;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Hutan Sejenis</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Emplasemen</span></div>
+                                    </div>
+                                    <!-- Skor 2 -->
+                                    <div style="font-size:9px;font-weight:800;color:#84cc16;margin-top:2px;">● Skor 2 —
+                                        Rendah</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Padang Rumput</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#b5d96d;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Semak</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#d4c08a;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Tanah Tandus</span></div>
+                                    </div>
+                                    <!-- Skor 3 -->
+                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;margin-top:2px;">● Skor 3 —
+                                        Sedang</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#8db600;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Kebun Campuran</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#cddc39;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Tegalan/Ladang</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#9b59b6;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Industri Non P.</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#e67e22;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Industri Pertanian</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#7f8c8d;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Pertambangan</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#00bcd4;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Sarana Olah Raga</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#bcaaa4;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Tanah Pgn. Lain</span></div>
+                                    </div>
+                                    <!-- Skor 4 -->
+                                    <div style="font-size:9px;font-weight:800;color:#ef4444;margin-top:2px;">● Skor 4 —
+                                        Tinggi</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#26a69a;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Sawah Irigasi</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#1565c0;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Sungai</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#0d47a1;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Tambak</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#64b5f6;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Kolam</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#4dd0e1;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Penggaraman</span></div>
+                                    </div>
+                                    <!-- Skor 5 -->
+                                    <div style="font-size:9px;font-weight:800;color:#991b1b;margin-top:2px;">● Skor 5 —
+                                        Sangat Tinggi</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#ff7043;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Kampung</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#e53935;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Perumahan</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#8e44ad;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Kuburan/Makam</span></div>
                                     </div>
                                 </div>
                             </label>
                             <hr class="panel-divider">
                             <!-- Jenis Tanah -->
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-soil" onchange="toggleTematik('soil',this.checked)">
-                                <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
+                            <label class="layer-item" style="align-items:flex-start;">
+                                <input type="checkbox" id="chk-soil" onchange="toggleTematik('soil',this.checked)"
+                                    style="margin-top:3px;">
+                                <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
                                     <span class="layer-item-label" style="font-weight:700;">Jenis Tanah</span>
-                                    <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#d9b38c;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Alluvial</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#a07850;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Regosol</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#7b5c38;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Latosol</span>
+                                    <!-- Skor 1 -->
+                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:2px;">● Skor 1 —
+                                        Sangat Rendah</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Regosol</span></div>
+                                    </div>
+                                    <!-- Skor 2 -->
+                                    <div style="font-size:9px;font-weight:800;color:#84cc16;margin-top:2px;">● Skor 2 —
+                                        Rendah</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Kambisol</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#b5d96d;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Grumusol</span></div>
+                                    </div>
+                                    <!-- Skor 3 -->
+                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;margin-top:2px;">● Skor 3 —
+                                        Sedang</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Mediterania</span></div>
+                                    </div>
+                                    <!-- Skor 4 -->
+                                    <div style="font-size:9px;font-weight:800;color:#ef4444;margin-top:2px;">● Skor 4 —
+                                        Tinggi</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#fb923c;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Gleisol</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#ef4444;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Rendsina</span></div>
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#dc2626;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Latosol</span></div>
+                                    </div>
+                                    <!-- Skor 5 -->
+                                    <div style="font-size:9px;font-weight:800;color:#991b1b;margin-top:2px;">● Skor 5 —
+                                        Sangat Tinggi</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                        <div style="display:flex;align-items:center;gap:3px;"><span
+                                                style="width:10px;height:10px;background:#991b1b;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Aluvial</span></div>
                                     </div>
                                 </div>
                             </label>
@@ -1486,27 +1844,31 @@
         // Koordinat pusat tiap kecamatan Bantul
         const kecamatanCenter = {
             'Banguntapan': [-7.8283, 110.4167],
-            'Bantul':      [-7.8900, 110.3300],
-            'Bambanglipuro':[-7.9667,110.3167],
-            'Dlingo':      [-7.9500, 110.4667],
-            'Imogiri':     [-7.9333, 110.4000],
-            'Jetis':       [-7.8667, 110.3500],
-            'Kasihan':     [-7.8333, 110.3333],
-            'Kretek':      [-8.0000, 110.2833],
-            'Pajangan':    [-7.8833, 110.2833],
-            'Pandak':      [-7.9167, 110.3167],
-            'Piyungan':    [-7.8667, 110.4500],
-            'Pleret':      [-7.8833, 110.4000],
-            'Pundong':     [-7.9833, 110.3500],
-            'Sanden':      [-7.9833, 110.2833],
-            'Sedayu':      [-7.8167, 110.2833],
-            'Sewon':       [-7.8500, 110.3667],
-            'Srandakan':   [-7.9667, 110.2667],
+            'Bantul': [-7.8900, 110.3300],
+            'Bambanglipuro': [-7.9667, 110.3167],
+            'Dlingo': [-7.9500, 110.4667],
+            'Imogiri': [-7.9333, 110.4000],
+            'Jetis': [-7.8667, 110.3500],
+            'Kasihan': [-7.8333, 110.3333],
+            'Kretek': [-8.0000, 110.2833],
+            'Pajangan': [-7.8833, 110.2833],
+            'Pandak': [-7.9167, 110.3167],
+            'Piyungan': [-7.8667, 110.4500],
+            'Pleret': [-7.8833, 110.4000],
+            'Pundong': [-7.9833, 110.3500],
+            'Sanden': [-7.9833, 110.2833],
+            'Sedayu': [-7.8167, 110.2833],
+            'Sewon': [-7.8500, 110.3667],
+            'Srandakan': [-7.9667, 110.2667],
         };
 
         // ── MAP VARS ───────────────────────────────────────────────────────
-        let map, layerGroups = {}, basemaps = {}, currentBasemap = 'streets';
-        let historisData = [], bantulGeoJSON = null, searchHighlightLayer = null;
+        let map, layerGroups = {},
+            basemaps = {},
+            currentBasemap = 'streets';
+        let historisData = [],
+            bantulGeoJSON = null,
+            searchHighlightLayer = null;
         let isFullscreen = false;
 
         // ── FULLSCREEN ─────────────────────────────────────────────────────
@@ -1520,14 +1882,15 @@
                 wrapper.classList.remove('is-fullscreen');
                 document.body.style.overflow = '';
             }
-            setTimeout(() => { if (map) map.invalidateSize(); }, 350);
+            setTimeout(() => {
+                if (map) map.invalidateSize();
+            }, 350);
         }
 
         // ── SEARCH KECAMATAN ───────────────────────────────────────────────
         function pointInPolygon(lat, lng, feature) {
-            const coords = feature.geometry.type === 'Polygon'
-                ? [feature.geometry.coordinates]
-                : feature.geometry.coordinates;
+            const coords = feature.geometry.type === 'Polygon' ? [feature.geometry.coordinates] :
+                feature.geometry.coordinates;
             for (const polygon of coords) {
                 if (pip(lng, lat, polygon[0])) return true;
             }
@@ -1537,8 +1900,10 @@
         function pip(x, y, vs) {
             let inside = false;
             for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-                const xi = vs[i][0], yi = vs[i][1];
-                const xj = vs[j][0], yj = vs[j][1];
+                const xi = vs[i][0],
+                    yi = vs[i][1];
+                const xj = vs[j][0],
+                    yj = vs[j][1];
                 if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
                     inside = !inside;
                 }
@@ -1547,8 +1912,8 @@
         }
 
         function doSearch() {
-            const val    = document.getElementById('searchKecamatan').value;
-            const badge  = document.getElementById('searchResultBadge');
+            const val = document.getElementById('searchKecamatan').value;
+            const badge = document.getElementById('searchResultBadge');
             const clearBtn = document.getElementById('searchClearBtn');
 
             if (searchHighlightLayer) {
@@ -1559,7 +1924,9 @@
             if (!val) {
                 badge.classList.remove('visible');
                 clearBtn.classList.remove('visible');
-                map.flyTo([-7.8700, 110.3300], 11, { duration: 1 });
+                map.flyTo([-7.8700, 110.3300], 11, {
+                    duration: 1
+                });
                 return;
             }
 
@@ -1574,10 +1941,15 @@
 
             if (kecFeature) {
                 const layer = L.geoJSON(kecFeature);
-                map.flyToBounds(layer.getBounds(), { padding: [30, 30], duration: 1.2 });
+                map.flyToBounds(layer.getBounds(), {
+                    padding: [30, 30],
+                    duration: 1.2
+                });
             } else {
                 const center = kecamatanCenter[val];
-                if (center) map.flyTo(center, 13, { duration: 1.2 });
+                if (center) map.flyTo(center, 13, {
+                    duration: 1.2
+                });
             }
 
             let jmlLaporan = 0;
@@ -1593,7 +1965,7 @@
                     if (pointInPolygon(c[1], c[0], kecFeature)) jmlHistoris++;
                 });
             } else {
-                jmlLaporan  = Object.values(laporanData).filter(l => l.kecamatan === val).length;
+                jmlLaporan = Object.values(laporanData).filter(l => l.kecamatan === val).length;
                 jmlHistoris = historisData.filter(f => (f.properties.Kecamatan || '') === val).length;
             }
 
@@ -1602,7 +1974,13 @@
 
             if (kecFeature) {
                 searchHighlightLayer = L.geoJSON(kecFeature, {
-                    style: { fillColor: '#fbbf24', fillOpacity: 0.35, color: '#f59e0b', weight: 3, opacity: 1 }
+                    style: {
+                        fillColor: '#fbbf24',
+                        fillOpacity: 0.35,
+                        color: '#f59e0b',
+                        weight: 3,
+                        opacity: 1
+                    }
                 }).addTo(map);
             }
         }
@@ -1624,10 +2002,16 @@
                 if (c && c[0] && c[1]) bounds.push([c[1], c[0]]);
             });
             if (bounds.length === 0) {
-                map.flyTo([-7.8700, 110.3300], 11, { duration: 1.2 });
+                map.flyTo([-7.8700, 110.3300], 11, {
+                    duration: 1.2
+                });
                 return;
             }
-            map.flyToBounds(L.latLngBounds(bounds), { padding: [50, 50], duration: 1.2, maxZoom: 14 });
+            map.flyToBounds(L.latLngBounds(bounds), {
+                padding: [50, 50],
+                duration: 1.2,
+                maxZoom: 14
+            });
         }
 
         // ── PANEL TOGGLE ───────────────────────────────────────────────────
@@ -1643,7 +2027,10 @@
 
         // ── IMAGE MODAL ────────────────────────────────────────────────────
         function openImageModal(src) {
-            if (event) { event.stopPropagation(); event.preventDefault(); }
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
             document.getElementById('modalImage').src = src;
             document.getElementById('imageModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -1654,29 +2041,32 @@
             if (!isFullscreen) document.body.style.overflow = '';
         }
 
-        document.getElementById('imageModal').addEventListener('click', function (e) {
+        document.getElementById('imageModal').addEventListener('click', function(e) {
             if (e.target === this) closeImageModal();
         });
 
         // ── DETAIL MODAL ───────────────────────────────────────────────────
         function showDetail(laporanId) {
             const laporan = laporanData[laporanId];
-            if (!laporan) { alert('Data laporan tidak ditemukan'); return; }
+            if (!laporan) {
+                alert('Data laporan tidak ditemukan');
+                return;
+            }
 
-            document.getElementById('detail-id').textContent        = laporan.id;
-            document.getElementById('detail-waktu').textContent     = formatDateTime(laporan.waktu_laporan);
-            document.getElementById('detail-status').innerHTML      =
+            document.getElementById('detail-id').textContent = laporan.id;
+            document.getElementById('detail-waktu').textContent = formatDateTime(laporan.waktu_laporan);
+            document.getElementById('detail-status').innerHTML =
                 '<span class="badge badge-verified"><i class="fas fa-check-circle"></i> Verified</span>';
-            document.getElementById('detail-pelapor').textContent   = laporan.nama_pelapor || '-';
-            document.getElementById('detail-telp').textContent      = laporan.no_telp || '-';
+            document.getElementById('detail-pelapor').textContent = laporan.nama_pelapor || '-';
+            document.getElementById('detail-telp').textContent = laporan.no_telp || '-';
             document.getElementById('detail-kecamatan').textContent = laporan.kecamatan || '-';
-            document.getElementById('detail-desa').textContent      = laporan.desa || '-';
+            document.getElementById('detail-desa').textContent = laporan.desa || '-';
             document.getElementById('detail-koordinat').textContent = `${laporan.latitude}, ${laporan.longitude}`;
             document.getElementById('detail-kedalaman').textContent = `${laporan.kedalaman_cm || 0} cm`;
             document.getElementById('detail-deskripsi').textContent = laporan.deskripsi || 'Tidak ada deskripsi';
 
             const fotoContainer = document.getElementById('detail-foto-container');
-            const fotoFields    = [laporan.foto, laporan.foto2, laporan.foto3].filter(Boolean);
+            const fotoFields = [laporan.foto, laporan.foto2, laporan.foto3].filter(Boolean);
             if (fotoFields.length > 0) {
                 fotoContainer.innerHTML = fotoFields.map((f, i) => `
                     <div style="text-align:center;">
@@ -1705,8 +2095,11 @@
 
         function formatDateTime(ds) {
             return new Date(ds).toLocaleDateString('id-ID', {
-                year: 'numeric', month: 'long', day: 'numeric',
-                hour: '2-digit', minute: '2-digit'
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
         }
 
@@ -1722,25 +2115,35 @@
         document.addEventListener('DOMContentLoaded', initMap);
 
         function initMap() {
-            map = L.map('map', { center: [-7.8700, 110.3300], zoom: 11, zoomControl: false });
-            L.control.zoom({ position: 'bottomright' }).addTo(map);
+            map = L.map('map', {
+                center: [-7.8700, 110.3300],
+                zoom: 11,
+                zoomControl: false
+            });
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(map);
 
             basemaps.streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap', maxZoom: 19
+                attribution: '© OpenStreetMap',
+                maxZoom: 19
             });
             basemaps.satellite = L.tileLayer(
-                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                { attribution: '© Esri', maxZoom: 19 }
+                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: '© Esri',
+                    maxZoom: 19
+                }
             );
             basemaps.topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenTopoMap', maxZoom: 17
+                attribution: '© OpenTopoMap',
+                maxZoom: 17
             });
             basemaps.streets.addTo(map);
 
-            layerGroups.kerawanan    = L.layerGroup().addTo(map);
+            layerGroups.kerawanan = L.layerGroup().addTo(map);
             layerGroups.administrasi = L.layerGroup().addTo(map);
-            layerGroups.laporan      = L.layerGroup().addTo(map);
-            layerGroups.historis     = L.layerGroup().addTo(map);
+            layerGroups.laporan = L.layerGroup().addTo(map);
+            layerGroups.historis = L.layerGroup().addTo(map);
 
             Promise.all([
                 loadZonaKerawanan(),
@@ -1778,15 +2181,22 @@
                 .then(data => {
                     L.geoJSON(data, {
                         style: feature => {
-                            const zona  = feature.properties.ZONA;
-                            const color = zona === 'Tinggi' ? '#ef4444'
-                                        : zona === 'Sedang' ? '#f59e0b'
-                                        : '#10b981';
-                            return { fillColor: color, fillOpacity: 0.4, color, weight: 2, opacity: 0.8 };
+                            const zona = feature.properties.ZONA;
+                            const color = zona === 'Tinggi' ? '#ef4444' :
+                                zona === 'Sedang' ? '#f59e0b' :
+                                '#10b981';
+                            return {
+                                fillColor: color,
+                                fillOpacity: 0.4,
+                                color,
+                                weight: 2,
+                                opacity: 0.8
+                            };
                         },
                         onEachFeature: (feature, layer) => {
-                            const zona  = feature.properties.ZONA;
-                            const color = zona === 'Tinggi' ? 'danger' : zona === 'Sedang' ? 'warning' : 'success';
+                            const zona = feature.properties.ZONA;
+                            const color = zona === 'Tinggi' ? 'danger' : zona === 'Sedang' ? 'warning' :
+                                'success';
                             layer.bindPopup(`
                                 <div style="min-width:180px;">
                                     <h6 class="mb-2"><strong>Zona Kerawanan</strong></h6>
@@ -1808,8 +2218,11 @@
                     bantulGeoJSON = data;
                     L.geoJSON(data, {
                         style: {
-                            fillColor: 'transparent', color: '#1e3c72',
-                            weight: 2, opacity: 0.8, dashArray: '5,5'
+                            fillColor: 'transparent',
+                            color: '#1e3c72',
+                            weight: 2,
+                            opacity: 0.8,
+                            dashArray: '5,5'
                         },
                         onEachFeature: (feature, layer) => {
                             const props = feature.properties;
@@ -1829,11 +2242,15 @@
             const laporanIcon = L.icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34]
             });
 
             laporanArr.forEach(laporan => {
-                const marker = L.marker([laporan.latitude, laporan.longitude], { icon: laporanIcon });
+                const marker = L.marker([laporan.latitude, laporan.longitude], {
+                    icon: laporanIcon
+                });
                 marker._laporanId = laporan.id;
 
                 let html = `<div style="min-width:250px;max-width:300px;">
@@ -1845,9 +2262,9 @@
                 if (fotos.length > 0) {
                     html += `<div style="display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;">`;
                     fotos.forEach((f, i) => {
-                        const w = fotos.length === 1 ? '100%'
-                                : fotos.length === 2 ? 'calc(50% - 2px)'
-                                : 'calc(33.3% - 3px)';
+                        const w = fotos.length === 1 ? '100%' :
+                            fotos.length === 2 ? 'calc(50% - 2px)' :
+                            'calc(33.3% - 3px)';
                         html += `<img src="/uploads/laporan/${f}"
                             style="width:${w};height:80px;object-fit:cover;border-radius:8px;
                                    cursor:pointer;border:2px solid #e2e8f0;"
@@ -1860,11 +2277,11 @@
                     }
                 }
 
-                const kd = laporan.kedalaman_cm >= 70
-                    ? 'background:#fee2e2;color:#991b1b;'
-                    : laporan.kedalaman_cm >= 40
-                    ? 'background:#fef3c7;color:#92400e;'
-                    : 'background:#dbeafe;color:#1e40af;';
+                const kd = laporan.kedalaman_cm >= 70 ?
+                    'background:#fee2e2;color:#991b1b;' :
+                    laporan.kedalaman_cm >= 40 ?
+                    'background:#fef3c7;color:#92400e;' :
+                    'background:#dbeafe;color:#1e40af;';
 
                 html += `
                     <p style="margin-bottom:6px;"><strong>Lokasi:</strong> ${laporan.kecamatan}, ${laporan.desa}</p>
@@ -1886,7 +2303,9 @@
                     </div>
                 </div>`;
 
-                marker.bindPopup(html, { maxWidth: 320 });
+                marker.bindPopup(html, {
+                    maxWidth: 320
+                });
                 layerGroups.laporan.addLayer(marker);
             });
             return Promise.resolve();
@@ -1896,7 +2315,7 @@
             const targetId = sessionStorage.getItem('bantara_focus_laporan');
             if (!targetId) return;
             let targetMarker = null;
-            layerGroups.laporan.eachLayer(function (marker) {
+            layerGroups.laporan.eachLayer(function(marker) {
                 if (String(marker._laporanId) === String(targetId)) targetMarker = marker;
             });
             if (targetMarker) {
@@ -1915,12 +2334,16 @@
                     const historisIcon = L.icon({
                         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
                         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34]
                     });
                     L.geoJSON(data, {
-                        pointToLayer: (feature, latlng) => L.marker(latlng, { icon: historisIcon }),
+                        pointToLayer: (feature, latlng) => L.marker(latlng, {
+                            icon: historisIcon
+                        }),
                         onEachFeature: (feature, layer) => {
-                            const props  = feature.properties;
+                            const props = feature.properties;
                             const coords = feature.geometry.coordinates;
                             layer.bindPopup(`
                                 <div style="min-width:250px;max-width:300px;">
@@ -1955,8 +2378,13 @@
         }
 
         function zoomToMarker(lat, lon, type) {
-            map.flyTo([lat, lon], 16, { duration: 1.5 });
-            document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            map.flyTo([lat, lon], 16, {
+                duration: 1.5
+            });
+            document.getElementById('map').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
             setTimeout(() => {
                 const target = type === 'laporan' ? layerGroups.laporan : layerGroups.historis;
                 target.eachLayer(layer => {
@@ -1979,9 +2407,9 @@
         function renderHistorisPage(page) {
             historisCurrentPage = page;
             const perPage = parseInt(document.getElementById('historisPerPage')?.value || 25);
-            const tbody   = document.getElementById('historis-table-body');
-            const pagDiv  = document.getElementById('historisPagination');
-            const info    = document.getElementById('historisInfo');
+            const tbody = document.getElementById('historis-table-body');
+            const pagDiv = document.getElementById('historisPagination');
+            const info = document.getElementById('historisInfo');
 
             if (!historisData.length) {
                 tbody.innerHTML =
@@ -1989,11 +2417,11 @@
                 return;
             }
 
-            const total      = historisData.length;
+            const total = historisData.length;
             const totalPages = perPage >= 999 ? 1 : Math.ceil(total / perPage);
-            const start      = (page - 1) * perPage;
-            const end        = Math.min(start + perPage, total);
-            const slice      = historisData.slice(start, end);
+            const start = (page - 1) * perPage;
+            const end = Math.min(start + perPage, total);
+            const slice = historisData.slice(start, end);
 
             if (info) info.textContent = `${start + 1}–${end} dari ${total}`;
 
@@ -2024,13 +2452,13 @@
         function renderLaporanPage(page) {
             laporanCurrentPage = page;
             const perPage = parseInt(document.getElementById('laporanPerPage')?.value || 25);
-            const rows    = Array.from(document.querySelectorAll('.laporan-row'));
-            const total   = rows.length;
-            const pagDiv  = document.getElementById('laporanPagination');
-            const info    = document.getElementById('laporanInfo');
+            const rows = Array.from(document.querySelectorAll('.laporan-row'));
+            const total = rows.length;
+            const pagDiv = document.getElementById('laporanPagination');
+            const info = document.getElementById('laporanInfo');
             const totalPages = perPage >= 999 ? 1 : Math.ceil(total / perPage);
-            const start   = (page - 1) * perPage;
-            const end     = Math.min(start + perPage, total);
+            const start = (page - 1) * perPage;
+            const end = Math.min(start + perPage, total);
 
             rows.forEach((r, i) => {
                 r.style.display = (i >= start && i < end) ? '' : 'none';
@@ -2042,13 +2470,16 @@
 
         function renderPagBtns(container, page, totalPages, fn) {
             if (!container) return;
-            if (totalPages <= 1) { container.innerHTML = ''; return; }
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
 
             const base = 'padding:4px 12px;border-radius:8px;border:2px solid #e2e8f0;' +
-                         'background:white;font-weight:700;font-size:13px;cursor:pointer;margin:2px;';
-            const act  = 'padding:4px 12px;border-radius:8px;border:2px solid #0891b2;' +
-                         'background:linear-gradient(135deg,#0891b2,#06b6d4);color:white;' +
-                         'font-weight:700;font-size:13px;cursor:pointer;margin:2px;';
+                'background:white;font-weight:700;font-size:13px;cursor:pointer;margin:2px;';
+            const act = 'padding:4px 12px;border-radius:8px;border:2px solid #0891b2;' +
+                'background:linear-gradient(135deg,#0891b2,#06b6d4);color:white;' +
+                'font-weight:700;font-size:13px;cursor:pointer;margin:2px;';
 
             let html = '';
             if (page > 1)
@@ -2068,56 +2499,140 @@
             longsor: {
                 file: '/storage/geojson/kerawanan_longsor.geojson',
                 key: 'KELAS',
-                colors: { 'Rendah': '#10b981', 'Sedang': '#f59e0b', 'Tinggi': '#ef4444' },
+                colors: {
+                    'Rendah': '#10b981',
+                    'Sedang': '#f59e0b',
+                    'Tinggi': '#ef4444'
+                },
                 def: '#94a3b8'
             },
             slope: {
-                file: '/storage/geojson/kemiringan_lereng.geojson',
-                key: 'KELAS',
-                colors: {
-                    'Datar': '#ffffcc', 'Landai': '#a1dab4',
-                    'Agak Curam': '#41b6c4', 'Curam': '#2171b5', 'Sangat Curam': '#08306b'
+                file: '/storage/geojson/klkl.geojson',
+                key: 'kemiringan',
+                skorLabels: {
+                    1: 'Sangat Rendah',
+                    2: 'Rendah',
+                    3: 'Sedang',
+                    4: 'Tinggi',
+                    5: 'Sangat Tinggi'
                 },
-                def: '#deebf7'
+                colors: {
+                    // Skor 1 - Sangat Rendah (lereng >40°, sangat curam)
+                    '>40': '#0a6949',
+                    // Skor 2 - Rendah (lereng 25-40°, curam)
+                    '25-40': '#a8d5a2',
+                    // Skor 3 - Sedang (lereng 15-25°)
+                    '15-25': '#f59e0b',
+                    // Skor 4 - Tinggi (lereng 2-15°, agak landai)
+                    '2-15': '#ef4444',
+                    // Skor 5 - Sangat Tinggi (lereng 0-2°, hampir datar = rawan genangan)
+                    '0-2': '#991b1b',
+                },
+
             },
             rain: {
                 file: '/storage/geojson/curah_hujan.geojson',
                 key: 'KELAS',
                 colors: {
-                    'Sangat Rendah': '#deebf7', 'Rendah': '#9ecae1', 'Sedang': '#6baed6',
-                    'Tinggi': '#2171b5', 'Sangat Tinggi': '#08306b'
+                    'Sangat Rendah': '#deebf7',
+                    'Rendah': '#9ecae1',
+                    'Sedang': '#6baed6',
+                    'Tinggi': '#2171b5',
+                    'Sangat Tinggi': '#08306b'
                 },
                 def: '#deebf7'
             },
             landuse: {
-                file: '/storage/geojson/penggunaan_lahan.geojson',
-                key: 'TUTUPAN',
+                file: '/storage/geojson/plpl.geojson',
+                key: 'Peng_Tanah',
+                skorLabels: {
+                    1: 'Sangat Rendah',
+                    2: 'Rendah',
+                    3: 'Sedang',
+                    4: 'Tinggi',
+                    5: 'Sangat Tinggi'
+                },
                 colors: {
-                    'Hutan': '#33a02c', 'Kebun': '#b2df8a', 'Sawah': '#a6cee3',
-                    'Permukiman': '#ff7f00', 'Lahan Terbuka': '#fdbf6f', 'Sungai/Waduk': '#1f78b4'
+                    // Skor 1 - Sangat Rendah
+                    'Hutan Lebat': '#1a6b1a',
+                    'Hutan Sejenis': '#2d8a2d',
+                    'Emplasemen': '#a8d5a2',
+                    // Skor 2 - Rendah
+                    'Padang Rumput': '#7dba5f',
+                    'Semak': '#b5d96d',
+                    'Tanah Tandus': '#d4c08a',
+                    // Skor 3 - Sedang
+                    'Industri Non Pertanian': '#9b59b6',
+                    'Industri Pertanian': '#e67e22',
+                    'Kebun Campuran': '#8db600',
+                    'Pertambangan': '#7f8c8d',
+                    'Sarana Olah Raga': '#00bcd4',
+                    'Tanah penggunaan lain': '#bcaaa4',
+                    'Tegalan/Ladang': '#cddc39',
+                    // Skor 4 - Tinggi
+                    'Kolam': '#64b5f6',
+                    'Penggaraman': '#4dd0e1',
+                    'Sawah Irigasi': '#26a69a',
+                    'Sungai': '#1565c0',
+                    'Tambak': '#0d47a1',
+                    // Skor 5 - Sangat Tinggi
+                    'Kampung': '#ff7043',
+                    'Kuburan/Makam': '#8e44ad',
+                    'Perumahan': '#e53935',
                 },
                 def: '#d9d9d9'
             },
             soil: {
-                file: '/storage/geojson/jenis_tanah.geojson',
-                key: 'JENIS',
-                colors: {
-                    'Alluvial Hidromorf': '#d9b38c', 'Alluvial Kelabu': '#c9936b',
-                    'Regosol': '#a07850', 'Grumusol': '#8b6040',
-                    'Latosol': '#7b5c38', 'Mediteran': '#5c3a20'
+                file: '/storage/geojson/jtjt.geojson',
+                key: 'KETERANGAN',
+                skorLabels: {
+                    1: 'Sangat Rendah',
+                    2: 'Rendah',
+                    3: 'Sedang',
+                    4: 'Tinggi',
+                    5: 'Sangat Tinggi'
                 },
-                def: '#d9b38c'
+                colors: {
+                    // Skor 1 - Sangat Rendah
+                    'Regosol': '#a8d5a2',
+                    // Skor 2 - Rendah
+                    'Kambisol': '#7dba5f',
+                    'Grumusol': '#b5d96d',
+                    // Skor 3 - Sedang
+                    'Mediterania': '#f59e0b',
+                    // Skor 4 - Tinggi
+                    'Gleisol': '#fb923c',
+                    'Rendsina': '#ef4444',
+                    'Latosol': '#dc2626',
+                    // Skor 5 - Sangat Tinggi
+                    'Aluvial': '#991b1b',
+                },
+                def: '#d9d9d9'
             },
             river: {
                 file: '/storage/geojson/jarak_sungai.geojson',
                 key: 'KELAS',
                 colors: {
-                    '0-100m': '#08519c', '100-200m': '#2171b5', '200-300m': '#4292c6',
-                    '300-500m': '#6baed6', '>500m': '#deebf7'
+                    '0-100m': '#08519c',
+                    '100-200m': '#2171b5',
+                    '200-300m': '#4292c6',
+                    '300-500m': '#6baed6',
+                    '>500m': '#deebf7'
                 },
                 def: '#deebf7'
             },
         };
+
+        function getSkorColor(skor) {
+            const map = {
+                1: '#10b981',
+                2: '#84cc16',
+                3: '#f59e0b',
+                4: '#ef4444',
+                5: '#991b1b'
+            };
+            return map[skor] || '#64748b';
+        }
 
         function toggleTematik(name, visible) {
             if (!visible) {
@@ -2139,16 +2654,97 @@
                     tematikLayers[name] = L.geoJSON(data, {
                         style: f => {
                             const val = f.properties[cfg.key] || '';
+                            const fillCol = cfg.colors[val] || cfg.def;
                             return {
-                                fillColor: cfg.colors[val] || cfg.def,
-                                fillOpacity: 0.55, color: '#fff', weight: 0.5
+                                fillColor: fillCol,
+                                fillOpacity: 0.7,
+                                color: fillCol,
+                                weight: 0.5,
+                                opacity: 0.6
                             };
                         },
                         onEachFeature: (f, layer) => {
+                            const val = f.properties[cfg.key] || '-';
+                            const skor = f.properties.skor;
+                            const warna = cfg.colors[val] || cfg.def;
+
+                            // Tooltip ringan saat hover
                             layer.bindTooltip(
-                                `<strong>${name.toUpperCase()}</strong>: ${f.properties[cfg.key] || '-'}`,
-                                { sticky: true }
+                                `<strong>${val}</strong>` + (skor !== undefined && cfg.skorLabels ?
+                                    ` &nbsp;|&nbsp; Skor ${skor}: ${cfg.skorLabels[skor]}` :
+                                    ''), {
+                                    sticky: true,
+                                    className: 'leaflet-tooltip'
+                                }
                             );
+
+                            // Popup interaktif saat klik (khusus landuse tampil lengkap)
+                            if (cfg.skorLabels && skor !== undefined) {
+                                const skorLabel = cfg.skorLabels[skor] || '-';
+                                const luas = f.properties.luas ?
+                                    parseFloat(f.properties.luas).toFixed(2) + ' ha' :
+                                    '-';
+                                layer.bindPopup(`
+                            <div style="min-width:230px;font-family:inherit;">
+                                <div style="background:linear-gradient(135deg,#0891b2,#06b6d4);
+                                            color:white;padding:10px 14px;border-radius:10px 10px 0 0;
+                                            margin:-1px -1px 0 -1px;">
+                                    <h6 style="margin:0;font-weight:800;font-size:13px;">
+                                        <i class="fas fa-map"></i> ${name === 'landuse' ? 'Penggunaan Lahan' : name === 'soil' ? 'Jenis Tanah' : name === 'slope' ? 'Kemiringan Lereng' : name.charAt(0).toUpperCase() + name.slice(1)}
+                                    </h6>
+                                </div>
+                                <div style="padding:12px;background:#f8fafc;border-radius:0 0 10px 10px;">
+                                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                                        <span style="width:18px;height:18px;background:${warna};
+                                                     border-radius:4px;flex-shrink:0;
+                                                     border:2px solid rgba(0,0,0,0.15);
+                                                     box-shadow:0 2px 4px rgba(0,0,0,0.1);"></span>
+                                        <strong style="color:#0f172a;font-size:14px;">${val}</strong>
+                                    </div>
+                                    <table style="width:100%;font-size:12px;border-collapse:collapse;">
+                                        <tr>
+                                            <td style="color:#64748b;padding:3px 0;width:55%;">🎯 Skor Kerawanan</td>
+                                            <td style="font-weight:700;color:#0f172a;">${skor}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:#64748b;padding:3px 0;">📊 Kategori</td>
+                                            <td>
+                                                <span style="background:${getSkorColor(skor)};color:white;
+                                                             padding:2px 8px;border-radius:20px;
+                                                             font-size:11px;font-weight:700;">
+                                                    ${skorLabel}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:#64748b;padding:3px 0;">📐 Luas</td>
+                                            <td style="font-weight:600;color:#0f172a;">${luas}</td>
+                                        </tr>
+                                    </table>
+                                    <div style="margin-top:10px;padding:7px 10px;
+                                                background:white;border-radius:8px;
+                                                border:1px solid #e2e8f0;font-size:10px;color:#64748b;">
+                                        <strong style="color:#0c4a6e;">Keterangan Skor:</strong><br>
+                                        <span style="color:#10b981;">1</span> = Sangat Rendah &nbsp;
+                                        <span style="color:#84cc16;">2</span> = Rendah &nbsp;
+                                        <span style="color:#f59e0b;">3</span> = Sedang<br>
+                                        <span style="color:#ef4444;">4</span> = Tinggi &nbsp;
+                                        <span style="color:#991b1b;">5</span> = Sangat Tinggi
+                                    </div>
+                                </div>
+                            </div>
+                        `, {
+                                    maxWidth: 280
+                                });
+                            } else {
+                                layer.bindPopup(`
+                            <div style="min-width:180px;padding:6px;">
+                                <h6 style="color:#0c4a6e;font-weight:700;margin-bottom:6px;">
+                                    ${name.charAt(0).toUpperCase() + name.slice(1)}
+                                </h6>
+                                <p style="margin:0;"><strong>${cfg.key}:</strong> ${val}</p>
+                            </div>`);
+                            }
                         }
                     }).addTo(map);
                 })
@@ -2156,7 +2752,7 @@
                     const chk = document.getElementById('chk-' + name);
                     if (chk) chk.checked = false;
                     alert('⚠️ File GeoJSON "' + cfg.file +
-                          '" belum tersedia.\nSiapkan file di /storage/geojson/ terlebih dahulu.');
+                        '" belum tersedia.\nSiapkan file di /storage/geojson/ terlebih dahulu.');
                 });
         }
 
@@ -2167,7 +2763,7 @@
         });
 
         // ── FOCUS FROM URL PARAMS ──────────────────────────────────────────
-        window.onload = function () {
+        window.onload = function() {
             const params = new URLSearchParams(window.location.search);
             const lat = params.get('lat');
             const lng = params.get('lng');

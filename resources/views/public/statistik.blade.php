@@ -68,21 +68,10 @@
             border-color: rgba(8, 145, 178, 0.3);
         }
 
-        .stat-card.bg-gradient-primary::before {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-        }
-
-        .stat-card.bg-gradient-success::before {
-            background: linear-gradient(90deg, #10b981, #059669);
-        }
-
-        .stat-card.bg-gradient-warning::before {
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-        }
-
-        .stat-card.bg-gradient-danger::before {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
-        }
+        .stat-card.bg-gradient-primary::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+        .stat-card.bg-gradient-success::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .stat-card.bg-gradient-warning::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .stat-card.bg-gradient-danger::before  { background: linear-gradient(90deg, #ef4444, #dc2626); }
 
         .stat-icon {
             width: 80px;
@@ -98,21 +87,10 @@
             box-shadow: 0 10px 30px rgba(8, 145, 178, 0.3);
         }
 
-        .stat-card.bg-gradient-primary .stat-icon {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-
-        .stat-card.bg-gradient-success .stat-icon {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .stat-card.bg-gradient-warning .stat-icon {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-
-        .stat-card.bg-gradient-danger .stat-icon {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-        }
+        .stat-card.bg-gradient-primary .stat-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .stat-card.bg-gradient-success .stat-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-card.bg-gradient-warning .stat-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-card.bg-gradient-danger .stat-icon  { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
         .stat-info h3 {
             font-size: 3rem;
@@ -124,29 +102,10 @@
             background-clip: text;
         }
 
-        .stat-card.bg-gradient-primary .stat-info h3 {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-card.bg-gradient-success .stat-info h3 {
-            background: linear-gradient(135deg, #10b981, #059669);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-card.bg-gradient-warning .stat-info h3 {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-card.bg-gradient-danger .stat-info h3 {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .stat-card.bg-gradient-primary .stat-info h3 { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card.bg-gradient-success .stat-info h3 { background: linear-gradient(135deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card.bg-gradient-warning .stat-info h3 { background: linear-gradient(135deg, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card.bg-gradient-danger .stat-info h3  { background: linear-gradient(135deg, #ef4444, #dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .stat-info p {
             font-size: 1.1rem;
@@ -170,27 +129,13 @@
         .info-box::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             opacity: 0.2;
         }
 
-        .info-box h3 {
-            position: relative;
-            z-index: 2;
-            font-weight: 800;
-            font-size: 1.5rem;
-        }
-
-        .info-box p {
-            position: relative;
-            z-index: 2;
-            line-height: 1.8;
-            opacity: 0.95;
-        }
+        .info-box h3 { position: relative; z-index: 2; font-weight: 800; font-size: 1.5rem; }
+        .info-box p  { position: relative; z-index: 2; line-height: 1.8; opacity: 0.95; }
 
         /* ==================== CHART CARDS ==================== */
         .chart-card {
@@ -309,10 +254,7 @@
         }
 
         /* ==================== TABLE ==================== */
-        .table {
-            border-radius: 12px;
-            overflow: hidden;
-        }
+        .table { border-radius: 12px; overflow: hidden; }
 
         .table thead {
             background: linear-gradient(135deg, #0891b2, #06b6d4);
@@ -342,9 +284,7 @@
             vertical-align: middle;
         }
 
-        .progress {
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+        .progress { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); }
 
         .badge {
             padding: 0.5rem 1rem;
@@ -365,22 +305,9 @@
             gap: 8px;
         }
 
-        .source-badge i {
-            color: #0891b2;
-            font-size: 11px;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-
-        .source-badge span {
-            font-size: 11px;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        .source-badge strong {
-            color: #0c4a6e;
-        }
+        .source-badge i { color: #0891b2; font-size: 11px; margin-top: 2px; flex-shrink: 0; }
+        .source-badge span { font-size: 11px; color: #64748b; line-height: 1.5; }
+        .source-badge strong { color: #0c4a6e; }
 
         /* ==================== CTA BUTTONS ==================== */
         .btn-lg {
@@ -413,19 +340,56 @@
 
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
-            .statistik-hero h1 {
-                font-size: 2rem;
-            }
-
-            .kecamatan-name {
-                width: 120px;
-                font-size: 0.9rem;
-            }
-
-            .bar-wrapper {
-                height: 35px;
-            }
+            .statistik-hero h1 { font-size: 2rem; }
+            .kecamatan-name { width: 120px; font-size: 0.9rem; }
+            .bar-wrapper { height: 35px; }
         }
+
+        /* ===== MOBILE RESPONSIVE TAMBAHAN (tidak menghapus apapun di atas) ===== */
+        @media (max-width: 767px) {
+            /* Hero statistik */
+            .statistik-hero { padding: 2rem 0; margin-bottom: 1.5rem; }
+            .statistik-hero h1 { font-size: 1.7rem; }
+            .statistik-hero p { font-size: 0.95rem; }
+
+            /* Stat cards: 2 kolom di HP */
+            .row.mb-5.g-4 .col-md-3 { flex: 0 0 50%; max-width: 50%; }
+            .stat-card { padding: 1.5rem 1rem; border-radius: 14px; }
+            .stat-icon { width: 58px; height: 58px; font-size: 1.6rem; margin-bottom: 0.9rem; }
+            .stat-info h3 { font-size: 2rem; }
+            .stat-info p { font-size: 0.88rem; }
+
+            /* Info box */
+            .info-box { padding: 1.5rem; border-radius: 14px; margin-bottom: 1.5rem; }
+            .info-box h3 { font-size: 1.2rem; }
+            .info-box p { font-size: 0.92rem; }
+
+            /* Chart card */
+            .chart-card { padding: 1.5rem; border-radius: 14px; }
+            .chart-card h5 { font-size: 1.05rem; flex-wrap: wrap; gap: 0.4rem; }
+            .btn-group { flex-wrap: wrap; gap: 4px; }
+            .btn-group .btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+
+            /* Kecamatan bar chart: lebih kompak */
+            .chart-container { padding: 1.5rem; border-radius: 14px; margin-bottom: 1.25rem; }
+            .chart-title { font-size: 1.1rem; margin-bottom: 1.25rem; }
+            .kecamatan-bar { padding: 0.85rem; margin-bottom: 0.75rem; }
+            .kecamatan-name { width: 100px; font-size: 0.82rem; }
+            .bar-wrapper { height: 30px; margin: 0 0.75rem; }
+            .bar-fill { font-size: 0.82rem; padding-right: 8px; }
+
+            /* Tabel */
+            .table thead th { padding: 0.75rem 0.6rem; font-size: 0.82rem; }
+            .table tbody td { padding: 0.75rem 0.6rem; font-size: 0.84rem; }
+
+            /* CTA buttons */
+            .btn-lg { padding: 0.8rem 1.6rem; font-size: 0.95rem; }
+        }
+        @media (max-width: 420px) {
+            .statistik-hero h1 { font-size: 1.45rem; }
+            .kecamatan-name { width: 85px; font-size: 0.78rem; }
+        }
+
     </style>
 @endsection
 
@@ -448,45 +412,34 @@
         <div class="row mb-5 g-4">
             <div class="col-md-3">
                 <div class="stat-card bg-gradient-primary">
-                    <div class="stat-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
+                    <div class="stat-icon"><i class="fas fa-database"></i></div>
                     <div class="stat-info">
                         <h3>{{ number_format($totalLaporan) }}</h3>
                         <p>Total Data Historis</p>
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="stat-card bg-gradient-success">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                     <div class="stat-info">
                         <h3>{{ number_format($totalVerified) }}</h3>
                         <p>Laporan Terverifikasi</p>
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="stat-card bg-gradient-warning">
-                    <div class="stat-icon">
-                        <i class="fas fa-map-marked-alt"></i>
-                    </div>
+                    <div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div>
                     <div class="stat-info">
                         <h3>{{ count($kecamatanStats) }}</h3>
                         <p>Kecamatan Terdampak</p>
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="stat-card bg-gradient-danger">
-                    <div class="stat-icon">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
                     <div class="stat-info">
                         <h3>{{ $kecamatanStats[0]['total'] ?? 0 }}</h3>
                         <p>Titik Terbanyak</p>
@@ -521,7 +474,6 @@
                     <i class="fas fa-chart-line"></i>
                     Tren Kejadian Bulanan (<span id="current-year">{{ $selectedYear }}</span>)
                 </h5>
-
                 <div class="btn-group" role="group">
                     @foreach ($availableYears as $year)
                         <button type="button"
@@ -532,7 +484,6 @@
                     @endforeach
                 </div>
             </div>
-
             <canvas id="trendChart"></canvas>
             <div class="source-badge">
                 <i class="fas fa-database"></i>
@@ -547,9 +498,7 @@
                 10 Kecamatan Paling Rawan Banjir
             </h4>
 
-            @php
-                $maxTotal = collect($kecamatanStats)->max('total') ?? 1;
-            @endphp
+            @php $maxTotal = collect($kecamatanStats)->max('total') ?? 1; @endphp
 
             @forelse($kecamatanStats as $kec)
                 <div class="kecamatan-bar">
@@ -577,7 +526,6 @@
                 <i class="fas fa-table"></i>
                 Detail Statistik Per Kecamatan
             </h4>
-
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -590,10 +538,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $totalAll = collect($kecamatanStats)->sum('total');
-                        @endphp
-
+                        @php $totalAll = collect($kecamatanStats)->sum('total'); @endphp
                         @forelse($kecamatanStats as $index => $item)
                             @php
                                 $percentage = $totalAll > 0 ? ($item['total'] / $totalAll) * 100 : 0;
@@ -618,9 +563,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">
-                                    Tidak ada data
-                                </td>
+                                <td colspan="5" class="text-center text-muted py-4">Tidak ada data</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -698,11 +641,7 @@
                             display: true,
                             position: 'top',
                             labels: {
-                                font: {
-                                    size: 14,
-                                    weight: 'bold',
-                                    family: 'Inter'
-                                },
+                                font: { size: 14, weight: 'bold', family: 'Inter' },
                                 color: '#0c4a6e'
                             }
                         },
@@ -711,13 +650,8 @@
                             intersect: false,
                             backgroundColor: 'rgba(12, 74, 110, 0.95)',
                             padding: 15,
-                            titleFont: {
-                                size: 15,
-                                weight: 'bold'
-                            },
-                            bodyFont: {
-                                size: 14
-                            },
+                            titleFont: { size: 15, weight: 'bold' },
+                            bodyFont: { size: 14 },
                             borderColor: '#0891b2',
                             borderWidth: 2,
                             callbacks: {
@@ -732,43 +666,24 @@
                             beginAtZero: true,
                             ticks: {
                                 stepSize: Math.max(1, Math.ceil(Math.max(...trendValues) / 10)),
-                                font: {
-                                    size: 13,
-                                    weight: '600'
-                                },
+                                font: { size: 13, weight: '600' },
                                 color: '#64748b'
                             },
-                            grid: {
-                                color: 'rgba(0,0,0,0.05)'
-                            },
+                            grid: { color: 'rgba(0,0,0,0.05)' },
                             title: {
                                 display: true,
                                 text: 'Jumlah Kejadian',
-                                font: {
-                                    size: 14,
-                                    weight: 'bold'
-                                },
+                                font: { size: 14, weight: 'bold' },
                                 color: '#0c4a6e'
                             }
                         },
                         x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                font: {
-                                    size: 13,
-                                    weight: '600'
-                                },
-                                color: '#64748b'
-                            },
+                            grid: { display: false },
+                            ticks: { font: { size: 13, weight: '600' }, color: '#64748b' },
                             title: {
                                 display: true,
                                 text: 'Bulan',
-                                font: {
-                                    size: 14,
-                                    weight: 'bold'
-                                },
+                                font: { size: 14, weight: 'bold' },
                                 color: '#0c4a6e'
                             }
                         }
