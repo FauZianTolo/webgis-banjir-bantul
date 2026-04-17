@@ -2507,7 +2507,7 @@
                 def: '#94a3b8'
             },
             slope: {
-                file: '/geojson/klkl.json',
+                file: '/geojson/klkl.geojson',
                 key: 'kemiringan',
                 skorLabels: {
                     1: 'Sangat Rendah',
