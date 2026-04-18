@@ -1415,38 +1415,46 @@
             const desc = document.getElementById('bmkgDesc');
             if (!box || !icon || !title || !desc) return;
 
-            const loc = d.location || 'Kabupaten Bantul';
+            const loc = d.location || 'Lokasi Anda';
             const c = d.current || {};
+            // ✅ Pakai cuaca HARI INI saja, bukan max 7 hari
             const rain = Number(c.rain_prob || 0);
             const wind = Number(c.wind_speed || 0);
-            const maxR = Math.max(rain, ...((d.forecast || []).map(f => Number(f.rain_prob || 0))));
+            const wCode = Number(c.weather_code || 0);
+            const temp = Number(c.temp || 0);
 
             let level, faIcon, t, dStr;
 
-            if (maxR >= 75 || wind >= 40) {
+            if (wCode >= 95 || wind >= 40) {
                 level = 'lvl-danger';
                 faIcon = 'fa-bolt';
                 t = `⚡ PERINGATAN CUACA EKSTREM — ${loc}`;
                 dStr =
-                    `Waspadai <strong>badai petir, hujan sangat lebat, dan angin kencang</strong> di ${loc}. Peluang hujan ekstrem mencapai <strong>${maxR}%</strong>. Hindari daerah rawan banjir dan longsor.`;
-            } else if (maxR >= 55) {
+                    `Waspadai <strong>badai petir dan angin kencang</strong> di ${loc}. Kondisi berbahaya! Hindari aktivitas luar ruangan dan daerah rawan banjir.`;
+            } else if (rain >= 70 || wCode === 65 || wCode === 82) {
+                level = 'lvl-danger';
+                faIcon = 'fa-cloud-showers-heavy';
+                t = `🌧️ HUJAN LEBAT — ${loc}`;
+                dStr =
+                    `Saat ini terjadi <strong>hujan lebat</strong> di ${loc} dengan peluang hujan <strong>${rain}%</strong>. Waspadai banjir dan genangan air.`;
+            } else if (rain >= 50 || wCode >= 61) {
                 level = 'lvl-warn';
                 faIcon = 'fa-cloud-rain';
-                t = `🌧️ Potensi Hujan Sedang–Lebat — ${loc}`;
+                t = `🌦️ Potensi Hujan Sedang — ${loc}`;
                 dStr =
-                    `Potensi hujan di ${loc} dengan peluang <strong>${maxR}%</strong>. Waspadai genangan air, luapan sungai, dan area dengan drainase buruk.`;
-            } else if (maxR >= 30) {
+                    `Potensi hujan di ${loc} dengan peluang <strong>${rain}%</strong>. Siapkan payung dan waspadai genangan air di jalan.`;
+            } else if (rain >= 25 || wCode >= 51) {
                 level = 'lvl-info';
                 faIcon = 'fa-cloud-drizzle';
-                t = `🌦️ Kemungkinan Hujan Ringan — ${loc}`;
+                t = `🌦️ Kemungkinan Gerimis — ${loc}`;
                 dStr =
-                    `Cuaca di ${loc} berpotensi gerimis atau hujan ringan dengan peluang <strong>${rain}%</strong>. Tetap pantau pembaruan cuaca berkala.`;
+                    `Cuaca di ${loc} berpotensi gerimis ringan dengan peluang <strong>${rain}%</strong>. Tetap pantau perkembangan cuaca.`;
             } else {
                 level = 'lvl-ok';
                 faIcon = 'fa-sun';
-                t = `☀️ Cuaca Cerah — ${loc}`;
+                t = `☀️ Cuaca Aman — ${loc}`;
                 dStr =
-                    `Kondisi cuaca di ${loc} <strong>cerah</strong> dengan peluang hujan hanya <strong>${rain}%</strong>. Aktivitas luar ruangan aman.`;
+                    `Kondisi cuaca di ${loc} <strong>cerah dan aman</strong>. Suhu ${temp}°C dengan peluang hujan hanya <strong>${rain}%</strong>. Aktivitas luar ruangan aman dilakukan.`;
             }
 
             box.className = 'bmkg-box ' + level;
@@ -1477,15 +1485,15 @@
                 if (!resp.ok) throw new Error('HTTP ' + resp.status);
                 const data = await resp.json();
                 if (data.error) throw new Error(data.error);
-                if (data.current && data.current.temp !== null) {
+                if (data.current && data.current.temp !== undefined) {
                     renderWeather(data);
                     if (showToastMsg) showToast(showToastMsg);
-                    return true; // ← TAMBAH INI
+                    return true; // ✅ sukses
                 }
                 return false;
             } catch (e) {
-                console.info('[Weather] Gagal fetch:', e.message);
-                return false; // ← TAMBAH INI
+                console.warn('[Weather] Fetch gagal:', e.message);
+                return false;
             }
         }
 
@@ -1503,7 +1511,6 @@
                 if (contentEl) contentEl.style.display = 'block';
             }
 
-            // Sembunyikan konten, tampilkan loading dulu
             if (loadingEl) loadingEl.style.display = 'flex';
             if (contentEl) contentEl.style.display = 'none';
 
@@ -1513,12 +1520,15 @@
                             _lat = pos.coords.latitude;
                             _lon = pos.coords.longitude;
                             const ok = await fetchAndRender(_lat, _lon, null);
-                            if (!ok) renderWeather(_serverData); // fallback kalau API gagal
+                            if (!ok) {
+                                // API gagal, pakai server data
+                                renderWeather(_serverData);
+                            }
                             showContent();
                             startRefreshTimer();
                         },
-                        () => {
-                            // User tolak atau timeout → pakai Bantul
+                        (err) => {
+                            console.warn('[Weather] Geolocation ditolak/gagal:', err.message);
                             renderWeather(_serverData);
                             showContent();
                             startRefreshTimer();
@@ -1526,7 +1536,7 @@
                             enableHighAccuracy: false,
                             timeout: 8000,
                             maximumAge: 0
-                        }
+                        } // ✅ maximumAge:0 = selalu fresh
                 );
             } else {
                 renderWeather(_serverData);
