@@ -1473,13 +1473,15 @@
                 if (!resp.ok) throw new Error('HTTP ' + resp.status);
                 const data = await resp.json();
                 if (data.error) throw new Error(data.error);
-
                 if (data.current && data.current.temp !== null) {
                     renderWeather(data);
                     if (showToastMsg) showToast(showToastMsg);
+                    return true; // ← TAMBAH INI
                 }
+                return false;
             } catch (e) {
-                console.info('[Weather] Background update gagal, pakai data server:', e.message);
+                console.info('[Weather] Gagal fetch:', e.message);
+                return false; // ← TAMBAH INI
             }
         }
 
@@ -1489,9 +1491,15 @@
         }
 
         function initWeather() {
-            // Tampilkan loading dulu, JANGAN render server data dulu
             const loadingEl = document.getElementById('w-loading');
             const contentEl = document.getElementById('w-content');
+
+            function showContent() {
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (contentEl) contentEl.style.display = 'block';
+            }
+
+            // Sembunyikan konten, tampilkan loading dulu
             if (loadingEl) loadingEl.style.display = 'flex';
             if (contentEl) contentEl.style.display = 'none';
 
@@ -1500,27 +1508,25 @@
                     async pos => {
                             _lat = pos.coords.latitude;
                             _lon = pos.coords.longitude;
-                            await fetchAndRender(_lat, _lon, null);
-                            if (loadingEl) loadingEl.style.display = 'none';
-                            if (contentEl) contentEl.style.display = 'block';
+                            const ok = await fetchAndRender(_lat, _lon, null);
+                            if (!ok) renderWeather(_serverData); // fallback kalau API gagal
+                            showContent();
                             startRefreshTimer();
                         },
                         () => {
-                            // Kalau user tolak/gagal, baru pakai Bantul
+                            // User tolak atau timeout → pakai Bantul
                             renderWeather(_serverData);
-                            if (loadingEl) loadingEl.style.display = 'none';
-                            if (contentEl) contentEl.style.display = 'block';
+                            showContent();
                             startRefreshTimer();
                         }, {
                             enableHighAccuracy: false,
-                            timeout: 10000,
-                            maximumAge: 300000
+                            timeout: 8000,
+                            maximumAge: 0
                         }
                 );
             } else {
                 renderWeather(_serverData);
-                if (loadingEl) loadingEl.style.display = 'none';
-                if (contentEl) contentEl.style.display = 'block';
+                showContent();
                 startRefreshTimer();
             }
         }
