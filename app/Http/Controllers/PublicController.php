@@ -428,79 +428,10 @@ private function parseIndonesianDate($dateString)
 
     public function berita()
 {
-    // ========== DATA CUACA REAL-TIME ==========
-    $cuacaAPI = [
-        'location' => 'Bantul, Yogyakarta',
-        'updated' => now()->format('d M Y, H:i') . ' WIB',
-        'current' => [
-            'temp' => rand(26, 30),
-            'weather' => 'Berawan Sebagian',
-            'icon' => 'fa-cloud-sun',
-            'humidity' => rand(70, 85),
-            'wind_speed' => rand(8, 15),
-            'rain_prob' => rand(30, 60)
-        ],
-        'forecast' => [
-            [
-                'date' => 'Senin',
-                'icon' => 'fa-cloud-rain',
-                'temp_max' => 29,
-                'temp_min' => 23,
-                'weather_text' => 'Hujan Ringan',
-                'rain_prob' => 60
-            ],
-            [
-                'date' => 'Selasa',
-                'icon' => 'fa-cloud-sun-rain',
-                'temp_max' => 30,
-                'temp_min' => 24,
-                'weather_text' => 'Cerah Berawan',
-                'rain_prob' => 30
-            ],
-            [
-                'date' => 'Rabu',
-                'icon' => 'fa-cloud-showers-heavy',
-                'temp_max' => 28,
-                'temp_min' => 22,
-                'weather_text' => 'Hujan Lebat',
-                'rain_prob' => 80
-            ],
-            [
-                'date' => 'Kamis',
-                'icon' => 'fa-cloud-rain',
-                'temp_max' => 27,
-                'temp_min' => 23,
-                'weather_text' => 'Hujan Sedang',
-                'rain_prob' => 70
-            ],
-            [
-                'date' => 'Jumat',
-                'icon' => 'fa-cloud-sun',
-                'temp_max' => 31,
-                'temp_min' => 24,
-                'weather_text' => 'Cerah',
-                'rain_prob' => 20
-            ],
-            [
-                'date' => 'Sabtu',
-                'icon' => 'fa-cloud',
-                'temp_max' => 30,
-                'temp_min' => 23,
-                'weather_text' => 'Berawan',
-                'rain_prob' => 35
-            ],
-            [
-                'date' => 'Minggu',
-                'icon' => 'fa-sun',
-                'temp_max' => 32,
-                'temp_min' => 25,
-                'weather_text' => 'Cerah',
-                'rain_prob' => 10
-            ]
-        ]
-    ];
+    // Ambil data cuaca real dari WeatherController (default: Bantul)
+    $weatherController = new WeatherController();
+    $weatherPayload = $weatherController->getServerWeather(-7.8877, 110.3302);
 
-    // ========== DATA BERITA DENGAN GAMBAR BERKUALITAS ==========
     $beritaList = [
         [
             'kategori' => 'Peringatan Dini',
@@ -566,7 +497,8 @@ private function parseIndonesianDate($dateString)
 
     return view('public.berita', [
         'title' => 'Berita & Informasi',
-        'cuacaAPI' => $cuacaAPI,
+        'cuacaAPI' => $weatherPayload,
+        'weatherPayload' => $weatherPayload,
         'beritaList' => $beritaList
     ]);
 }
