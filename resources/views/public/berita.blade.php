@@ -1129,6 +1129,10 @@
                         <div class="live-badge">
                             <span class="pulse-dot"></span>
                             <span class="live-text">LIVE</span>
+                            <button onclick="requestLocation()" title="Gunakan lokasi saya"
+                                style="background:rgba(255,255,255,0.2); border:none; border-radius:50%; width:28px; height:28px; color:white; cursor:pointer; margin-left:8px; font-size:13px;">
+                                <i class="fas fa-crosshairs"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1529,6 +1533,33 @@
                 showContent();
                 startRefreshTimer();
             }
+        }
+
+        function requestLocation() {
+            const loadingEl = document.getElementById('w-loading');
+            const contentEl = document.getElementById('w-content');
+            if (loadingEl) loadingEl.style.display = 'flex';
+            if (contentEl) contentEl.style.display = 'none';
+
+            navigator.geolocation.getCurrentPosition(
+                async pos => {
+                        _lat = pos.coords.latitude;
+                        _lon = pos.coords.longitude;
+                        const ok = await fetchAndRender(_lat, _lon, 'Cuaca diperbarui untuk lokasi Anda!');
+                        if (!ok) renderWeather(_serverData);
+                        if (loadingEl) loadingEl.style.display = 'none';
+                        if (contentEl) contentEl.style.display = 'block';
+                    },
+                    () => {
+                        alert('Izin lokasi ditolak. Aktifkan lokasi di browser kamu ya!');
+                        if (loadingEl) loadingEl.style.display = 'none';
+                        if (contentEl) contentEl.style.display = 'block';
+                    }, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+            );
         }
 
         document.addEventListener('DOMContentLoaded', initWeather);

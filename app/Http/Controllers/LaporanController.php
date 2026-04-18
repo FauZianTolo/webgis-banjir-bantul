@@ -35,77 +35,70 @@ class LaporanController extends Controller
      * Verifikasi (Setujui) Laporan
      */
     public function verify($id)
-    {
-        try {
-            $laporan = LaporanBanjir::findOrFail($id);
-            $laporan->status = 'verified';
-            $laporan->save();
+{
+    try {
+        $laporan = LaporanBanjir::findOrFail($id);
+        $laporan->status = 'verified';
+        $laporan->save();
 
-            // Clear cache
-            Cache::forget('laporan_verified');
-            Cache::forget('dashboard_stats');
+        Cache::forget('laporan_verified');
+        Cache::forget('dashboard_stats');
 
-            // Buat notifikasi ke pelapor
-            NotificationController::createVerifiedNotification($laporan);
+        NotificationController::createVerifiedNotification($laporan);
 
-            return redirect()->back()->with('success', 'Laporan berhasil diverifikasi!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memverifikasi laporan: ' . $e->getMessage());
-        }
+        return redirect()->route('admin.laporan.index')->with('success', 'Laporan berhasil diverifikasi!');
+    } catch (\Exception $e) {
+        return redirect()->route('admin.laporan.index')->with('error', 'Gagal memverifikasi laporan: ' . $e->getMessage());
     }
+}
 
     /**
      * Tolak Laporan
      */
     public function reject($id)
-    {
-        try {
-            $laporan = LaporanBanjir::findOrFail($id);
-            $laporan->status = 'rejected';
-            $laporan->save();
+{
+    try {
+        $laporan = LaporanBanjir::findOrFail($id);
+        $laporan->status = 'rejected';
+        $laporan->save();
 
-            // Clear cache
-            Cache::forget('laporan_verified');
-            Cache::forget('dashboard_stats');
+        Cache::forget('laporan_verified');
+        Cache::forget('dashboard_stats');
 
-            // Buat notifikasi ke pelapor
-            NotificationController::createRejectedNotification($laporan);
+        NotificationController::createRejectedNotification($laporan);
 
-            return redirect()->back()->with('success', 'Laporan berhasil ditolak.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menolak laporan: ' . $e->getMessage());
-        }
+        return redirect()->route('admin.laporan.index')->with('success', 'Laporan berhasil ditolak.');
+    } catch (\Exception $e) {
+        return redirect()->route('admin.laporan.index')->with('error', 'Gagal menolak laporan: ' . $e->getMessage());
     }
+}
 
     /**
      * Delete rejected report
      */
     public function destroyRejected($id)
-    {
-        try {
-            $laporan = LaporanBanjir::findOrFail($id);
+{
+    try {
+        $laporan = LaporanBanjir::findOrFail($id);
 
-            // Pastikan hanya rejected yang bisa dihapus dari halaman verifikasi
-            if ($laporan->status !== 'rejected') {
-                return redirect()->back()->with('error', 'Hanya laporan yang ditolak yang bisa dihapus!');
-            }
-
-            // Hapus foto jika ada
-            if ($laporan->foto && file_exists(public_path('uploads/laporan/' . $laporan->foto))) {
-                unlink(public_path('uploads/laporan/' . $laporan->foto));
-            }
-
-            $laporan->delete();
-
-            // Clear cache
-            Cache::forget('dashboard_stats');
-            Cache::forget('laporan_verified');
-
-            return redirect()->back()->with('success', 'Laporan yang ditolak berhasil dihapus!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menghapus laporan: ' . $e->getMessage());
+        if ($laporan->status !== 'rejected') {
+            return redirect()->route('admin.laporan.index')->with('error', 'Hanya laporan yang ditolak yang bisa dihapus!');
         }
+
+        if ($laporan->foto && file_exists(public_path('uploads/laporan/' . $laporan->foto))) {
+            unlink(public_path('uploads/laporan/' . $laporan->foto));
+        }
+
+        $laporan->delete();
+
+        Cache::forget('dashboard_stats');
+        Cache::forget('laporan_verified');
+
+        return redirect()->route('admin.laporan.index')->with('success', 'Laporan yang ditolak berhasil dihapus!');
+    } catch (\Exception $e) {
+        return redirect()->route('admin.laporan.index')->with('error', 'Gagal menghapus laporan: ' . $e->getMessage());
     }
+}
 
     /**
  * Export laporan ke PDF (browser print)
