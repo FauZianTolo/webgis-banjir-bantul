@@ -385,6 +385,80 @@
             margin: 10px 0;
         }
 
+        /* ==================== TEMATIK ACCORDION ==================== */
+        .tematik-item {
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 6px;
+            overflow: hidden;
+        }
+
+        .tematik-item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: #f8fafc;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .tematik-item-header:hover {
+            background: #f0f9ff;
+        }
+
+        .tematik-item-header input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: #0891b2;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .tematik-item-title {
+            font-weight: 700;
+            color: #0c4a6e;
+            font-size: 11px;
+            flex: 1;
+        }
+
+        .tematik-item-arrow {
+            font-size: 9px;
+            color: #0891b2;
+            transition: transform 0.25s;
+            flex-shrink: 0;
+        }
+
+        .tematik-item-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .tematik-item-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+            padding: 0 10px;
+        }
+
+        .tematik-item-body.open {
+            max-height: 400px;
+            padding: 8px 10px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f0f9ff;
+        }
+
+        .tematik-item-body.open::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .tematik-item-body.open::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
         .layer-item {
             display: flex;
             align-items: center;
@@ -947,7 +1021,7 @@
             }
 
             /* KUNCI: Search panel dipindah ke kiri (bawah toolbar)
-                                           agar tidak BERTABRAKAN dengan layer panel di kanan */
+                                                   agar tidak BERTABRAKAN dengan layer panel di kanan */
             .search-panel {
                 top: 8px;
                 left: 52px;
@@ -1305,216 +1379,223 @@
                             <span class="arrow-sm">▼</span>
                         </div>
                         <div class="panel-section-body" id="tematikSection">
-                            <div style="font-size:10px;color:#94a3b8;margin-bottom:8px;padding:0 4px;">
-                                <i class="fas fa-info-circle"></i> Layer tambahan — klik untuk aktifkan
+                            <div style="font-size:10px;color:#94a3b8;margin-bottom:8px;padding:0 2px;">
+                                <i class="fas fa-info-circle"></i> Klik nama layer untuk buka legenda
                             </div>
-                            <!-- Kerawanan Longsor -->
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-longsor" onchange="toggleTematik('longsor',this.checked)">
-                                <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
-                                    <div style="display:flex;align-items:center;gap:6px;">
-                                        <span class="layer-item-label" style="font-weight:700;">Kerawanan Longsor</span>
-                                    </div>
-                                    <div style="display:flex;gap:3px;margin-top:3px;padding-left:2px;">
-                                        <span
-                                            style="width:14px;height:10px;background:#10b981;border-radius:2px;flex-shrink:0;"></span><span
-                                            style="font-size:9px;color:#64748b;align-self:center;">Rendah</span>
-                                        <span
-                                            style="width:14px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;align-self:center;">Sedang</span>
-                                        <span
-                                            style="width:14px;height:10px;background:#ef4444;border-radius:2px;flex-shrink:0;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;align-self:center;">Tinggi</span>
+
+                            <!-- 1. Kerawanan Longsor -->
+                            <div class="tematik-item">
+                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-longsor',this)">
+                                    <input type="checkbox" id="chk-longsor"
+                                        onclick="event.stopPropagation();toggleTematik('longsor',this.checked)">
+                                    <span class="tematik-item-title"><i class="fas fa-mountain"
+                                            style="color:#0891b2;margin-right:4px;"></i>Kerawanan Longsor</span>
+                                    <span class="tematik-item-arrow">▼</span>
+                                </div>
+                                <div class="tematik-item-body" id="acc-longsor">
+                                    <div style="display:flex;gap:3px;flex-wrap:wrap;padding:4px 0;">
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#10b981;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">Rendah</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;margin-left:6px;"><span
+                                                style="width:12px;height:12px;background:#f59e0b;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">Sedang</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;margin-left:6px;"><span
+                                                style="width:12px;height:12px;background:#ef4444;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">Tinggi</span></div>
                                     </div>
                                 </div>
-                            </label>
-                            <hr class="panel-divider">
-                            <!-- Kemiringan Lereng -->
-                            <label class="layer-item" style="align-items:flex-start;">
-                                <input type="checkbox" id="chk-slope" onchange="toggleTematik('slope',this.checked)"
-                                    style="margin-top:3px;">
-                                <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
-                                    <span class="layer-item-label" style="font-weight:700;">Kemiringan Lereng</span>
-                                    <!-- Skor 1 -->
-                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:2px;">● Skor 1 —
+                            </div>
+
+                            <!-- 2. Kemiringan Lereng -->
+                            <div class="tematik-item">
+                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-slope',this)">
+                                    <input type="checkbox" id="chk-slope"
+                                        onclick="event.stopPropagation();toggleTematik('slope',this.checked)">
+                                    <span class="tematik-item-title"><i class="fas fa-angle-double-up"
+                                            style="color:#0891b2;margin-right:4px;"></i>Kemiringan Lereng</span>
+                                    <span class="tematik-item-arrow">▼</span>
+                                </div>
+                                <div class="tematik-item-body" id="acc-slope">
+                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
                                         Sangat Rendah</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">&gt;40°</span></div>
                                     </div>
-                                    <!-- Skor 2 -->
-                                    <div style="font-size:9px;font-weight:800;color:#84cc16;margin-top:2px;">● Skor 2 —
-                                        Rendah</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#84cc16;">● Skor 2 — Rendah</div>
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">25–40°</span></div>
                                     </div>
-                                    <!-- Skor 3 -->
-                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;margin-top:2px;">● Skor 3 —
-                                        Sedang</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;">● Skor 3 — Sedang</div>
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">15–25°</span></div>
                                     </div>
-                                    <!-- Skor 4 -->
-                                    <div style="font-size:9px;font-weight:800;color:#ef4444;margin-top:2px;">● Skor 4 —
-                                        Tinggi</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#ef4444;">● Skor 4 — Tinggi</div>
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#ef4444;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">2–15°</span></div>
                                     </div>
-                                    <!-- Skor 5 -->
-                                    <div style="font-size:9px;font-weight:800;color:#991b1b;margin-top:2px;">● Skor 5 —
-                                        Sangat Tinggi</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#991b1b;">● Skor 5 — Sangat Tinggi
+                                    </div>
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#991b1b;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">0–2° (Datar)</span></div>
                                     </div>
-                                    <div
-                                        style="font-size:8px;color:#94a3b8;padding-left:4px;margin-top:2px;font-style:italic;">
-                                        Makin datar = makin rawan genangan</div>
+                                    <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">Makin datar
+                                        = makin rawan genangan</div>
                                 </div>
-                            </label>
-                            <hr class="panel-divider">
-                            <!-- Curah Hujan -->
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-rain" onchange="toggleTematik('rain',this.checked)">
-                                <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
-                                    <span class="layer-item-label" style="font-weight:700;">Curah Hujan</span>
-                                    <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#deebf7;border:1px solid #ccc;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&lt;1500</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#9ecae1;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">Sedang</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#2171b5;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&gt;3000mm</span>
+                            </div>
+
+                            <!-- 3. Curah Hujan -->
+                            <div class="tematik-item">
+                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-rain',this)">
+                                    <input type="checkbox" id="chk-rain"
+                                        onclick="event.stopPropagation();toggleTematik('rain',this.checked)">
+                                    <span class="tematik-item-title"><i class="fas fa-cloud-rain"
+                                            style="color:#0891b2;margin-right:4px;"></i>Curah Hujan</span>
+                                    <span class="tematik-item-arrow">▼</span>
+                                </div>
+                                <div class="tematik-item-body" id="acc-rain">
+                                    <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#deebf7;border:1px solid #ccc;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">&lt;1500mm</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#9ecae1;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">Sedang</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#2171b5;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">&gt;3000mm</span></div>
                                     </div>
                                 </div>
-                            </label>
-                            <hr class="panel-divider">
-                            <!-- Penggunaan Lahan -->
-                            <label class="layer-item" style="align-items:flex-start;">
-                                <input type="checkbox" id="chk-landuse" onchange="toggleTematik('landuse',this.checked)"
-                                    style="margin-top:3px;">
-                                <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
-                                    <span class="layer-item-label" style="font-weight:700;">Penggunaan Lahan</span>
-                                    <!-- Skor 1 -->
-                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:2px;">● Skor 1 —
+                            </div>
+
+                            <!-- 4. Penggunaan Lahan -->
+                            <div class="tematik-item">
+                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-landuse',this)">
+                                    <input type="checkbox" id="chk-landuse"
+                                        onclick="event.stopPropagation();toggleTematik('landuse',this.checked)">
+                                    <span class="tematik-item-title"><i class="fas fa-map"
+                                            style="color:#0891b2;margin-right:4px;"></i>Penggunaan Lahan</span>
+                                    <span class="tematik-item-arrow">▼</span>
+                                </div>
+                                <div class="tematik-item-body" id="acc-landuse">
+                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
                                         Sangat Rendah</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div
+                                        style="display:grid;grid-template-columns:1fr 1fr;gap:2px 4px;padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#1a6b1a;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#1a6b1a;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Hutan Lebat</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#2d8a2d;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#2d8a2d;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Hutan Sejenis</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Emplasemen</span></div>
                                     </div>
-                                    <!-- Skor 2 -->
-                                    <div style="font-size:9px;font-weight:800;color:#84cc16;margin-top:2px;">● Skor 2 —
-                                        Rendah</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#84cc16;">● Skor 2 — Rendah</div>
+                                    <div
+                                        style="display:grid;grid-template-columns:1fr 1fr;gap:2px 4px;padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Padang Rumput</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#b5d96d;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#b5d96d;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Semak</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#d4c08a;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#d4c08a;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Tanah Tandus</span></div>
                                     </div>
-                                    <!-- Skor 3 -->
-                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;margin-top:2px;">● Skor 3 —
-                                        Sedang</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;">● Skor 3 — Sedang</div>
+                                    <div
+                                        style="display:grid;grid-template-columns:1fr 1fr;gap:2px 4px;padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#8db600;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#8db600;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Kebun Campuran</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#cddc39;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#cddc39;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Tegalan/Ladang</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#9b59b6;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#9b59b6;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Industri Non P.</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#e67e22;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#e67e22;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Industri Pertanian</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#7f8c8d;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#7f8c8d;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Pertambangan</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#00bcd4;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:8px;color:#475569;">Sarana Olah Raga</span></div>
+                                                style="width:9px;height:9px;background:#00bcd4;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:8px;color:#475569;">Sarana OR</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#bcaaa4;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#bcaaa4;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Tanah Pgn. Lain</span></div>
                                     </div>
-                                    <!-- Skor 4 -->
-                                    <div style="font-size:9px;font-weight:800;color:#ef4444;margin-top:2px;">● Skor 4 —
-                                        Tinggi</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#ef4444;">● Skor 4 — Tinggi</div>
+                                    <div
+                                        style="display:grid;grid-template-columns:1fr 1fr;gap:2px 4px;padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#26a69a;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#26a69a;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Sawah Irigasi</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#1565c0;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#1565c0;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Sungai</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#0d47a1;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#0d47a1;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Tambak</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#64b5f6;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#64b5f6;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Kolam</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#4dd0e1;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#4dd0e1;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Penggaraman</span></div>
                                     </div>
-                                    <!-- Skor 5 -->
-                                    <div style="font-size:9px;font-weight:800;color:#991b1b;margin-top:2px;">● Skor 5 —
-                                        Sangat Tinggi</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#991b1b;">● Skor 5 — Sangat Tinggi
+                                    </div>
+                                    <div
+                                        style="display:grid;grid-template-columns:1fr 1fr;gap:2px 4px;padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#ff7043;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#ff7043;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Kampung</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#e53935;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#e53935;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Perumahan</span></div>
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#8e44ad;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:9px;height:9px;background:#8e44ad;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Kuburan/Makam</span></div>
                                     </div>
                                 </div>
-                            </label>
-                            <hr class="panel-divider">
-                            <!-- Jenis Tanah -->
-                            <label class="layer-item" style="align-items:flex-start;">
-                                <input type="checkbox" id="chk-soil" onchange="toggleTematik('soil',this.checked)"
-                                    style="margin-top:3px;">
-                                <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
-                                    <span class="layer-item-label" style="font-weight:700;">Jenis Tanah</span>
-                                    <!-- Skor 1 -->
-                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:2px;">● Skor 1 —
+                            </div>
+
+                            <!-- 5. Jenis Tanah -->
+                            <div class="tematik-item">
+                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-soil',this)">
+                                    <input type="checkbox" id="chk-soil"
+                                        onclick="event.stopPropagation();toggleTematik('soil',this.checked)">
+                                    <span class="tematik-item-title"><i class="fas fa-seedling"
+                                            style="color:#0891b2;margin-right:4px;"></i>Jenis Tanah</span>
+                                    <span class="tematik-item-arrow">▼</span>
+                                </div>
+                                <div class="tematik-item-body" id="acc-soil">
+                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
                                         Sangat Rendah</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Regosol</span></div>
                                     </div>
-                                    <!-- Skor 2 -->
-                                    <div style="font-size:9px;font-weight:800;color:#84cc16;margin-top:2px;">● Skor 2 —
-                                        Rendah</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#84cc16;">● Skor 2 — Rendah</div>
+                                    <div
+                                        style="display:grid;grid-template-columns:1fr 1fr;gap:2px 4px;padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Kambisol</span></div>
@@ -1522,18 +1603,15 @@
                                                 style="width:10px;height:10px;background:#b5d96d;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Grumusol</span></div>
                                     </div>
-                                    <!-- Skor 3 -->
-                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;margin-top:2px;">● Skor 3 —
-                                        Sedang</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;">● Skor 3 — Sedang</div>
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Mediterania</span></div>
                                     </div>
-                                    <!-- Skor 4 -->
-                                    <div style="font-size:9px;font-weight:800;color:#ef4444;margin-top:2px;">● Skor 4 —
-                                        Tinggi</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#ef4444;">● Skor 4 — Tinggi</div>
+                                    <div
+                                        style="display:grid;grid-template-columns:1fr 1fr;gap:2px 4px;padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#fb923c;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Gleisol</span></div>
@@ -1544,36 +1622,47 @@
                                                 style="width:10px;height:10px;background:#dc2626;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Latosol</span></div>
                                     </div>
-                                    <!-- Skor 5 -->
-                                    <div style="font-size:9px;font-weight:800;color:#991b1b;margin-top:2px;">● Skor 5 —
-                                        Sangat Tinggi</div>
-                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;padding-left:4px;">
+                                    <div style="font-size:9px;font-weight:800;color:#991b1b;">● Skor 5 — Sangat Tinggi
+                                    </div>
+                                    <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
                                                 style="width:10px;height:10px;background:#991b1b;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Aluvial</span></div>
                                     </div>
                                 </div>
-                            </label>
-                            <hr class="panel-divider">
-                            <!-- Jarak dari Sungai -->
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-river" onchange="toggleTematik('river',this.checked)">
-                                <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
-                                    <span class="layer-item-label" style="font-weight:700;">Jarak dari Sungai</span>
-                                    <div style="display:flex;gap:3px;margin-top:3px;">
-                                        <span
-                                            style="width:12px;height:10px;background:#08519c;border-radius:2px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&lt;100m</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#6baed6;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">100-300m</span>
-                                        <span
-                                            style="width:12px;height:10px;background:#deebf7;border:1px solid #ccc;border-radius:2px;margin-left:4px;"></span><span
-                                            style="font-size:9px;color:#64748b;">&gt;500m</span>
+                            </div>
+
+                            <!-- 6. Jarak dari Sungai -->
+                            <div class="tematik-item">
+                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-river',this)">
+                                    <input type="checkbox" id="chk-river"
+                                        onclick="event.stopPropagation();toggleTematik('river',this.checked)">
+                                    <span class="tematik-item-title"><i class="fas fa-water"
+                                            style="color:#0891b2;margin-right:4px;"></i>Jarak dari Sungai</span>
+                                    <span class="tematik-item-arrow">▼</span>
+                                </div>
+                                <div class="tematik-item-body" id="acc-river">
+                                    <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#08519c;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">&lt;100m</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#2171b5;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">100–200m</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#4292c6;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">200–300m</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#6baed6;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">300–500m</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#deebf7;border:1px solid #ccc;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">&gt;500m</span></div>
                                     </div>
                                 </div>
-                            </label>
-                            <div style="padding:8px 4px 4px;font-size:10px;color:#94a3b8;font-style:italic;">
+                            </div>
+
+                            <div style="padding:6px 2px 4px;font-size:10px;color:#94a3b8;font-style:italic;">
                                 * File GeoJSON tematik perlu disiapkan di /geojson/
                             </div>
                         </div>
@@ -2023,6 +2112,14 @@
         function toggleSection(sId, hId) {
             document.getElementById(sId).classList.toggle('open');
             document.getElementById(hId).classList.toggle('open');
+        }
+
+        // ── TEMATIK ACCORDION ──────────────────────────────────────────
+        function toggleTematikAccordion(bodyId, headerEl) {
+            const body = document.getElementById(bodyId);
+            const arrow = headerEl.querySelector('.tematik-item-arrow');
+            body.classList.toggle('open');
+            arrow.classList.toggle('open');
         }
 
         // ── IMAGE MODAL ────────────────────────────────────────────────────

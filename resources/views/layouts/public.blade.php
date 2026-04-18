@@ -502,11 +502,18 @@
                 navbar.style.boxShadow = '0 4px 30px rgba(8, 145, 178, 0.3)';
             }
         });
+        // Auto-close navbar saat klik link menu di mobile
+        document.querySelectorAll('#navbarNav .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const collapse = document.getElementById('navbarNav');
+                if (collapse.classList.contains('show')) {
+                    new bootstrap.Collapse(collapse).hide();
+                }
+            });
+        });
     </script>
 
     @yield('script')
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')
     <!-- ⭐⭐⭐ NOTIFICATION TOAST FOR ADMIN ⭐⭐⭐ -->
