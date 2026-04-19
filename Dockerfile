@@ -18,11 +18,10 @@ RUN mkdir -p storage/framework/sessions \
     storage/framework/cache \
     storage/logs \
     bootstrap/cache \
-    public/uploads/laporan \
-    && chown -R www-data:www-data storage bootstrap/cache public/uploads \
-    && chmod -R 775 storage bootstrap/cache public/uploads
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 RUN echo '<VirtualHost *:80>\n    DocumentRoot /var/www/html/public\n    <Directory /var/www/html/public>\n        AllowOverride All\n        Require all granted\n    </Directory>\n</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
-CMD ["bash", "-c", "a2dismod mpm_event mpm_worker 2>/dev/null || true && a2enmod mpm_prefork rewrite 2>/dev/null || true && php artisan config:clear && php artisan migrate --force && php artisan storage:link 2>/dev/null || true && apache2-foreground"]
+CMD ["bash", "-c", "a2dismod mpm_event mpm_worker 2>/dev/null || true && a2enmod mpm_prefork rewrite 2>/dev/null || true && mkdir -p /var/www/html/public/uploads/laporan && chown -R www-data:www-data /var/www/html/public/uploads && php artisan config:clear && php artisan migrate --force && php artisan storage:link 2>/dev/null || true && apache2-foreground"]
