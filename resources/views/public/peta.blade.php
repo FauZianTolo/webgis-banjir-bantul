@@ -1021,7 +1021,7 @@
             }
 
             /* KUNCI: Search panel dipindah ke kiri (bawah toolbar)
-                                                   agar tidak BERTABRAKAN dengan layer panel di kanan */
+                                                       agar tidak BERTABRAKAN dengan layer panel di kanan */
             .search-panel {
                 top: 8px;
                 left: 52px;
@@ -2167,8 +2167,8 @@
             if (fotoFields.length > 0) {
                 fotoContainer.innerHTML = fotoFields.map((f, i) => `
                     <div style="text-align:center;">
-                        <img src="/uploads/laporan/${f}" alt="Foto ${i + 1}" class="detail-foto"
-                             onclick="openImageModal('/uploads/laporan/${f}')"
+                        <img src="${getFotoUrl(f)}" alt="Foto ${i + 1}" class="detail-foto"
+                             onclick="openImageModal('${getFotoUrl(f)}')"
                              style="width:160px;height:160px;object-fit:cover;border-radius:14px;
                                     cursor:pointer;border:3px solid #e2e8f0;
                                     box-shadow:0 6px 20px rgba(0,0,0,0.1);">
@@ -2362,10 +2362,10 @@
                         const w = fotos.length === 1 ? '100%' :
                             fotos.length === 2 ? 'calc(50% - 2px)' :
                             'calc(33.3% - 3px)';
-                        html += `<img src="/uploads/laporan/${f}"
+                        html += `<img src="${getFotoUrl(f)}"
                             style="width:${w};height:80px;object-fit:cover;border-radius:8px;
                                    cursor:pointer;border:2px solid #e2e8f0;"
-                            onclick="openImageModal('/uploads/laporan/${f}')">`;
+                            onclick="openImageModal('${getFotoUrl(f)}')">`;
                     });
                     html += `</div>`;
                     if (fotos.length > 1) {
@@ -2870,5 +2870,11 @@
                 L.marker(lokasi).addTo(map).bindPopup('Lokasi Laporan Banjir').openPopup();
             }
         };
+
+        // Helper: handle Cloudinary URL atau local file
+        function getFotoUrl(f) {
+            if (!f) return '';
+            return f.startsWith('http') ? f : '/uploads/laporan/' + f;
+        }
     </script>
 @endsection

@@ -338,7 +338,7 @@
                         <i class="fas fa-image"></i> Foto Saat Ini:
                     </span>
                     <div class="current-photo">
-                        <img src="{{ asset('uploads/laporan/' . $laporan->foto) }}"
+                        <img src="{{ fotoUrl($laporan->foto) }}"
                              alt="Foto Laporan"
                              style="width: 300px; height: 300px; object-fit: cover; display: block;">
                     </div>

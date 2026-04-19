@@ -536,7 +536,8 @@
                     <h4 class="detail-section-title">
                         <i class="fas fa-camera"></i> Dokumentasi Foto
                     </h4>
-                    <div id="detail-foto-container" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+                    <div id="detail-foto-container"
+                        style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
                         <!-- Diisi oleh JS -->
                     </div>
                 </div>
@@ -613,10 +614,10 @@
                 if (fotoFields.length > 0) {
                     fotoContainer.innerHTML = fotoFields.map((f, i) => `
                         <div style="text-align:center;">
-                            <img src="/uploads/laporan/${f}"
+                            <img src="${getFotoUrl(f)}"
                                  alt="Foto ${i+1}"
                                  class="detail-foto"
-                                 onclick="openImageModal('/uploads/laporan/${f}')"
+                                 onclick="openImageModal('${getFotoUrl(f)}')"
                                  style="width:155px;height:155px;object-fit:cover;border-radius:14px;cursor:pointer;border:3px solid #e2e8f0;box-shadow:0 6px 20px rgba(0,0,0,0.1);">
                             <div style="font-size:11px;font-weight:700;color:#64748b;margin-top:5px;">Foto ${i+1}</div>
                         </div>
@@ -645,6 +646,12 @@
                     hour: '2-digit',
                     minute: '2-digit'
                 });
+            }
+
+            // Helper: handle Cloudinary URL atau local file
+            function getFotoUrl(f) {
+                if (!f) return '';
+                return f.startsWith('http') ? f : '/uploads/laporan/' + f;
             }
 
             // ⭐⭐⭐ ROUTING FUNCTIONS ⭐⭐⭐
@@ -771,16 +778,20 @@
                     if (popupFotos.length > 0) {
                         popupContent += '<div style="display:flex;gap:4px;margin-bottom:10px;">';
                         popupFotos.forEach(function(f, i) {
-                            var w = popupFotos.length === 1 ? '100%' : (popupFotos.length === 2 ? 'calc(50% - 2px)' : 'calc(33.3% - 3px)');
-                            popupContent += '<img src="/uploads/laporan/' + f + '" ' +
-                                'alt="Foto ' + (i+1) + '" ' +
-                                'style="width:' + w + ';height:75px;object-fit:cover;border-radius:7px;cursor:pointer;border:2px solid #e2e8f0;" ' +
-                                'onclick="openImageModal(\'/uploads/laporan/' + f + '\')" ' +
-                                'title="Foto ' + (i+1) + ' — klik untuk memperbesar">';
+                            var w = popupFotos.length === 1 ? '100%' : (popupFotos.length === 2 ?
+                                'calc(50% - 2px)' : 'calc(33.3% - 3px)');
+                            popupContent += '<img src="' + getFotoUrl(f) + '" ' +
+                                'alt="Foto ' + (i + 1) + '" ' +
+                                'style="width:' + w +
+                                ';height:75px;object-fit:cover;border-radius:7px;cursor:pointer;border:2px solid #e2e8f0;" ' +
+                                'onclick="openImageModal(\'' + getFotoUrl(f) + '\')" ' +
+                                'title="Foto ' + (i + 1) + ' — klik untuk memperbesar">';
                         });
                         popupContent += '</div>';
                         if (popupFotos.length > 1) {
-                            popupContent += '<p style="font-size:10px;color:#64748b;margin-bottom:6px;text-align:center;">' + popupFotos.length + ' foto tersedia</p>';
+                            popupContent +=
+                                '<p style="font-size:10px;color:#64748b;margin-bottom:6px;text-align:center;">' +
+                                popupFotos.length + ' foto tersedia</p>';
                         }
                     }
 
@@ -793,7 +804,7 @@
                         .desa + '</p>' +
                         '<p style="margin: 6px 0;"><strong>Kedalaman:</strong> <span style="font-weight: bold; color: ' +
                         (item.kedalaman_cm >= 70 ? '#991b1b' : item.kedalaman_cm >= 40 ? '#92400e' :
-                        '#1e40af') + ';">' +
+                            '#1e40af') + ';">' +
                         item.kedalaman_cm + ' cm</span></p>' +
                         '<p style="margin: 6px 0;"><strong>Pelapor:</strong> ' + item.nama_pelapor + '</p>' +
                         '<p style="margin: 6px 0 12px 0;"><strong>Waktu:</strong> ' + new Date(item

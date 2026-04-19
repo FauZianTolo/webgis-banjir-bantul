@@ -887,6 +887,15 @@
 @endsection
 
 @section('content')
+    @php
+        function fotoUrl($f)
+        {
+            if (!$f) {
+                return '';
+            }
+            return str_starts_with($f, 'http') ? $f : asset('uploads/laporan/' . $f);
+        }
+    @endphp
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
@@ -1168,10 +1177,10 @@
                             <div class="feature-card report-card">
                                 @if ($laporan->foto)
                                     <div class="foto-wrap">
-                                        <img src="{{ asset('uploads/laporan/' . $laporan->foto) }}" alt="Laporan Banjir"
-                                            onclick="openZoomHome('{{ asset('uploads/laporan/' . $laporan->foto) }}')">
+                                        <img src="{{ fotoUrl($laporan->foto) }}" alt="Laporan Banjir"
+                                            onclick="openZoomHome('{{ fotoUrl($laporan->foto) }}')">
                                         <button type="button" class="foto-zoom-btn"
-                                            onclick="openZoomHome('{{ asset('uploads/laporan/' . $laporan->foto) }}')">
+                                            onclick="openZoomHome('{{ fotoUrl($laporan->foto) }}')">
                                             <i class="fas fa-search-plus"></i> Perbesar
                                         </button>
                                     </div>

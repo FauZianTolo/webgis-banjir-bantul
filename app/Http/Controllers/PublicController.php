@@ -101,10 +101,17 @@ public function route(Request $request)
         if ($request->hasFile('fotos')) {
             $files = $request->file('fotos');
             foreach (array_slice($files, 0, 3) as $i => $file) {
-    $uploaded = cloudinary()->upload($file->getRealPath(), [
-        'folder' => 'webgis-banjir-bantul/laporan',
-    ]);
-    $validated[$fotoKeys[$i]] = $uploaded->getSecurePath();
+    try {
+        $uploaded = cloudinary()->upload($file->getRealPath(), [
+            'folder' => 'webgis-banjir/laporan',
+            'resource_type' => 'image',
+        ]);
+        $validated[$fotoKeys[$i]] = $uploaded->getSecurePath();
+    } catch (\Exception $e) {
+        $fotoName = time() . '_' . ($i + 1) . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads/laporan'), $fotoName);
+        $validated[$fotoKeys[$i]] = asset('uploads/laporan/' . $fotoName);
+    }
 }
         }
 
