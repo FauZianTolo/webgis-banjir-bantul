@@ -716,32 +716,15 @@
         }
 
         /* ===== MOBILE RESPONSIVE TAMBAHAN (tidak menghapus apapun di atas) ===== */
-        @media (max-width: 991px) {
-            .hero-content {
-                padding: 6rem 0 3rem;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-image {
-                margin-top: 2rem;
-            }
-
-            .hero-img-anim {
-                max-height: 300px;
-            }
-        }
-
         @media (max-width: 767px) {
+
+            /* Hero: padding lebih kecil, font lebih kecil */
             .hero-section {
                 min-height: auto;
             }
 
             .hero-content {
-                padding: 5rem 0 2rem;
-                text-align: center;
+                padding: 5rem 0 3rem;
             }
 
             .hero-title {
@@ -756,46 +739,45 @@
                 justify-content: center;
             }
 
-            .hero-image {
-                display: none;
-            }
-
-            /* sembunyikan ilustrasi di HP kecil */
-
-            /* Fitur unggulan */
-            .features-section {
-                padding: 2.5rem 0;
-            }
-
-            .feature-card {
-                padding: 1.2rem;
-                border-radius: 14px;
-                margin-bottom: 0;
-            }
-
-            .feature-icon {
-                width: 48px;
-                height: 48px;
-                font-size: 1.3rem;
-                margin-bottom: 0.75rem;
-            }
-
-            .feature-card h4 {
+            .btn-hero {
+                padding: 0.8rem 1.6rem;
                 font-size: 0.95rem;
-                margin-bottom: 0.4rem;
             }
 
-            .feature-card p {
-                font-size: 0.82rem;
-                margin-bottom: 0.6rem;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
+            /* Stats: 2 kolom di HP */
+            .stats-section {
+                margin-top: -50px;
+                padding: 2rem 0;
             }
 
-            .feature-link {
-                font-size: 0.8rem;
+            .stats-section .col-md-3 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .stat-card {
+                padding: 1.5rem 1rem;
+                border-radius: 14px;
+            }
+
+            .stat-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.4rem;
+                margin-bottom: 0.9rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .stat-label {
+                font-size: 0.88rem;
+            }
+
+            /* Features: 2 kolom di HP */
+            .features-section {
+                padding: 3rem 0;
             }
 
             .features-section .col-md-4 {
@@ -803,22 +785,91 @@
                 max-width: 50%;
             }
 
+            .section-title {
+                margin-bottom: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-title p {
+                font-size: 1rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+                border-radius: 14px;
+            }
+
+            .feature-icon {
+                width: 54px;
+                height: 54px;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+                border-radius: 12px;
+            }
+
+            .feature-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .feature-card p {
+                font-size: 0.88rem;
+                margin-bottom: 0.9rem;
+            }
+
+            /* About */
+            .about-section {
+                padding: 3rem 0;
+            }
+
+            .about-title {
+                font-size: 1.8rem;
+            }
+
+            .about-text {
+                font-size: 0.95rem;
+            }
+
             /* Laporan terbaru */
-            .laporan-section .col-md-4 {
-                flex: 0 0 100%;
-                max-width: 100%;
+            .laporan-section {
+                margin-top: 40px;
+                padding-top: 20px;
             }
 
             .report-card .foto-wrap img {
                 height: 160px;
             }
 
-            .report-card h4 {
+            /* CTA */
+            .cta-section {
+                padding: 3rem 0;
+            }
+
+            .cta-content h2 {
+                font-size: 1.6rem;
+            }
+
+            .cta-content p {
                 font-size: 1rem;
             }
 
-            .report-card p {
-                font-size: 0.88rem;
+            /* Pesan */
+            .pesan-section {
+                padding: 3rem 0;
+            }
+
+            .pesan-header {
+                padding: 1.5rem;
+            }
+
+            .pesan-header h3 {
+                font-size: 1.3rem;
+            }
+
+            .pesan-body {
+                padding: 1.5rem;
             }
         }
 
@@ -830,10 +881,6 @@
             .features-section .col-md-4 {
                 flex: 0 0 100%;
                 max-width: 100%;
-            }
-
-            .feature-card {
-                padding: 1rem;
             }
         }
     </style>
