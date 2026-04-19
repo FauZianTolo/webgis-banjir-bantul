@@ -36,7 +36,8 @@
         }
 
         .hero-content {
-            padding-top: -5rem;   /* atur tinggi dari navbar */
+            padding-top: -5rem;
+            /* atur tinggi dari navbar */
             padding-bottom: 3rem;
             position: relative;
             z-index: 2;
@@ -129,6 +130,22 @@
             width: 100%;
             max-width: 500px;
             filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.4));
+        }
+
+        .hero-img-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
         }
 
         @keyframes float {
@@ -699,57 +716,125 @@
         }
 
         /* ===== MOBILE RESPONSIVE TAMBAHAN (tidak menghapus apapun di atas) ===== */
+        @media (max-width: 991px) {
+            .hero-content {
+                padding: 6rem 0 3rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-image {
+                margin-top: 2rem;
+            }
+
+            .hero-img-anim {
+                max-height: 300px;
+            }
+        }
+
         @media (max-width: 767px) {
-            /* Hero: padding lebih kecil, font lebih kecil */
-            .hero-section { min-height: auto; }
-            .hero-content { padding: 5rem 0 3rem; }
-            .hero-title { font-size: 2rem; }
-            .hero-subtitle { font-size: 1rem; }
-            .hero-buttons { justify-content: center; }
-            .btn-hero { padding: 0.8rem 1.6rem; font-size: 0.95rem; }
+            .hero-section {
+                min-height: auto;
+            }
 
-            /* Stats: 2 kolom di HP */
-            .stats-section { margin-top: -50px; padding: 2rem 0; }
-            .stats-section .col-md-3 { flex: 0 0 50%; max-width: 50%; }
-            .stat-card { padding: 1.5rem 1rem; border-radius: 14px; }
-            .stat-icon { width: 55px; height: 55px; font-size: 1.4rem; margin-bottom: 0.9rem; }
-            .stat-number { font-size: 2rem; }
-            .stat-label { font-size: 0.88rem; }
+            .hero-content {
+                padding: 5rem 0 2rem;
+                text-align: center;
+            }
 
-            /* Features: 2 kolom di HP */
-            .features-section { padding: 3rem 0; }
-            .features-section .col-md-4 { flex: 0 0 50%; max-width: 50%; }
-            .section-title { margin-bottom: 2rem; }
-            .section-title h2 { font-size: 1.8rem; }
-            .section-title p { font-size: 1rem; }
-            .feature-card { padding: 1.5rem; border-radius: 14px; }
-            .feature-icon { width: 54px; height: 54px; font-size: 1.5rem; margin-bottom: 1rem; border-radius: 12px; }
-            .feature-card h4 { font-size: 1.1rem; }
-            .feature-card p { font-size: 0.88rem; margin-bottom: 0.9rem; }
+            .hero-title {
+                font-size: 2rem;
+            }
 
-            /* About */
-            .about-section { padding: 3rem 0; }
-            .about-title { font-size: 1.8rem; }
-            .about-text { font-size: 0.95rem; }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-image {
+                display: none;
+            }
+
+            /* sembunyikan ilustrasi di HP kecil */
+
+            /* Fitur unggulan */
+            .features-section {
+                padding: 2.5rem 0;
+            }
+
+            .feature-card {
+                padding: 1.2rem;
+                border-radius: 14px;
+                margin-bottom: 0;
+            }
+
+            .feature-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .feature-card h4 {
+                font-size: 0.95rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .feature-card p {
+                font-size: 0.82rem;
+                margin-bottom: 0.6rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .feature-link {
+                font-size: 0.8rem;
+            }
+
+            .features-section .col-md-4 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
 
             /* Laporan terbaru */
-            .laporan-section { margin-top: 40px; padding-top: 20px; }
-            .report-card .foto-wrap img { height: 160px; }
+            .laporan-section .col-md-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
 
-            /* CTA */
-            .cta-section { padding: 3rem 0; }
-            .cta-content h2 { font-size: 1.6rem; }
-            .cta-content p { font-size: 1rem; }
+            .report-card .foto-wrap img {
+                height: 160px;
+            }
 
-            /* Pesan */
-            .pesan-section { padding: 3rem 0; }
-            .pesan-header { padding: 1.5rem; }
-            .pesan-header h3 { font-size: 1.3rem; }
-            .pesan-body { padding: 1.5rem; }
+            .report-card h4 {
+                font-size: 1rem;
+            }
+
+            .report-card p {
+                font-size: 0.88rem;
+            }
         }
+
         @media (max-width: 480px) {
-            .hero-title { font-size: 1.7rem; }
-            .features-section .col-md-4 { flex: 0 0 100%; max-width: 100%; }
+            .hero-title {
+                font-size: 1.7rem;
+            }
+
+            .features-section .col-md-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .feature-card {
+                padding: 1rem;
+            }
         }
     </style>
 @endsection
@@ -786,114 +871,10 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-6 d-flex align-items-center justify-content-center">
                     <div class="hero-image text-center">
-                        <svg width="550" height="450" viewBox="0 0 550 450" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#e0f2fe;stop-opacity:1" />
-                                </linearGradient>
-                                <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
-                                </linearGradient>
-                                <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.9" />
-                                    <stop offset="100%" style="stop-color:#0891b2;stop-opacity:0.9" />
-                                </linearGradient>
-                                <filter id="glow">
-                                    <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-                                    <feMerge>
-                                        <feMergeNode in="coloredBlur" />
-                                        <feMergeNode in="SourceGraphic" />
-                                    </feMerge>
-                                </filter>
-                            </defs>
-
-                            <circle cx="275" cy="225" r="200" fill="none" stroke="rgba(255,255,255,0.2)"
-                                stroke-width="2" />
-                            <circle cx="275" cy="225" r="170" fill="none" stroke="rgba(255,255,255,0.15)"
-                                stroke-width="2" />
-                            <circle cx="275" cy="225" r="140" fill="none" stroke="rgba(255,255,255,0.1)"
-                                stroke-width="2" />
-
-                            <g filter="url(#glow)">
-                                <path d="M275 80 L360 110 L360 200 Q360 250 275 290 Q190 250 190 200 L190 110 Z"
-                                    fill="url(#shieldGrad)" stroke="white" stroke-width="4" opacity="0.95" />
-                                <path d="M275 100 L345 125 L345 195 Q345 235 275 265 Q205 235 205 195 L205 125 Z"
-                                    fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2" />
-                            </g>
-
-                            <g opacity="0.8">
-                                <line x1="220" y1="140" x2="330" y2="140" stroke="white"
-                                    stroke-width="2" opacity="0.6" />
-                                <line x1="215" y1="170" x2="335" y2="170" stroke="white"
-                                    stroke-width="2" opacity="0.6" />
-                                <line x1="220" y1="200" x2="330" y2="200" stroke="white"
-                                    stroke-width="2" opacity="0.6" />
-                                <line x1="245" y1="130" x2="245" y2="220" stroke="white"
-                                    stroke-width="2" opacity="0.6" />
-                                <line x1="275" y1="125" x2="275" y2="230" stroke="white"
-                                    stroke-width="2" opacity="0.6" />
-                                <line x1="305" y1="130" x2="305" y2="220" stroke="white"
-                                    stroke-width="2" opacity="0.6" />
-                            </g>
-
-                            <g class="pin-animation">
-                                <circle cx="240" cy="150" r="12" fill="#ef4444" stroke="white"
-                                    stroke-width="3" />
-                                <circle cx="240" cy="150" r="20" fill="none" stroke="#ef4444"
-                                    stroke-width="2" opacity="0.4" />
-
-                                <circle cx="310" cy="180" r="12" fill="#f59e0b" stroke="white"
-                                    stroke-width="3" />
-                                <circle cx="310" cy="180" r="20" fill="none" stroke="#f59e0b"
-                                    stroke-width="2" opacity="0.4" />
-
-                                <circle cx="260" cy="210" r="12" fill="#10b981" stroke="white"
-                                    stroke-width="3" />
-                                <circle cx="260" cy="210" r="20" fill="none" stroke="#10b981"
-                                    stroke-width="2" opacity="0.4" />
-                            </g>
-
-                            <g filter="url(#glow)">
-                                <path d="M275 300 Q245 330 245 360 Q245 390 275 405 Q305 390 305 360 Q305 330 275 300 Z"
-                                    fill="url(#waterGrad)" stroke="white" stroke-width="3" />
-                                <ellipse cx="268" cy="355" rx="8" ry="12"
-                                    fill="rgba(255,255,255,0.6)" />
-                            </g>
-
-                            <style>
-                                @keyframes pin-pulse {
-
-                                    0%,
-                                    100% {
-                                        opacity: 0.4;
-                                        r: 20;
-                                    }
-
-                                    50% {
-                                        opacity: 0.8;
-                                        r: 25;
-                                    }
-                                }
-
-                                .pin-animation circle:nth-child(2),
-                                .pin-animation circle:nth-child(4),
-                                .pin-animation circle:nth-child(6) {
-                                    animation: pin-pulse 2s ease-in-out infinite;
-                                }
-
-                                .pin-animation circle:nth-child(4) {
-                                    animation-delay: 0.3s;
-                                }
-
-                                .pin-animation circle:nth-child(6) {
-                                    animation-delay: 0.6s;
-                                }
-                            </style>
-                        </svg>
+                        <img src="{{ asset('images/maskot.png') }}" alt="WebGIS Bantul" class="hero-img-anim"
+                            style="max-width:100%;height:auto;max-height:420px;filter:drop-shadow(0 20px 60px rgba(0,0,0,0.25));">
                     </div>
                 </div>
             </div>
