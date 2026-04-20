@@ -82,57 +82,55 @@ public function route(Request $request)
     }
 
      public function submitLaporan(Request $request)
-    {
-        $validated = $request->validate([
-            'nama_pelapor' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:20',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'kecamatan' => 'required|string|max:100',
-            'desa' => 'nullable|string|max:100',
-            'deskripsi' => 'required|string',
-            'kedalaman_cm' => 'nullable|numeric',
-            'fotos' => 'nullable|array|max:3',
-            'fotos.*' => 'image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+{
+    $validated = $request->validate([
+        'nama_pelapor' => 'required|string|max:255',
+        'no_telp' => 'required|string|max:20',
+        'latitude' => 'required|numeric',
+        'longitude' => 'required|numeric',
+        'kecamatan' => 'required|string|max:100',
+        'desa' => 'nullable|string|max:100',
+        'deskripsi' => 'required|string',
+        'kedalaman_cm' => 'nullable|numeric',
+        'fotos' => 'nullable|array|max:3',
+        'fotos.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-        // Handle multi-foto upload (max 3)
-        $fotoKeys = ['foto', 'foto2', 'foto3'];
-        if ($request->hasFile('fotos')) {
-            $files = $request->file('fotos');
-            foreach (array_slice($files, 0, 3) as $i => $file) {
-    try {
-        $uploaded = cloudinary()->upload($file->getRealPath(), [
-            'folder' => 'webgis-banjir/laporan',
-            'resource_type' => 'image',
-        ]);
-        $validated[$fotoKeys[$i]] = $uploaded->getSecurePath();
-    } catch (\Exception $e) {
-        $fotoName = time() . '_' . ($i + 1) . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads/laporan'), $fotoName);
-        $validated[$fotoKeys[$i]] = asset('uploads/laporan/' . $fotoName);
-    }
-}
+    // Handle multi-foto upload (max 3) ke Cloudinary
+    $fotoKeys = ['foto', 'foto2', 'foto3'];
+    if ($request->hasFile('fotos')) {
+        $files = $request->file('fotos');
+        foreach (array_slice($files, 0, 3) as $i => $file) {
+            try {
+                $uploaded = cloudinary()->upload($file->getRealPath(), [
+                    'folder' => 'webgis-banjir/laporan',
+                    'resource_type' => 'image',
+                ]);
+                $validated[$fotoKeys[$i]] = $uploaded->getSecurePath();
+            } catch (\Exception $e) {
+                // Fallback lokal jika Cloudinary gagal
+                $fotoName = time() . '_' . ($i + 1) . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/laporan'), $fotoName);
+                $validated[$fotoKeys[$i]] = asset('uploads/laporan/' . $fotoName);
+            }
         }
-
-        // Remove 'fotos' from validated (not a db column)
-        unset($validated['fotos']);
-
-        $validated['waktu_laporan'] = now();
-        $validated['status'] = 'pending';
-        $validated['user_id'] = auth()->id();
-
-        $laporan = LaporanBanjir::create($validated);
-
-        // Clear cache
-        Cache::forget('laporan_verified');
-        Cache::forget('dashboard_stats');
-
-        // Buat notifikasi
-        NotificationController::createLaporanNotification($laporan);
-
-        return redirect()->route('laporan')->with('success', 'Laporan berhasil dikirim! Terima kasih atas partisipasinya.');
     }
+
+    unset($validated['fotos']);
+
+    $validated['waktu_laporan'] = now();
+    $validated['status'] = 'pending';
+    $validated['user_id'] = auth()->id();
+
+    $laporan = LaporanBanjir::create($validated);
+
+    Cache::forget('laporan_verified');
+    Cache::forget('dashboard_stats');
+
+    NotificationController::createLaporanNotification($laporan);
+
+    return redirect()->route('laporan')->with('success', 'Laporan berhasil dikirim! Terima kasih atas partisipasinya.');
+}
 
     public function statistik()
 {
