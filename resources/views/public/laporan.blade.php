@@ -17,16 +17,13 @@
     .laporan-hero h1 { position:relative;z-index:2;font-weight:900;font-size:2.8rem;text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
     .laporan-hero p  { position:relative;z-index:2;font-size:1.2rem;opacity:0.95; }
 
-    /* ==================== INFO BAR (atas form, full width) ==================== */
+    /* ==================== INFO BAR ==================== */
     .info-top-bar {
         background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
         border-bottom: 2px solid rgba(8,145,178,0.15);
         padding: 1.25rem 0;
     }
-    .info-top-inner {
-        display: flex; align-items: stretch; gap: 16px; flex-wrap: wrap;
-    }
-    /* Petunjuk box */
+    .info-top-inner { display: flex; align-items: stretch; gap: 16px; flex-wrap: wrap; }
     .petunjuk-box {
         flex: 2; min-width: 280px;
         background: white; border-radius: 14px;
@@ -40,7 +37,6 @@
     }
     .petunjuk-box ul { margin: 0; padding-left: 1.1rem; }
     .petunjuk-box li { font-size: 12.5px; color: #475569; margin-bottom: 3px; line-height: 1.5; }
-    /* Koordinat box */
     .coord-display-box {
         flex: 1; min-width: 200px;
         background: linear-gradient(135deg, #0891b2, #06b6d4);
@@ -59,10 +55,7 @@
     }
     .coord-display-box .coord-val span { display: block; margin-bottom: 3px; }
     .coord-display-box .coord-val span:last-child { margin-bottom: 0; }
-    .coord-display-box .coord-note {
-        margin-top: 7px; font-size: 10.5px; opacity: 0.8;
-    }
-    /* Status badge */
+    .coord-display-box .coord-note { margin-top: 7px; font-size: 10.5px; opacity: 0.8; }
     .coord-status-pill {
         display: inline-block; margin-top: 8px;
         padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
@@ -90,6 +83,22 @@
     }
     .form-control::placeholder { color: #94a3b8; }
     textarea.form-control { resize: vertical; min-height: 120px; }
+
+    /* Kecamatan auto-detect badge */
+    .kec-auto-badge {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #059669;
+        background: #d1fae5;
+        border: 1px solid #10b981;
+        border-radius: 8px;
+        padding: 4px 10px;
+        margin-top: 6px;
+    }
+    .kec-auto-badge.show { display: flex; }
 
     /* ==================== MAP SECTION ==================== */
     .map-section {
@@ -191,23 +200,21 @@
     </div>
 </div>
 
-{{-- ── INFO BAR FULL WIDTH (petunjuk + koordinat) ── --}}
+{{-- ── INFO BAR ── --}}
 <div class="info-top-bar">
     <div class="container">
         <div class="info-top-inner">
-            {{-- Petunjuk --}}
             <div class="petunjuk-box">
                 <div class="petunjuk-title"><i class="fas fa-info-circle" style="color:#0891b2;"></i> Petunjuk Pelaporan</div>
                 <ul>
                     <li>Klik tombol <strong>GPS</strong> di peta untuk deteksi lokasi otomatis</li>
                     <li>Atau klik langsung di peta / geser marker ke lokasi kejadian</li>
-                    <li>Atau ketik koordinat secara manual di kolom Lat/Lng</li>
+                    <li>Kecamatan akan <strong>otomatis terisi</strong> sesuai lokasi yang dipilih di peta</li>
                     <li>Isi formulir dengan lengkap — nomor telepon <strong>wajib</strong> diisi</li>
                     <li>Upload <strong>minimal 1 foto</strong> sebagai bukti kejadian banjir</li>
                     <li>Laporan akan diverifikasi oleh admin BPBD sebelum ditampilkan</li>
                 </ul>
             </div>
-            {{-- Koordinat terpilih --}}
             <div class="coord-display-box" id="coordInfoBox">
                 <div class="coord-title"><i class="fas fa-map-pin"></i> Koordinat Dipilih</div>
                 <div class="coord-val">
@@ -253,7 +260,7 @@
 
             <div class="map-section">
                 <div class="map-section-header">
-                    <h6><i class="fas fa-map-pin"></i> Klik peta atau geser marker untuk menentukan lokasi</h6>
+                    <h6><i class="fas fa-map-pin"></i> Klik peta atau geser marker — kecamatan otomatis terdeteksi</h6>
                     <span class="map-status-badge" id="mapStatusBadge">Belum dipilih</span>
                 </div>
                 <div style="position:relative;">
@@ -309,6 +316,9 @@
                         <option value="{{ $kec }}" {{ old('kecamatan') == $kec ? 'selected' : '' }}>{{ $kec }}</option>
                         @endforeach
                     </select>
+                    <div class="kec-auto-badge" id="kecAutoBadge">
+                        <i class="fas fa-magic"></i> <span id="kecAutoText">Terdeteksi otomatis dari peta</span>
+                    </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Desa / Kelurahan</label>
@@ -327,6 +337,21 @@
                           placeholder="Jelaskan detail kejadian banjir (penyebab, dampak, kondisi terkini, dll)"
                           required>{{ old('deskripsi') }}</textarea>
                 <small class="text-muted"><i class="fas fa-lightbulb"></i> Berikan deskripsi sejelas mungkin untuk membantu tim BPBD</small>
+            </div>
+
+            {{-- ══ KEBUTUHAN BANTUAN (BARU) ══ --}}
+            <div class="mb-3">
+                <label class="form-label">
+                    <i class="fas fa-hands-helping"></i> Kebutuhan / Bantuan yang Diperlukan
+                    <span class="badge" style="background:#fef3c7;color:#92400e;font-size:0.75rem;margin-left:6px;">Opsional</span>
+                </label>
+                <textarea name="kebutuhan_bantuan" class="form-control" rows="3"
+                          placeholder="Contoh: Perahu karet, selimut, makanan siap saji, obat-obatan, pompa air, dll."
+                          style="border-color:#f59e0b;">{{ old('kebutuhan_bantuan') }}</textarea>
+                <small class="text-muted">
+                    <i class="fas fa-info-circle" style="color:#f59e0b;"></i>
+                    Tuliskan barang atau alat yang dibutuhkan di lokasi kejadian agar BPBD dapat menyiapkan bantuan yang tepat
+                </small>
             </div>
 
             <div class="row">
@@ -391,7 +416,18 @@ const kelurahanData = {
     'Srandakan':   ['Poncosari','Trimurti'],
 };
 
-function updateKelurahan() {
+// ── NAMA KECAMATAN di GeoJSON (mapping) ──────────────────────────────
+// Sesuaikan key ini dengan property di bantul.geojson kamu
+const KECAMATAN_PROP_KEYS = ['WADMKC','WADMC','KECAMATAN','Kecamatan','NAME','name'];
+
+function getKecamatanFromFeature(props) {
+    for (const key of KECAMATAN_PROP_KEYS) {
+        if (props[key]) return props[key].trim();
+    }
+    return null;
+}
+
+function updateKelurahan(fromAuto) {
     const kec   = document.getElementById('selectKecamatan').value;
     const sel   = document.getElementById('selectDesa');
     const oldVal = '{{ old("desa") }}';
@@ -411,16 +447,22 @@ function updateKelurahan() {
         sel.innerHTML = '<option value="">-- Pilih Kecamatan dulu --</option>';
         sel.disabled = true;
     }
+
+    // Sembunyikan badge auto kalau user ganti manual
+    if (!fromAuto) {
+        document.getElementById('kecAutoBadge').classList.remove('show');
+    }
 }
 
-// Inisialisasi saat load jika ada old value
 document.addEventListener('DOMContentLoaded', function () {
-    updateKelurahan();
+    updateKelurahan(false);
     initMap();
 });
 
 // ── MAP ────────────────────────────────────────────────────────────────
 let map, marker, locationSet = false;
+let bantulGeoJSON = null; // Simpan data GeoJSON batas administrasi
+let adminLayer = null;    // Layer batas administrasi di peta laporan
 const BANTUL_CENTER = [-7.8700, 110.3300];
 
 function initMap() {
@@ -443,9 +485,100 @@ function initMap() {
         setLocation(p.lat, p.lng, 'drag');
     });
 
+    // Load batas administrasi kecamatan
+    loadBatasAdminLaporan();
+
     @if(old('latitude') && old('longitude'))
     setLocation({{ old('latitude') }}, {{ old('longitude') }}, 'restore');
     @endif
+}
+
+// ── LOAD BATAS ADMINISTRASI DI PETA LAPORAN ────────────────────────────
+function loadBatasAdminLaporan() {
+    fetch('/geojson/bantul.geojson')
+        .then(r => r.json())
+        .then(data => {
+            bantulGeoJSON = data;
+            adminLayer = L.geoJSON(data, {
+                style: {
+                    fillColor: 'transparent',
+                    color: '#1e3c72',
+                    weight: 2,
+                    opacity: 0.7,
+                    dashArray: '5,5'
+                },
+                onEachFeature: (feature, layer) => {
+                    const kecNama = getKecamatanFromFeature(feature.properties) || 'Kecamatan';
+                    layer.bindTooltip(kecNama, {
+                        permanent: false,
+                        direction: 'center',
+                        className: 'leaflet-tooltip',
+                        sticky: true
+                    });
+                }
+            }).addTo(map);
+        })
+        .catch(err => console.warn('Batas admin tidak dimuat:', err));
+}
+
+// ── POINT IN POLYGON (Ray Casting) ────────────────────────────────────
+function pointInPolygon(lat, lng, coordinates) {
+    let inside = false;
+    const x = lng, y = lat;
+    for (let i = 0, j = coordinates.length - 1; i < coordinates.length; j = i++) {
+        const xi = coordinates[i][0], yi = coordinates[i][1];
+        const xj = coordinates[j][0], yj = coordinates[j][1];
+        const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
+}
+
+function pointInGeoJSONFeature(lat, lng, feature) {
+    const geom = feature.geometry;
+    if (!geom) return false;
+    if (geom.type === 'Polygon') {
+        return pointInPolygon(lat, lng, geom.coordinates[0]);
+    } else if (geom.type === 'MultiPolygon') {
+        for (const poly of geom.coordinates) {
+            if (pointInPolygon(lat, lng, poly[0])) return true;
+        }
+    }
+    return false;
+}
+
+// ── DETEKSI KECAMATAN DARI KOORDINAT ─────────────────────────────────
+function detectKecamatanFromPoint(lat, lng) {
+    if (!bantulGeoJSON || !bantulGeoJSON.features) return null;
+    for (const feature of bantulGeoJSON.features) {
+        if (pointInGeoJSONFeature(lat, lng, feature)) {
+            return getKecamatanFromFeature(feature.properties);
+        }
+    }
+    return null;
+}
+
+// ── AUTO FILL KECAMATAN ───────────────────────────────────────────────
+function autoFillKecamatan(lat, lng) {
+    const kecNama = detectKecamatanFromPoint(lat, lng);
+    const badge = document.getElementById('kecAutoBadge');
+    const badgeText = document.getElementById('kecAutoText');
+    const selectKec = document.getElementById('selectKecamatan');
+
+    if (kecNama) {
+        // Cari option yang cocok (case-insensitive)
+        const opts = Array.from(selectKec.options);
+        const match = opts.find(o => o.value.toLowerCase() === kecNama.toLowerCase());
+        if (match) {
+            selectKec.value = match.value;
+            updateKelurahan(true);
+            badgeText.textContent = `✓ Terdeteksi: Kec. ${match.value}`;
+            badge.classList.add('show');
+            return;
+        }
+    }
+    // Tidak ditemukan — jangan ubah pilihan tapi sembunyikan badge
+    badge.classList.remove('show');
 }
 
 function setLocation(lat, lng, source) {
@@ -481,6 +614,9 @@ function setLocation(lat, lng, source) {
 
     locationSet = true;
     checkCanSubmit();
+
+    // Auto-detect dan isi kecamatan dari GeoJSON
+    autoFillKecamatan(lat, lng);
 }
 
 function buildPopupContent(lat, lng) {
