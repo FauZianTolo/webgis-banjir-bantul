@@ -3,7 +3,6 @@
 @section('styles')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-    /* ==================== HERO ==================== */
     .laporan-hero {
         background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
         color: white; padding: 4rem 0; margin-bottom: 0;
@@ -17,182 +16,78 @@
     .laporan-hero h1 { position:relative;z-index:2;font-weight:900;font-size:2.8rem;text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
     .laporan-hero p  { position:relative;z-index:2;font-size:1.2rem;opacity:0.95; }
 
-    /* ==================== INFO BAR ==================== */
-    .info-top-bar {
-        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-        border-bottom: 2px solid rgba(8,145,178,0.15);
-        padding: 1.25rem 0;
-    }
-    .info-top-inner { display: flex; align-items: stretch; gap: 16px; flex-wrap: wrap; }
-    .petunjuk-box {
-        flex: 2; min-width: 280px;
-        background: white; border-radius: 14px;
-        padding: 1.1rem 1.4rem;
-        border: 2px solid rgba(8,145,178,0.15);
-        box-shadow: 0 4px 16px rgba(8,145,178,0.07);
-    }
-    .petunjuk-box .petunjuk-title {
-        font-weight: 800; color: #0c4a6e; font-size: 0.95rem;
-        margin-bottom: 0.6rem; display: flex; align-items: center; gap: 7px;
-    }
-    .petunjuk-box ul { margin: 0; padding-left: 1.1rem; }
-    .petunjuk-box li { font-size: 12.5px; color: #475569; margin-bottom: 3px; line-height: 1.5; }
-    .coord-display-box {
-        flex: 1; min-width: 200px;
-        background: linear-gradient(135deg, #0891b2, #06b6d4);
-        border-radius: 14px; padding: 1.1rem 1.4rem;
-        color: white;
-        box-shadow: 0 6px 20px rgba(8,145,178,0.3);
-        display: flex; flex-direction: column; justify-content: center;
-    }
-    .coord-display-box .coord-title {
-        font-weight: 800; font-size: 0.9rem; margin-bottom: 0.75rem;
-        display: flex; align-items: center; gap: 6px; opacity: 0.95;
-    }
-    .coord-display-box .coord-val {
-        background: rgba(255,255,255,0.2); border-radius: 8px; padding: 0.6rem 0.9rem;
-        font-family: monospace; font-size: 13px; font-weight: 700;
-    }
-    .coord-display-box .coord-val span { display: block; margin-bottom: 3px; }
-    .coord-display-box .coord-val span:last-child { margin-bottom: 0; }
-    .coord-display-box .coord-note { margin-top: 7px; font-size: 10.5px; opacity: 0.8; }
-    .coord-status-pill {
-        display: inline-block; margin-top: 8px;
-        padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
-        background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4);
-    }
-    .coord-status-pill.ok { background: rgba(16,185,129,0.35); border-color: #10b981; }
+    .info-top-bar { background:linear-gradient(135deg,#f0f9ff,#e0f2fe); border-bottom:2px solid rgba(8,145,178,0.15); padding:1.25rem 0; }
+    .info-top-inner { display:flex; align-items:stretch; gap:16px; flex-wrap:wrap; }
+    .petunjuk-box { flex:2; min-width:280px; background:white; border-radius:14px; padding:1.1rem 1.4rem; border:2px solid rgba(8,145,178,0.15); box-shadow:0 4px 16px rgba(8,145,178,0.07); }
+    .petunjuk-box .petunjuk-title { font-weight:800; color:#0c4a6e; font-size:0.95rem; margin-bottom:0.6rem; display:flex; align-items:center; gap:7px; }
+    .petunjuk-box ul { margin:0; padding-left:1.1rem; }
+    .petunjuk-box li { font-size:12.5px; color:#475569; margin-bottom:3px; line-height:1.5; }
+    .coord-display-box { flex:1; min-width:200px; background:linear-gradient(135deg,#0891b2,#06b6d4); border-radius:14px; padding:1.1rem 1.4rem; color:white; box-shadow:0 6px 20px rgba(8,145,178,0.3); display:flex; flex-direction:column; justify-content:center; }
+    .coord-display-box .coord-title { font-weight:800; font-size:0.9rem; margin-bottom:0.75rem; display:flex; align-items:center; gap:6px; opacity:0.95; }
+    .coord-display-box .coord-val { background:rgba(255,255,255,0.2); border-radius:8px; padding:0.6rem 0.9rem; font-family:monospace; font-size:13px; font-weight:700; }
+    .coord-display-box .coord-val span { display:block; margin-bottom:3px; }
+    .coord-display-box .coord-val span:last-child { margin-bottom:0; }
+    .coord-display-box .coord-note { margin-top:7px; font-size:10.5px; opacity:0.8; }
+    .coord-status-pill { display:inline-block; margin-top:8px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; background:rgba(255,255,255,0.25); border:1px solid rgba(255,255,255,0.4); }
+    .coord-status-pill.ok { background:rgba(16,185,129,0.35); border-color:#10b981; }
 
-    /* ==================== FORM CONTAINER ==================== */
-    .form-container {
-        background: white; border-radius: 20px; padding: 2.5rem;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.08);
-        border: 2px solid rgba(8,145,178,0.1);
-    }
-    .form-container h4 {
-        color: #0c4a6e; font-weight: 800; font-size: 1.8rem; margin-bottom: 2rem;
-        display: flex; align-items: center; gap: 0.75rem;
-    }
-    .form-label { font-weight: 700; color: #334155; margin-bottom: 0.5rem; font-size: 0.95rem; }
-    .form-control, .form-select {
-        border: 2px solid #e2e8f0; border-radius: 10px;
-        padding: 0.85rem 1.25rem; font-size: 1rem; transition: all 0.3s;
-    }
-    .form-control:focus, .form-select:focus {
-        border-color: #0891b2; box-shadow: 0 0 0 4px rgba(8,145,178,0.1);
-    }
-    .form-control::placeholder { color: #94a3b8; }
-    textarea.form-control { resize: vertical; min-height: 120px; }
+    /* Auto-detect badge */
+    .auto-detect-badge { display:none; align-items:center; gap:6px; font-size:12px; font-weight:700; color:#059669; background:#d1fae5; border:1px solid #10b981; border-radius:8px; padding:4px 10px; margin-top:6px; }
+    .auto-detect-badge.show { display:flex; }
 
-    /* Kecamatan auto-detect badge */
-    .kec-auto-badge {
-        display: none;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        font-weight: 700;
-        color: #059669;
-        background: #d1fae5;
-        border: 1px solid #10b981;
-        border-radius: 8px;
-        padding: 4px 10px;
-        margin-top: 6px;
-    }
-    .kec-auto-badge.show { display: flex; }
+    .form-container { background:white; border-radius:20px; padding:2.5rem; box-shadow:0 15px 50px rgba(0,0,0,0.08); border:2px solid rgba(8,145,178,0.1); }
+    .form-container h4 { color:#0c4a6e; font-weight:800; font-size:1.8rem; margin-bottom:2rem; display:flex; align-items:center; gap:0.75rem; }
+    .form-label { font-weight:700; color:#334155; margin-bottom:0.5rem; font-size:0.95rem; }
+    .form-control, .form-select { border:2px solid #e2e8f0; border-radius:10px; padding:0.85rem 1.25rem; font-size:1rem; transition:all 0.3s; }
+    .form-control:focus, .form-select:focus { border-color:#0891b2; box-shadow:0 0 0 4px rgba(8,145,178,0.1); }
+    .form-control::placeholder { color:#94a3b8; }
+    textarea.form-control { resize:vertical; min-height:120px; }
 
-    /* ==================== MAP SECTION ==================== */
-    .map-section {
-        background: white; border-radius: 16px;
-        border: 2px solid rgba(8,145,178,0.2); overflow: hidden;
-        margin-bottom: 1.5rem; box-shadow: 0 8px 30px rgba(8,145,178,0.12);
-    }
-    .map-section-header {
-        background: linear-gradient(135deg, #0891b2, #06b6d4);
-        color: white; padding: 1rem 1.5rem;
-        display: flex; align-items: center; justify-content: space-between;
-    }
-    .map-section-header h6 { margin: 0; font-weight: 800; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-    .map-status-badge {
-        padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
-        background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; transition: all 0.3s;
-    }
-    .map-status-badge.detected { background: rgba(16,185,129,0.3); border-color: #10b981; }
-    #locationMap { height: 380px; width: 100%; position: relative; z-index: 1; }
-    .btn-gps {
-        position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-        z-index: 1000; background: linear-gradient(135deg, #0891b2, #06b6d4);
-        color: white; border: 3px solid white; border-radius: 30px;
-        padding: 8px 20px; font-weight: 700; font-size: 13px; cursor: pointer;
-        box-shadow: 0 6px 20px rgba(8,145,178,0.4); transition: all 0.3s;
-        display: flex; align-items: center; gap: 7px; white-space: nowrap;
-    }
-    .btn-gps:hover { transform: translateX(-50%) translateY(-2px); box-shadow: 0 10px 28px rgba(8,145,178,0.5); }
-    .btn-gps.success { background: linear-gradient(135deg, #10b981, #059669); }
-    .btn-gps.loading { background: linear-gradient(135deg, #f59e0b, #d97706); pointer-events: none; }
-    .coord-row {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-        padding: 1rem 1.25rem; background: #f8fafc; border-top: 2px solid #e2e8f0;
-    }
-    .coord-input-wrap label {
-        font-size: 11px; font-weight: 700; color: #64748b;
-        text-transform: uppercase; letter-spacing: 0.5px;
-        margin-bottom: 5px; display: flex; align-items: center; gap: 5px;
-    }
-    .coord-input-wrap input {
-        width: 100%; padding: 9px 14px; border: 2px solid #e2e8f0;
-        border-radius: 10px; font-size: 14px; font-weight: 600; color: #0c4a6e;
-        background: white; transition: all 0.3s; font-family: 'Courier New', monospace;
-    }
-    .coord-input-wrap input:focus { border-color: #0891b2; box-shadow: 0 0 0 3px rgba(8,145,178,0.12); outline: none; }
-    .coord-input-wrap input.has-value { border-color: #10b981; background: #f0fdf4; }
-    .coord-hint { font-size: 10px; color: #94a3b8; margin-top: 3px; }
-    .map-instruction {
-        position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-        z-index: 1000; background: rgba(12,74,110,0.88); color: white;
-        padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
-        pointer-events: none; white-space: nowrap; backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,0.2); transition: opacity 0.4s;
-    }
+    .map-section { background:white; border-radius:16px; border:2px solid rgba(8,145,178,0.2); overflow:hidden; margin-bottom:1.5rem; box-shadow:0 8px 30px rgba(8,145,178,0.12); }
+    .map-section-header { background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+    .map-section-header h6 { margin:0; font-weight:800; font-size:1rem; display:flex; align-items:center; gap:0.5rem; }
+    .map-status-badge { padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); color:white; transition:all 0.3s; }
+    .map-status-badge.detected { background:rgba(16,185,129,0.3); border-color:#10b981; }
+    #locationMap { height:400px; width:100%; position:relative; z-index:1; }
+    .btn-gps { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); z-index:1000; background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; border:3px solid white; border-radius:30px; padding:8px 20px; font-weight:700; font-size:13px; cursor:pointer; box-shadow:0 6px 20px rgba(8,145,178,0.4); transition:all 0.3s; display:flex; align-items:center; gap:7px; white-space:nowrap; }
+    .btn-gps:hover { transform:translateX(-50%) translateY(-2px); box-shadow:0 10px 28px rgba(8,145,178,0.5); }
+    .btn-gps.success { background:linear-gradient(135deg,#10b981,#059669); }
+    .btn-gps.loading { background:linear-gradient(135deg,#f59e0b,#d97706); pointer-events:none; }
+    .coord-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:1rem 1.25rem; background:#f8fafc; border-top:2px solid #e2e8f0; }
+    .coord-input-wrap label { font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; display:flex; align-items:center; gap:5px; }
+    .coord-input-wrap input { width:100%; padding:9px 14px; border:2px solid #e2e8f0; border-radius:10px; font-size:14px; font-weight:600; color:#0c4a6e; background:white; transition:all 0.3s; font-family:'Courier New',monospace; }
+    .coord-input-wrap input:focus { border-color:#0891b2; box-shadow:0 0 0 3px rgba(8,145,178,0.12); outline:none; }
+    .coord-input-wrap input.has-value { border-color:#10b981; background:#f0fdf4; }
+    .coord-hint { font-size:10px; color:#94a3b8; margin-top:3px; }
+    .map-instruction { position:absolute; top:12px; left:50%; transform:translateX(-50%); z-index:1000; background:rgba(12,74,110,0.88); color:white; padding:7px 16px; border-radius:20px; font-size:12px; font-weight:600; pointer-events:none; white-space:nowrap; backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.2); transition:opacity 0.4s; }
 
-    /* ==================== ALERTS ==================== */
-    .alert { border-radius: 12px; border: none; padding: 1.25rem 1.5rem; font-weight: 600; }
-    .alert-success { background: linear-gradient(135deg,#d1fae5,#a7f3d0); color: #065f46; border-left: 5px solid #10b981; }
-    .alert-danger  { background: linear-gradient(135deg,#fee2e2,#fecaca); color: #991b1b; border-left: 5px solid #ef4444; }
-    .alert-warning { background: linear-gradient(135deg,#fef3c7,#fde68a); color: #92400e; border-left: 5px solid #f59e0b; }
+    .alert { border-radius:12px; border:none; padding:1.25rem 1.5rem; font-weight:600; }
+    .alert-success { background:linear-gradient(135deg,#d1fae5,#a7f3d0); color:#065f46; border-left:5px solid #10b981; }
+    .alert-danger  { background:linear-gradient(135deg,#fee2e2,#fecaca); color:#991b1b; border-left:5px solid #ef4444; }
+    .alert-warning { background:linear-gradient(135deg,#fef3c7,#fde68a); color:#92400e; border-left:5px solid #f59e0b; }
 
-    /* ==================== BUTTONS ==================== */
-    .btn-primary {
-        background: linear-gradient(135deg, #0891b2, #06b6d4); border: none;
-        padding: 1.25rem 3rem; font-weight: 800; font-size: 1.15rem;
-        border-radius: 12px; transition: all 0.3s;
-        box-shadow: 0 10px 30px rgba(8,145,178,0.3);
-    }
-    .btn-primary:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(8,145,178,0.5); }
-    .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
+    .btn-primary { background:linear-gradient(135deg,#0891b2,#06b6d4); border:none; padding:1.25rem 3rem; font-weight:800; font-size:1.15rem; border-radius:12px; transition:all 0.3s; box-shadow:0 10px 30px rgba(8,145,178,0.3); }
+    .btn-primary:hover:not(:disabled) { transform:translateY(-5px); box-shadow:0 15px 40px rgba(8,145,178,0.5); }
+    .btn-primary:disabled { background:#cbd5e1; cursor:not-allowed; box-shadow:none; }
+    .section-label { display:flex; align-items:center; gap:10px; color:#0c4a6e; font-weight:800; font-size:1rem; margin-bottom:1rem; margin-top:0.5rem; }
+    .section-label::after { content:''; flex:1; height:2px; background:linear-gradient(90deg,#0891b2,transparent); border-radius:2px; }
+    .leaflet-popup-content-wrapper { border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
 
-    .section-label {
-        display: flex; align-items: center; gap: 10px;
-        color: #0c4a6e; font-weight: 800; font-size: 1rem;
-        margin-bottom: 1rem; margin-top: 0.5rem;
-    }
-    .section-label::after {
-        content: ''; flex: 1; height: 2px;
-        background: linear-gradient(90deg, #0891b2, transparent); border-radius: 2px;
-    }
-    .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    /* Tooltip desa di peta */
+    .leaflet-tooltip { background:rgba(12,74,110,0.9); color:white; border:none; border-radius:6px; font-weight:700; font-size:11px; padding:4px 8px; }
+    .leaflet-tooltip::before { border-top-color:rgba(12,74,110,0.9); }
 
-    @media (max-width: 767px) {
-        #locationMap { height: 300px; }
-        .coord-row { grid-template-columns: 1fr; }
-        .laporan-hero h1 { font-size: 2rem; }
-        .form-container { padding: 1.5rem; }
-        .info-top-inner { flex-direction: column; }
+    @media (max-width:767px) {
+        #locationMap { height:300px; }
+        .coord-row { grid-template-columns:1fr; }
+        .laporan-hero h1 { font-size:2rem; }
+        .form-container { padding:1.5rem; }
+        .info-top-inner { flex-direction:column; }
     }
 </style>
 @endsection
 
 @section('content')
-<!-- Hero -->
 <div class="laporan-hero">
     <div class="container">
         <h1 class="text-center mb-3"><i class="fas fa-paper-plane"></i> Lapor Kejadian Banjir</h1>
@@ -200,7 +95,6 @@
     </div>
 </div>
 
-{{-- ── INFO BAR ── --}}
 <div class="info-top-bar">
     <div class="container">
         <div class="info-top-inner">
@@ -209,13 +103,13 @@
                 <ul>
                     <li>Klik tombol <strong>GPS</strong> di peta untuk deteksi lokasi otomatis</li>
                     <li>Atau klik langsung di peta / geser marker ke lokasi kejadian</li>
-                    <li>Kecamatan akan <strong>otomatis terisi</strong> sesuai lokasi yang dipilih di peta</li>
+                    <li>Kecamatan & desa akan <strong>otomatis terisi</strong> sesuai lokasi yang dipilih</li>
                     <li>Isi formulir dengan lengkap — nomor telepon <strong>wajib</strong> diisi</li>
                     <li>Upload <strong>minimal 1 foto</strong> sebagai bukti kejadian banjir</li>
                     <li>Laporan akan diverifikasi oleh admin BPBD sebelum ditampilkan</li>
                 </ul>
             </div>
-            <div class="coord-display-box" id="coordInfoBox">
+            <div class="coord-display-box">
                 <div class="coord-title"><i class="fas fa-map-pin"></i> Koordinat Dipilih</div>
                 <div class="coord-val">
                     <span><i class="fas fa-arrows-alt-v"></i> Lat: <strong id="infoLat">—</strong></span>
@@ -257,10 +151,9 @@
 
             {{-- ══ PETA LOKASI ══ --}}
             <div class="section-label"><i class="fas fa-map-marked-alt"></i> Pilih Lokasi di Peta</div>
-
             <div class="map-section">
                 <div class="map-section-header">
-                    <h6><i class="fas fa-map-pin"></i> Klik peta atau geser marker — kecamatan otomatis terdeteksi</h6>
+                    <h6><i class="fas fa-map-pin"></i> Klik peta atau geser marker — kecamatan & desa otomatis terdeteksi</h6>
                     <span class="map-status-badge" id="mapStatusBadge">Belum dipilih</span>
                 </div>
                 <div style="position:relative;">
@@ -292,15 +185,12 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Nama Lengkap</label>
-                    <input type="text" name="nama_pelapor" class="form-control"
-                           placeholder="Masukkan nama lengkap Anda"
-                           value="{{ old('nama_pelapor') }}">
+                    <input type="text" name="nama_pelapor" class="form-control" placeholder="Masukkan nama lengkap Anda" value="{{ old('nama_pelapor') }}">
                     <small class="text-muted">Opsional — nama boleh dikosongkan</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">No. Telepon / WhatsApp <span class="text-danger">*</span></label>
-                    <input type="text" name="no_telp" class="form-control" required
-                           placeholder="08xxxxxxxxxx" value="{{ old('no_telp') }}">
+                    <input type="text" name="no_telp" class="form-control" required placeholder="08xxxxxxxxxx" value="{{ old('no_telp') }}">
                     <small class="text-muted">Wajib — untuk konfirmasi laporan oleh BPBD</small>
                 </div>
             </div>
@@ -310,22 +200,25 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Kecamatan <span class="text-danger">*</span></label>
-                    <select name="kecamatan" id="selectKecamatan" class="form-select" required onchange="updateKelurahan()">
+                    <select name="kecamatan" id="selectKecamatan" class="form-select" required onchange="onKecamatanChange()">
                         <option value="">-- Pilih Kecamatan --</option>
                         @foreach(['Banguntapan','Bantul','Bambanglipuro','Dlingo','Imogiri','Jetis','Kasihan','Kretek','Pajangan','Pandak','Piyungan','Pleret','Pundong','Sanden','Sedayu','Sewon','Srandakan'] as $kec)
                         <option value="{{ $kec }}" {{ old('kecamatan') == $kec ? 'selected' : '' }}>{{ $kec }}</option>
                         @endforeach
                     </select>
-                    <div class="kec-auto-badge" id="kecAutoBadge">
+                    <div class="auto-detect-badge" id="kecAutoBadge">
                         <i class="fas fa-magic"></i> <span id="kecAutoText">Terdeteksi otomatis dari peta</span>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Desa / Kelurahan</label>
-                    <select name="desa" id="selectDesa" class="form-select">
+                    <select name="desa" id="selectDesa" class="form-select" disabled>
                         <option value="">-- Pilih Kecamatan dulu --</option>
                     </select>
-                    <small class="text-muted">Otomatis menyesuaikan kecamatan yang dipilih</small>
+                    <div class="auto-detect-badge" id="desaAutoBadge">
+                        <i class="fas fa-magic"></i> <span id="desaAutoText">Terdeteksi otomatis dari peta</span>
+                    </div>
+                    <small class="text-muted" id="desaHint">Otomatis menyesuaikan kecamatan yang dipilih</small>
                 </div>
             </div>
 
@@ -339,23 +232,21 @@
                 <small class="text-muted"><i class="fas fa-lightbulb"></i> Berikan deskripsi sejelas mungkin untuk membantu tim BPBD</small>
             </div>
 
-            {{-- ══ KEBUTUHAN BANTUAN (BARU) ══ --}}
             <div class="mb-3">
-                <label class="form-label">Kebutuhan / Bantuan yang Diperlukan <span class="text-danger">*</span></label>
+                <label class="form-label">
+                    <i class="fas fa-hands-helping"></i> Kebutuhan / Bantuan yang Diperlukan
+                    <span class="badge" style="background:#fef3c7;color:#92400e;font-size:0.75rem;margin-left:6px;">Opsional</span>
+                </label>
                 <textarea name="kebutuhan_bantuan" class="form-control" rows="3"
                           placeholder="Contoh: Perahu karet, selimut, makanan siap saji, obat-obatan, pompa air, dll."
-                          required>{{ old('kebutuhan_bantuan') }}</textarea>
-                <small class="text-muted">
-                    <i class="fas fa-hands-helping"></i>
-                    Tuliskan barang atau alat yang dibutuhkan di lokasi kejadian agar BPBD dapat menyiapkan bantuan yang tepat
-                </small>
+                          style="border-color:#f59e0b;">{{ old('kebutuhan_bantuan') }}</textarea>
+                <small class="text-muted"><i class="fas fa-info-circle" style="color:#f59e0b;"></i> Tuliskan barang atau alat yang dibutuhkan agar BPBD dapat menyiapkan bantuan yang tepat</small>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Perkiraan Kedalaman Air (cm)</label>
-                    <input type="number" name="kedalaman_cm" class="form-control"
-                           placeholder="Contoh: 50" min="1" value="{{ old('kedalaman_cm') }}">
+                    <input type="number" name="kedalaman_cm" class="form-control" placeholder="Contoh: 50" min="1" value="{{ old('kedalaman_cm') }}">
                     <small class="text-muted"><i class="fas fa-ruler-vertical"></i> Perkiraan kedalaman genangan dalam cm</small>
                 </div>
 
@@ -364,13 +255,10 @@
                         <i class="fas fa-camera"></i> Foto Kejadian <span class="text-danger">*</span>
                         <span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:0.75rem;margin-left:6px;">Maks. 3 Foto</span>
                     </label>
-                    <input type="file" name="fotos[]" id="fotoInput" class="form-control" required
-                           accept="image/jpeg,image/png,image/jpg" multiple>
+                    <input type="file" name="fotos[]" id="fotoInput" class="form-control" required accept="image/jpeg,image/png,image/jpg" multiple>
                     <small class="text-muted"><i class="fas fa-info-circle"></i> Wajib upload min. 1 foto sebagai bukti kejadian. Format: JPG/PNG. Maks. 2MB/foto.</small>
                     <div id="fotoPreviewGrid" style="display:none;margin-top:12px;">
-                        <div style="font-size:0.85rem;font-weight:700;color:#0c4a6e;margin-bottom:8px;">
-                            <i class="fas fa-images"></i> Preview Foto:
-                        </div>
+                        <div style="font-size:0.85rem;font-weight:700;color:#0c4a6e;margin-bottom:8px;"><i class="fas fa-images"></i> Preview Foto:</div>
                         <div id="previewContainer" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
                     </div>
                 </div>
@@ -392,7 +280,7 @@
 @section('script')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// ── KELURAHAN DATA ─────────────────────────────────────────────────────
+// ── KELURAHAN DATA (fallback jika GeoJSON belum load) ─────────────────
 const kelurahanData = {
     'Banguntapan': ['Banguntapan','Baturetno','Jagalan','Jambidan','Potorono','Singosaren','Tamanan','Wirokerten'],
     'Bantul':      ['Bantul','Palbapang','Ringinharjo','Sabdodadi','Trirenggo'],
@@ -413,55 +301,145 @@ const kelurahanData = {
     'Srandakan':   ['Poncosari','Trimurti'],
 };
 
-// ── NAMA KECAMATAN di GeoJSON (mapping) ──────────────────────────────
-// Sesuaikan key ini dengan property di bantul.geojson kamu
-const KECAMATAN_PROP_KEYS = ['WADMKC','WADMC','KECAMATAN','Kecamatan','NAME','name'];
+// ── VARIABEL GLOBAL ────────────────────────────────────────────────────
+let map, marker, locationSet = false;
+let desaGeoJSON = null;   // GeoJSON level desa (bantuldesa.geojson)
+let adminLayer  = null;
+const BANTUL_CENTER = [-7.8700, 110.3300];
 
-function getKecamatanFromFeature(props) {
-    for (const key of KECAMATAN_PROP_KEYS) {
-        if (props[key]) return props[key].trim();
+// ── INIT ───────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+    // Isi desa dari old value jika ada
+    const oldKec = '{{ old("kecamatan") }}';
+    const oldDesa = '{{ old("desa") }}';
+    if (oldKec) {
+        populateDesaSelect(oldKec, oldDesa, false);
+    }
+    initMap();
+});
+
+// ── POPULATE DESA SELECT ───────────────────────────────────────────────
+function populateDesaSelect(kecNama, selectedDesa, fromAuto) {
+    const sel = document.getElementById('selectDesa');
+    const hint = document.getElementById('desaHint');
+    sel.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
+
+    const list = kelurahanData[kecNama] || [];
+    list.sort().forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        if (selectedDesa && d.toLowerCase() === selectedDesa.toLowerCase()) opt.selected = true;
+        sel.appendChild(opt);
+    });
+    sel.disabled = list.length === 0;
+    if (hint) hint.style.display = list.length > 0 ? 'block' : 'none';
+
+    // Sembunyikan badge desa jika user pilih manual
+    if (!fromAuto) {
+        document.getElementById('desaAutoBadge').classList.remove('show');
+    }
+}
+
+// ── EVENT: user ganti kecamatan manual ────────────────────────────────
+function onKecamatanChange() {
+    const kec = document.getElementById('selectKecamatan').value;
+    document.getElementById('kecAutoBadge').classList.remove('show');
+    document.getElementById('desaAutoBadge').classList.remove('show');
+    populateDesaSelect(kec, '', false);
+}
+
+// ── RAY CASTING: point in polygon ─────────────────────────────────────
+function pointInRing(lat, lng, ring) {
+    let inside = false;
+    const x = lng, y = lat;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const xi = ring[i][0], yi = ring[i][1];
+        const xj = ring[j][0], yj = ring[j][1];
+        if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+function pointInFeature(lat, lng, feature) {
+    const geom = feature.geometry;
+    if (!geom) return false;
+    if (geom.type === 'Polygon') {
+        return pointInRing(lat, lng, geom.coordinates[0]);
+    } else if (geom.type === 'MultiPolygon') {
+        for (const poly of geom.coordinates) {
+            if (pointInRing(lat, lng, poly[0])) return true;
+        }
+    }
+    return false;
+}
+
+// ── DETEKSI DESA DAN KECAMATAN DARI TITIK ─────────────────────────────
+function detectFromPoint(lat, lng) {
+    if (!desaGeoJSON || !desaGeoJSON.features) return null;
+    for (const feature of desaGeoJSON.features) {
+        if (pointInFeature(lat, lng, feature)) {
+            const props = feature.properties;
+            return {
+                kecamatan: (props.WADMKC || '').trim(),
+                desa:      (props.WADMKD || props.NAMOBJ || '').trim()
+            };
+        }
     }
     return null;
 }
 
-function updateKelurahan(fromAuto) {
-    const kec   = document.getElementById('selectKecamatan').value;
-    const sel   = document.getElementById('selectDesa');
-    const oldVal = '{{ old("desa") }}';
+// ── AUTO FILL KECAMATAN & DESA ─────────────────────────────────────────
+function autoFillFromPoint(lat, lng) {
+    const result = detectFromPoint(lat, lng);
+    const kecBadge  = document.getElementById('kecAutoBadge');
+    const kecText   = document.getElementById('kecAutoText');
+    const desaBadge = document.getElementById('desaAutoBadge');
+    const desaText  = document.getElementById('desaAutoText');
+    const selectKec = document.getElementById('selectKecamatan');
 
-    sel.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
-
-    if (kec && kelurahanData[kec]) {
-        kelurahanData[kec].forEach(d => {
-            const opt = document.createElement('option');
-            opt.value = d;
-            opt.textContent = d;
-            if (d === oldVal) opt.selected = true;
-            sel.appendChild(opt);
-        });
-        sel.disabled = false;
-    } else {
-        sel.innerHTML = '<option value="">-- Pilih Kecamatan dulu --</option>';
-        sel.disabled = true;
+    if (!result) {
+        kecBadge.classList.remove('show');
+        desaBadge.classList.remove('show');
+        return;
     }
 
-    // Sembunyikan badge auto kalau user ganti manual
-    if (!fromAuto) {
-        document.getElementById('kecAutoBadge').classList.remove('show');
+    const { kecamatan, desa } = result;
+
+    // ── Isi kecamatan ──
+    const opts = Array.from(selectKec.options);
+    const matchKec = opts.find(o => o.value.toLowerCase() === kecamatan.toLowerCase());
+    if (matchKec) {
+        selectKec.value = matchKec.value;
+        kecText.textContent = '✓ Terdeteksi: Kec. ' + matchKec.value;
+        kecBadge.classList.add('show');
+
+        // ── Isi desa ──
+        populateDesaSelect(matchKec.value, desa, true);
+
+        // Cari & pilih desa yang cocok setelah populate
+        setTimeout(() => {
+            const selDesa = document.getElementById('selectDesa');
+            const matchDesa = Array.from(selDesa.options).find(
+                o => o.value.toLowerCase() === desa.toLowerCase()
+            );
+            if (matchDesa) {
+                selDesa.value = matchDesa.value;
+                desaText.textContent = '✓ Terdeteksi: ' + matchDesa.value;
+                desaBadge.classList.add('show');
+            } else {
+                desaBadge.classList.remove('show');
+            }
+        }, 50);
+    } else {
+        kecBadge.classList.remove('show');
+        desaBadge.classList.remove('show');
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    updateKelurahan(false);
-    initMap();
-});
-
-// ── MAP ────────────────────────────────────────────────────────────────
-let map, marker, locationSet = false;
-let bantulGeoJSON = null; // Simpan data GeoJSON batas administrasi
-let adminLayer = null;    // Layer batas administrasi di peta laporan
-const BANTUL_CENTER = [-7.8700, 110.3300];
-
+// ── MAP INIT ──────────────────────────────────────────────────────────
 function initMap() {
     map = L.map('locationMap', { center: BANTUL_CENTER, zoom: 11, zoomControl: true });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -482,102 +460,55 @@ function initMap() {
         setLocation(p.lat, p.lng, 'drag');
     });
 
-    // Load batas administrasi kecamatan
-    loadBatasAdminLaporan();
+    // Load GeoJSON batas desa
+    loadDesaGeoJSON();
 
     @if(old('latitude') && old('longitude'))
     setLocation({{ old('latitude') }}, {{ old('longitude') }}, 'restore');
     @endif
 }
 
-// ── LOAD BATAS ADMINISTRASI DI PETA LAPORAN ────────────────────────────
-function loadBatasAdminLaporan() {
-    fetch('/geojson/bantul.geojson')
-        .then(r => r.json())
+// ── LOAD GEOJSON BATAS DESA ───────────────────────────────────────────
+function loadDesaGeoJSON() {
+    fetch('/geojson/bantuldesa.geojson')
+        .then(r => {
+            if (!r.ok) throw new Error('GeoJSON tidak ditemukan');
+            return r.json();
+        })
         .then(data => {
-            bantulGeoJSON = data;
+            desaGeoJSON = data;
             adminLayer = L.geoJSON(data, {
                 style: {
-                    fillColor: 'transparent',
+                    fillColor: 'rgba(8,145,178,0.04)',
                     color: '#1e3c72',
-                    weight: 2,
-                    opacity: 0.7,
-                    dashArray: '5,5'
+                    weight: 1.5,
+                    opacity: 0.6,
+                    dashArray: '4,4'
                 },
                 onEachFeature: (feature, layer) => {
-                    const kecNama = getKecamatanFromFeature(feature.properties) || 'Kecamatan';
-                    layer.bindTooltip(kecNama, {
-                        permanent: false,
-                        direction: 'center',
-                        className: 'leaflet-tooltip',
-                        sticky: true
+                    const props = feature.properties;
+                    const kec  = props.WADMKC || '';
+                    const desa = props.WADMKD || props.NAMOBJ || '';
+                    layer.bindTooltip(
+                        `<strong>${desa}</strong><br><small>Kec. ${kec}</small>`,
+                        { sticky: true, direction: 'top' }
+                    );
+                    layer.on('mouseover', function() {
+                        this.setStyle({ fillColor:'rgba(8,145,178,0.15)', weight: 2 });
+                    });
+                    layer.on('mouseout', function() {
+                        adminLayer.resetStyle(this);
                     });
                 }
             }).addTo(map);
+            console.log('✅ GeoJSON desa berhasil dimuat:', data.features.length, 'desa');
         })
-        .catch(err => console.warn('Batas admin tidak dimuat:', err));
+        .catch(err => {
+            console.warn('⚠️ GeoJSON desa tidak dimuat:', err.message);
+        });
 }
 
-// ── POINT IN POLYGON (Ray Casting) ────────────────────────────────────
-function pointInPolygon(lat, lng, coordinates) {
-    let inside = false;
-    const x = lng, y = lat;
-    for (let i = 0, j = coordinates.length - 1; i < coordinates.length; j = i++) {
-        const xi = coordinates[i][0], yi = coordinates[i][1];
-        const xj = coordinates[j][0], yj = coordinates[j][1];
-        const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
-    }
-    return inside;
-}
-
-function pointInGeoJSONFeature(lat, lng, feature) {
-    const geom = feature.geometry;
-    if (!geom) return false;
-    if (geom.type === 'Polygon') {
-        return pointInPolygon(lat, lng, geom.coordinates[0]);
-    } else if (geom.type === 'MultiPolygon') {
-        for (const poly of geom.coordinates) {
-            if (pointInPolygon(lat, lng, poly[0])) return true;
-        }
-    }
-    return false;
-}
-
-// ── DETEKSI KECAMATAN DARI KOORDINAT ─────────────────────────────────
-function detectKecamatanFromPoint(lat, lng) {
-    if (!bantulGeoJSON || !bantulGeoJSON.features) return null;
-    for (const feature of bantulGeoJSON.features) {
-        if (pointInGeoJSONFeature(lat, lng, feature)) {
-            return getKecamatanFromFeature(feature.properties);
-        }
-    }
-    return null;
-}
-
-// ── AUTO FILL KECAMATAN ───────────────────────────────────────────────
-function autoFillKecamatan(lat, lng) {
-    const kecNama = detectKecamatanFromPoint(lat, lng);
-    const badge = document.getElementById('kecAutoBadge');
-    const badgeText = document.getElementById('kecAutoText');
-    const selectKec = document.getElementById('selectKecamatan');
-
-    if (kecNama) {
-        // Cari option yang cocok (case-insensitive)
-        const opts = Array.from(selectKec.options);
-        const match = opts.find(o => o.value.toLowerCase() === kecNama.toLowerCase());
-        if (match) {
-            selectKec.value = match.value;
-            updateKelurahan(true);
-            badgeText.textContent = `✓ Terdeteksi: Kec. ${match.value}`;
-            badge.classList.add('show');
-            return;
-        }
-    }
-    // Tidak ditemukan — jangan ubah pilihan tapi sembunyikan badge
-    badge.classList.remove('show');
-}
-
+// ── SET LOCATION ───────────────────────────────────────────────────────
 function setLocation(lat, lng, source) {
     lat = parseFloat(parseFloat(lat).toFixed(6));
     lng = parseFloat(parseFloat(lng).toFixed(6));
@@ -595,13 +526,11 @@ function setLocation(lat, lng, source) {
 
     if (source !== 'drag') map.flyTo([lat, lng], source === 'gps' ? 16 : 14, { duration: 1.2 });
 
-    // Update info bar
     document.getElementById('infoLat').textContent = lat;
     document.getElementById('infoLon').textContent = lng;
     const pill = document.getElementById('coordStatusPill');
     pill.textContent = '✓ Lokasi Dipilih';
     pill.classList.add('ok');
-
     document.getElementById('mapStatusBadge').textContent = '✓ Lokasi Dipilih';
     document.getElementById('mapStatusBadge').classList.add('detected');
 
@@ -612,8 +541,8 @@ function setLocation(lat, lng, source) {
     locationSet = true;
     checkCanSubmit();
 
-    // Auto-detect dan isi kecamatan dari GeoJSON
-    autoFillKecamatan(lat, lng);
+    // Auto-detect kecamatan & desa dari GeoJSON
+    autoFillFromPoint(lat, lng);
 }
 
 function buildPopupContent(lat, lng) {
@@ -681,7 +610,7 @@ function detectGPS() {
     );
 }
 
-// ── ENABLE SUBMIT: lokasi + foto ───────────────────────────────────────
+// ── FOTO PREVIEW ───────────────────────────────────────────────────────
 let fotoSelected = false;
 
 function checkCanSubmit() {
@@ -733,10 +662,7 @@ document.getElementById('fotoInput').addEventListener('change', function () {
         reader.readAsDataURL(file);
     });
 
-    if (valid) {
-        fotoSelected = true;
-        previewGrid.style.display = 'block';
-    }
+    if (valid) { fotoSelected = true; previewGrid.style.display = 'block'; }
     checkCanSubmit();
 });
 
