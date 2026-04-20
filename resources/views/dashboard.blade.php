@@ -509,11 +509,11 @@
 
                                 <td>
                                     @if ($item->foto)
-                                        <img src="{{ str_starts_with($f, 'http') ? $f : asset('uploads/laporan/' . $f) }}"
-                                            alt="Foto" class="rounded"
+                                        @php $fotoUrl = str_starts_with($item->foto, 'http') ? $item->foto : asset('uploads/laporan/' . $item->foto); @endphp
+                                        <img src="{{ $fotoUrl }}" alt="Foto" class="rounded"
                                             style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
-                                            onclick="openImageModal('{{ asset('uploads/laporan/' . $item->foto) }}')"
-                                            title="Klik untuk memperbesar">
+                                            onclick="openImageModal('{{ $fotoUrl }}')"
+                                            title="Klik untuk memperbesar" onerror="this.style.display='none'">
                                     @else
                                         <span class="text-muted small">Tidak ada foto</span>
                                     @endif
