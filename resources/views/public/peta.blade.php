@@ -1021,7 +1021,7 @@
             }
 
             /* KUNCI: Search panel dipindah ke kiri (bawah toolbar)
-                                                       agar tidak BERTABRAKAN dengan layer panel di kanan */
+                                                           agar tidak BERTABRAKAN dengan layer panel di kanan */
             .search-panel {
                 top: 8px;
                 left: 52px;
@@ -1383,16 +1383,16 @@
                                 <i class="fas fa-info-circle"></i> Klik nama layer untuk buka legenda
                             </div>
 
-                            <!-- 1. Kerawanan Longsor -->
+                            <!-- 1. Kerawanan banjir -->
                             <div class="tematik-item">
-                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-longsor',this)">
-                                    <input type="checkbox" id="chk-longsor"
-                                        onclick="event.stopPropagation();toggleTematik('longsor',this.checked)">
+                                <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-banjir',this)">
+                                    <input type="checkbox" id="chk-banjir"
+                                        onclick="event.stopPropagation();toggleTematik('banjir',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-mountain"
-                                            style="color:#0891b2;margin-right:4px;"></i>Kerawanan Longsor</span>
+                                            style="color:#0891b2;margin-right:4px;"></i>Kerawanan banjir</span>
                                     <span class="tematik-item-arrow">▼</span>
                                 </div>
-                                <div class="tematik-item-body" id="acc-longsor">
+                                <div class="tematik-item-body" id="acc-banjir">
                                     <div style="display:flex;gap:3px;flex-wrap:wrap;padding:4px 0;">
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#10b981;border-radius:2px;flex-shrink:0;"></span><span
@@ -1733,11 +1733,12 @@
                                                 <div style="display:flex;gap:3px;flex-wrap:wrap;">
                                                     @foreach ($fotos as $fi => $f)
                                                         <div style="position:relative;">
-                                                            <img src="{{ asset('uploads/laporan/' . $f) }}"
-                                                                alt="Foto {{ $fi + 1 }}"
+                                                            @php $fotoUrl = str_starts_with($f, 'http') ? $f : asset('uploads/laporan/' . $f); @endphp
+                                                            <img src="{{ $fotoUrl }}" alt="Foto {{ $fi + 1 }}"
                                                                 style="width:44px;height:44px;object-fit:cover;border-radius:7px;cursor:pointer;border:2px solid #e2e8f0;"
-                                                                onclick="openImageModal('{{ asset('uploads/laporan/' . $f) }}')"
-                                                                title="Foto {{ $fi + 1 }}">
+                                                                onclick="openImageModal('{{ $fotoUrl }}')"
+                                                                title="Foto {{ $fi + 1 }}"
+                                                                onerror="this.style.display='none'">
                                                             @if ($fi === 0 && count($fotos) > 1)
                                                                 <span
                                                                     style="position:absolute;bottom:1px;right:1px;background:rgba(8,145,178,0.85);color:white;font-size:8px;font-weight:900;padding:0 3px;border-radius:3px;">+{{ count($fotos) }}</span>
@@ -1927,6 +1928,11 @@
 @section('script')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Helper: handle Cloudinary URL atau local file
+        function getFotoUrl(f) {
+            if (!f) return '';
+            return f.startsWith('http') ? f : '/uploads/laporan/' + f;
+        }
         // ── DATA ───────────────────────────────────────────────────────────
         const laporanData = @json($laporan->keyBy('id'));
 
@@ -2593,8 +2599,8 @@
         // ── TEMATIK LAYERS ─────────────────────────────────────────────────
         const tematikLayers = {};
         const tematikConfig = {
-            longsor: {
-                file: '/geojson/kerawanan_longsor.geojson',
+            banjir: {
+                file: '/geojson/kerawanan_banjir.geojson',
                 key: 'KELAS',
                 colors: {
                     'Rendah': '#10b981',
@@ -2870,11 +2876,5 @@
                 L.marker(lokasi).addTo(map).bindPopup('Lokasi Laporan Banjir').openPopup();
             }
         };
-
-        // Helper: handle Cloudinary URL atau local file
-        function getFotoUrl(f) {
-            if (!f) return '';
-            return f.startsWith('http') ? f : '/uploads/laporan/' + f;
-        }
     </script>
 @endsection
