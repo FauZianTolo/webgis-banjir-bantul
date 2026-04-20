@@ -3,6 +3,9 @@
 @section('styles')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
+    /* ══════════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════════ */
     .laporan-hero {
         background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
         color: white; padding: 4rem 0; margin-bottom: 0;
@@ -16,6 +19,9 @@
     .laporan-hero h1 { position:relative;z-index:2;font-weight:900;font-size:2.8rem;text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
     .laporan-hero p  { position:relative;z-index:2;font-size:1.2rem;opacity:0.95; }
 
+    /* ══════════════════════════════════════════════════════
+       INFO BAR TOP
+    ══════════════════════════════════════════════════════ */
     .info-top-bar { background:linear-gradient(135deg,#f0f9ff,#e0f2fe); border-bottom:2px solid rgba(8,145,178,0.15); padding:1.25rem 0; }
     .info-top-inner { display:flex; align-items:stretch; gap:16px; flex-wrap:wrap; }
     .petunjuk-box { flex:2; min-width:280px; background:white; border-radius:14px; padding:1.1rem 1.4rem; border:2px solid rgba(8,145,178,0.15); box-shadow:0 4px 16px rgba(8,145,178,0.07); }
@@ -30,11 +36,19 @@
     .coord-display-box .coord-note { margin-top:7px; font-size:10.5px; opacity:0.8; }
     .coord-status-pill { display:inline-block; margin-top:8px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; background:rgba(255,255,255,0.25); border:1px solid rgba(255,255,255,0.4); }
     .coord-status-pill.ok { background:rgba(16,185,129,0.35); border-color:#10b981; }
+    .coord-status-pill.out { background:rgba(239,68,68,0.4); border-color:#ef4444; }
 
     /* Auto-detect badge */
     .auto-detect-badge { display:none; align-items:center; gap:6px; font-size:12px; font-weight:700; color:#059669; background:#d1fae5; border:1px solid #10b981; border-radius:8px; padding:4px 10px; margin-top:6px; }
     .auto-detect-badge.show { display:flex; }
 
+    /* Outside-boundary warning badge */
+    .outside-boundary-badge { display:none; align-items:center; gap:6px; font-size:12px; font-weight:700; color:#dc2626; background:#fee2e2; border:1px solid #ef4444; border-radius:8px; padding:4px 10px; margin-top:6px; }
+    .outside-boundary-badge.show { display:flex; }
+
+    /* ══════════════════════════════════════════════════════
+       FORM
+    ══════════════════════════════════════════════════════ */
     .form-container { background:white; border-radius:20px; padding:2.5rem; box-shadow:0 15px 50px rgba(0,0,0,0.08); border:2px solid rgba(8,145,178,0.1); }
     .form-container h4 { color:#0c4a6e; font-weight:800; font-size:1.8rem; margin-bottom:2rem; display:flex; align-items:center; gap:0.75rem; }
     .form-label { font-weight:700; color:#334155; margin-bottom:0.5rem; font-size:0.95rem; }
@@ -43,12 +57,20 @@
     .form-control::placeholder { color:#94a3b8; }
     textarea.form-control { resize:vertical; min-height:120px; }
 
+    /* Select — state luar batas */
+    .select-cleared { border-color:#ef4444 !important; background:#fff5f5 !important; }
+    .select-cleared:focus { box-shadow:0 0 0 4px rgba(239,68,68,0.12) !important; }
+
+    /* ══════════════════════════════════════════════════════
+       MAP SECTION
+    ══════════════════════════════════════════════════════ */
     .map-section { background:white; border-radius:16px; border:2px solid rgba(8,145,178,0.2); overflow:hidden; margin-bottom:1.5rem; box-shadow:0 8px 30px rgba(8,145,178,0.12); }
-    .map-section-header { background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+    .map-section-header { background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
     .map-section-header h6 { margin:0; font-weight:800; font-size:1rem; display:flex; align-items:center; gap:0.5rem; }
-    .map-status-badge { padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); color:white; transition:all 0.3s; }
+    .map-status-badge { padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); color:white; transition:all 0.3s; white-space:nowrap; }
     .map-status-badge.detected { background:rgba(16,185,129,0.3); border-color:#10b981; }
-    #locationMap { height:400px; width:100%; position:relative; z-index:1; }
+    .map-status-badge.out-of-bounds { background:rgba(239,68,68,0.4); border-color:#ef4444; }
+    #locationMap { height:440px; width:100%; position:relative; z-index:1; }
     .btn-gps { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); z-index:1000; background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; border:3px solid white; border-radius:30px; padding:8px 20px; font-weight:700; font-size:13px; cursor:pointer; box-shadow:0 6px 20px rgba(8,145,178,0.4); transition:all 0.3s; display:flex; align-items:center; gap:7px; white-space:nowrap; }
     .btn-gps:hover { transform:translateX(-50%) translateY(-2px); box-shadow:0 10px 28px rgba(8,145,178,0.5); }
     .btn-gps.success { background:linear-gradient(135deg,#10b981,#059669); }
@@ -61,6 +83,78 @@
     .coord-hint { font-size:10px; color:#94a3b8; margin-top:3px; }
     .map-instruction { position:absolute; top:12px; left:50%; transform:translateX(-50%); z-index:1000; background:rgba(12,74,110,0.88); color:white; padding:7px 16px; border-radius:20px; font-size:12px; font-weight:600; pointer-events:none; white-space:nowrap; backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.2); transition:opacity 0.4s; }
 
+    /* Outside-boundary toast overlay on map */
+    .map-oob-toast { position:absolute; top:12px; right:12px; z-index:1001; background:rgba(220,38,38,0.92); color:white; padding:8px 14px; border-radius:12px; font-size:12px; font-weight:700; display:none; align-items:center; gap:6px; backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.25); box-shadow:0 4px 16px rgba(220,38,38,0.4); max-width:240px; }
+    .map-oob-toast.show { display:flex; }
+
+    /* ══════════════════════════════════════════════════════
+       MAP LEGEND
+    ══════════════════════════════════════════════════════ */
+    .map-legend {
+        position: absolute;
+        bottom: 60px;
+        right: 10px;
+        z-index: 1000;
+        background: rgba(255,255,255,0.96);
+        border-radius: 12px;
+        padding: 10px 14px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+        border: 1.5px solid rgba(8,145,178,0.18);
+        max-height: 300px;
+        overflow-y: auto;
+        min-width: 170px;
+        font-size: 11.5px;
+        backdrop-filter: blur(6px);
+    }
+    .map-legend-title {
+        font-weight: 800;
+        color: #0c4a6e;
+        font-size: 12px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        border-bottom: 1.5px solid #e2e8f0;
+        padding-bottom: 6px;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        border-radius: 6px;
+        padding: 2px 4px;
+        transition: background 0.2s;
+    }
+    .legend-item:hover { background: #f0f9ff; }
+    .legend-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        flex-shrink: 0;
+        border: 2px solid rgba(0,0,0,0.15);
+    }
+    .legend-label { color: #334155; font-weight: 600; font-size: 11px; line-height: 1.3; }
+    .legend-toggle-btn {
+        position: absolute;
+        bottom: 60px;
+        right: 10px;
+        z-index: 1001;
+        background: white;
+        border: 2px solid rgba(8,145,178,0.3);
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #0891b2;
+        cursor: pointer;
+        display: none;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ALERTS & MISC
+    ══════════════════════════════════════════════════════ */
     .alert { border-radius:12px; border:none; padding:1.25rem 1.5rem; font-weight:600; }
     .alert-success { background:linear-gradient(135deg,#d1fae5,#a7f3d0); color:#065f46; border-left:5px solid #10b981; }
     .alert-danger  { background:linear-gradient(135deg,#fee2e2,#fecaca); color:#991b1b; border-left:5px solid #ef4444; }
@@ -74,15 +168,21 @@
     .leaflet-popup-content-wrapper { border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
 
     /* Tooltip desa di peta */
-    .leaflet-tooltip { background:rgba(12,74,110,0.9); color:white; border:none; border-radius:6px; font-weight:700; font-size:11px; padding:4px 8px; }
-    .leaflet-tooltip::before { border-top-color:rgba(12,74,110,0.9); }
+    .leaflet-tooltip { background:rgba(12,74,110,0.92); color:white; border:none; border-radius:6px; font-weight:700; font-size:11px; padding:4px 8px; }
+    .leaflet-tooltip::before { border-top-color:rgba(12,74,110,0.92); }
+
+    /* Scrollbar legend */
+    .map-legend::-webkit-scrollbar { width: 4px; }
+    .map-legend::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .map-legend::-webkit-scrollbar-thumb { background: #0891b2; border-radius: 4px; }
 
     @media (max-width:767px) {
-        #locationMap { height:300px; }
+        #locationMap { height:320px; }
         .coord-row { grid-template-columns:1fr; }
         .laporan-hero h1 { font-size:2rem; }
         .form-container { padding:1.5rem; }
         .info-top-inner { flex-direction:column; }
+        .map-legend { max-height:180px; font-size:10.5px; right:8px; bottom:55px; min-width:150px; padding:8px 10px; }
     }
 </style>
 @endsection
@@ -103,7 +203,8 @@
                 <ul>
                     <li>Klik tombol <strong>GPS</strong> di peta untuk deteksi lokasi otomatis</li>
                     <li>Atau klik langsung di peta / geser marker ke lokasi kejadian</li>
-                    <li>Kecamatan & desa akan <strong>otomatis terisi</strong> sesuai lokasi yang dipilih</li>
+                    <li>Kecamatan &amp; desa akan <strong>otomatis terisi</strong> sesuai lokasi yang dipilih</li>
+                    <li>Jika titik <strong>di luar wilayah Bantul</strong>, form kecamatan &amp; desa akan dikosongkan</li>
                     <li>Isi formulir dengan lengkap — nomor telepon <strong>wajib</strong> diisi</li>
                     <li>Upload <strong>minimal 1 foto</strong> sebagai bukti kejadian banjir</li>
                     <li>Laporan akan diverifikasi oleh admin BPBD sebelum ditampilkan</li>
@@ -153,7 +254,7 @@
             <div class="section-label"><i class="fas fa-map-marked-alt"></i> Pilih Lokasi di Peta</div>
             <div class="map-section">
                 <div class="map-section-header">
-                    <h6><i class="fas fa-map-pin"></i> Klik peta atau geser marker — kecamatan & desa otomatis terdeteksi</h6>
+                    <h6><i class="fas fa-map-pin"></i> Klik peta atau geser marker — kecamatan &amp; desa otomatis terdeteksi</h6>
                     <span class="map-status-badge" id="mapStatusBadge">Belum dipilih</span>
                 </div>
                 <div style="position:relative;">
@@ -161,10 +262,25 @@
                     <div class="map-instruction" id="mapInstruction">
                         <i class="fas fa-hand-pointer"></i> Klik peta atau geser marker
                     </div>
+                    {{-- Toast peringatan luar batas --}}
+                    <div class="map-oob-toast" id="mapOobToast">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Titik di luar wilayah Kab. Bantul!</span>
+                    </div>
+                    {{-- Tombol GPS --}}
                     <button type="button" class="btn-gps" id="btnGps" onclick="detectGPS()">
                         <i class="fas fa-crosshairs" id="gpsIcon"></i>
                         <span id="gpsText">Deteksi GPS</span>
                     </button>
+                    {{-- Legend Kecamatan --}}
+                    <div class="map-legend" id="kecLegend">
+                        <div class="map-legend-title">
+                            <i class="fas fa-layer-group" style="color:#0891b2;"></i> Kecamatan
+                        </div>
+                        <div id="legendItems">
+                            {{-- diisi oleh JS --}}
+                        </div>
+                    </div>
                 </div>
                 <div class="coord-row">
                     <div class="coord-input-wrap">
@@ -209,6 +325,9 @@
                     <div class="auto-detect-badge" id="kecAutoBadge">
                         <i class="fas fa-magic"></i> <span id="kecAutoText">Terdeteksi otomatis dari peta</span>
                     </div>
+                    <div class="outside-boundary-badge" id="kecOobBadge">
+                        <i class="fas fa-exclamation-triangle"></i> <span>Titik di luar wilayah Bantul — pilih manual</span>
+                    </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Desa / Kelurahan</label>
@@ -217,6 +336,9 @@
                     </select>
                     <div class="auto-detect-badge" id="desaAutoBadge">
                         <i class="fas fa-magic"></i> <span id="desaAutoText">Terdeteksi otomatis dari peta</span>
+                    </div>
+                    <div class="outside-boundary-badge" id="desaOobBadge">
+                        <i class="fas fa-exclamation-triangle"></i> <span>Tidak terdeteksi — pilih manual setelah memilih kecamatan</span>
                     </div>
                     <small class="text-muted" id="desaHint">Otomatis menyesuaikan kecamatan yang dipilih</small>
                 </div>
@@ -280,47 +402,76 @@
 @section('script')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// ── KELURAHAN DATA (fallback jika GeoJSON belum load) ─────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  DATA KELURAHAN (fallback jika GeoJSON belum load)
+// ══════════════════════════════════════════════════════════════════════
 const kelurahanData = {
-    'Banguntapan': ['Banguntapan','Baturetno','Jagalan','Jambidan','Potorono','Singosaren','Tamanan','Wirokerten'],
-    'Bantul':      ['Bantul','Palbapang','Ringinharjo','Sabdodadi','Trirenggo'],
-    'Bambanglipuro':['Mulyodadi','Sidomulyo','Sumbermulyo'],
-    'Dlingo':      ['Dlingo','Jatimulyo','Mangunan','Muntuk','Temuwuh','Terong'],
-    'Imogiri':     ['Girirejo','Imogiri','Karangtalun','Karangtengah','Kebonagung','Selopamioro','Sriharjo','Wukirsari'],
-    'Jetis':       ['Canden','Patalan','Sumberagung','Trimulyo'],
-    'Kasihan':     ['Bangunjiwo','Ngestiharjo','Tamantirto','Tirtonirmolo'],
-    'Kretek':      ['Donotirto','Parangtritis','Tirtohargo','Tirtomulyo','Tirtosari'],
-    'Pajangan':    ['Guwosari','Sendangsari','Triwidadi'],
-    'Pandak':      ['Caturharjo','Gilangharjo','Triharjo','Wijirejo'],
-    'Piyungan':    ['Sitimulyo','Srimartani','Srimulyo'],
-    'Pleret':      ['Bawuran','Pleret','Segoroyoso','Wonokromo','Wonolelo'],
-    'Pundong':     ['Panjangrejo','Seloharjo','Srihardono'],
-    'Sanden':      ['Gadingharjo','Gadingsari','Murtigading','Srigading'],
-    'Sedayu':      ['Argodadi','Argorejo','Argomulyo','Argosari'],
-    'Sewon':       ['Bangunharjo','Panggungharjo','Pendowoharjo','Timbulharjo'],
-    'Srandakan':   ['Poncosari','Trimurti'],
+    'Banguntapan':   ['Banguntapan','Baturetno','Jagalan','Jambidan','Potorono','Singosaren','Tamanan','Wirokerten'],
+    'Bantul':        ['Bantul','Palbapang','Ringinharjo','Sabdodadi','Trirenggo'],
+    'Bambanglipuro': ['Mulyodadi','Sidomulyo','Sumbermulyo'],
+    'Dlingo':        ['Dlingo','Jatimulyo','Mangunan','Muntuk','Temuwuh','Terong'],
+    'Imogiri':       ['Girirejo','Imogiri','Karangtalun','Karangtengah','Kebonagung','Selopamioro','Sriharjo','Wukirsari'],
+    'Jetis':         ['Canden','Patalan','Sumberagung','Trimulyo'],
+    'Kasihan':       ['Bangunjiwo','Ngestiharjo','Tamantirto','Tirtonirmolo'],
+    'Kretek':        ['Donotirto','Parangtritis','Tirtohargo','Tirtomulyo','Tirtosari'],
+    'Pajangan':      ['Guwosari','Sendangsari','Triwidadi'],
+    'Pandak':        ['Caturharjo','Gilangharjo','Triharjo','Wijirejo'],
+    'Piyungan':      ['Sitimulyo','Srimartani','Srimulyo'],
+    'Pleret':        ['Bawuran','Pleret','Segoroyoso','Wonokromo','Wonolelo'],
+    'Pundong':       ['Panjangrejo','Seloharjo','Srihardono'],
+    'Sanden':        ['Gadingharjo','Gadingsari','Murtigading','Srigading'],
+    'Sedayu':        ['Argodadi','Argorejo','Argomulyo','Argosari'],
+    'Sewon':         ['Bangunharjo','Panggungharjo','Pendowoharjo','Timbulharjo'],
+    'Srandakan':     ['Poncosari','Trimurti'],
 };
 
-// ── VARIABEL GLOBAL ────────────────────────────────────────────────────
-let map, marker, locationSet = false;
-let desaGeoJSON = null;   // GeoJSON level desa (bantuldesa.geojson)
+// ══════════════════════════════════════════════════════════════════════
+//  PALET WARNA PER KECAMATAN — unik, menarik, mudah dibedakan
+// ══════════════════════════════════════════════════════════════════════
+const KEC_COLORS = {
+    'BANGUNTAPAN':   { fill: '#FF6B6B', border: '#C0392B', label: 'Banguntapan' },
+    'BANTUL':        { fill: '#4FC3F7', border: '#0277BD', label: 'Bantul' },
+    'BAMBANGLIPURO': { fill: '#81C784', border: '#2E7D32', label: 'Bambanglipuro' },
+    'DLINGO':        { fill: '#FFD54F', border: '#F57F17', label: 'Dlingo' },
+    'IMOGIRI':       { fill: '#CE93D8', border: '#6A1B9A', label: 'Imogiri' },
+    'JETIS':         { fill: '#80DEEA', border: '#00838F', label: 'Jetis' },
+    'KASIHAN':       { fill: '#FFAB91', border: '#BF360C', label: 'Kasihan' },
+    'KRETEK':        { fill: '#A5D6A7', border: '#1B5E20', label: 'Kretek' },
+    'PAJANGAN':      { fill: '#F48FB1', border: '#880E4F', label: 'Pajangan' },
+    'PANDAK':        { fill: '#B39DDB', border: '#4527A0', label: 'Pandak' },
+    'PIYUNGAN':      { fill: '#FFF176', border: '#F9A825', label: 'Piyungan' },
+    'PLERET':        { fill: '#80CBC4', border: '#004D40', label: 'Pleret' },
+    'PUNDONG':       { fill: '#FFCC80', border: '#E65100', label: 'Pundong' },
+    'SANDEN':        { fill: '#90CAF9', border: '#0D47A1', label: 'Sanden' },
+    'SEDAYU':        { fill: '#EF9A9A', border: '#B71C1C', label: 'Sedayu' },
+    'SEWON':         { fill: '#C5E1A5', border: '#33691E', label: 'Sewon' },
+    'SRANDAKAN':     { fill: '#F8BBD0', border: '#AD1457', label: 'Srandakan' },
+};
+
+// ══════════════════════════════════════════════════════════════════════
+//  VARIABEL GLOBAL
+// ══════════════════════════════════════════════════════════════════════
+let map, marker, locationSet = false, isOutOfBounds = false;
+let desaGeoJSON = null;
 let adminLayer  = null;
+let kecLayers   = {};   // { 'BANGUNTAPAN': L.GeoJSON, ... }
 const BANTUL_CENTER = [-7.8700, 110.3300];
 
-// ── INIT ───────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function () {
-    // Isi desa dari old value jika ada
-    const oldKec = '{{ old("kecamatan") }}';
+    const oldKec  = '{{ old("kecamatan") }}';
     const oldDesa = '{{ old("desa") }}';
-    if (oldKec) {
-        populateDesaSelect(oldKec, oldDesa, false);
-    }
+    if (oldKec) populateDesaSelect(oldKec, oldDesa, false);
     initMap();
 });
 
-// ── POPULATE DESA SELECT ───────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  POPULATE DESA SELECT
+// ══════════════════════════════════════════════════════════════════════
 function populateDesaSelect(kecNama, selectedDesa, fromAuto) {
-    const sel = document.getElementById('selectDesa');
+    const sel  = document.getElementById('selectDesa');
     const hint = document.getElementById('desaHint');
     sel.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
 
@@ -335,21 +486,28 @@ function populateDesaSelect(kecNama, selectedDesa, fromAuto) {
     sel.disabled = list.length === 0;
     if (hint) hint.style.display = list.length > 0 ? 'block' : 'none';
 
-    // Sembunyikan badge desa jika user pilih manual
     if (!fromAuto) {
         document.getElementById('desaAutoBadge').classList.remove('show');
     }
 }
 
-// ── EVENT: user ganti kecamatan manual ────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  EVENT: user ganti kecamatan manual
+// ══════════════════════════════════════════════════════════════════════
 function onKecamatanChange() {
     const kec = document.getElementById('selectKecamatan').value;
     document.getElementById('kecAutoBadge').classList.remove('show');
     document.getElementById('desaAutoBadge').classList.remove('show');
+    document.getElementById('kecOobBadge').classList.remove('show');
+    document.getElementById('desaOobBadge').classList.remove('show');
+    document.getElementById('selectKecamatan').classList.remove('select-cleared');
+    document.getElementById('selectDesa').classList.remove('select-cleared');
     populateDesaSelect(kec, '', false);
 }
 
-// ── RAY CASTING: point in polygon ─────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  RAY CASTING — point in polygon
+// ══════════════════════════════════════════════════════════════════════
 function pointInRing(lat, lng, ring) {
     let inside = false;
     const x = lng, y = lat;
@@ -376,7 +534,9 @@ function pointInFeature(lat, lng, feature) {
     return false;
 }
 
-// ── DETEKSI DESA DAN KECAMATAN DARI TITIK ─────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  DETEKSI DESA DAN KECAMATAN DARI TITIK
+// ══════════════════════════════════════════════════════════════════════
 function detectFromPoint(lat, lng) {
     if (!desaGeoJSON || !desaGeoJSON.features) return null;
     for (const feature of desaGeoJSON.features) {
@@ -391,37 +551,86 @@ function detectFromPoint(lat, lng) {
     return null;
 }
 
-// ── AUTO FILL KECAMATAN & DESA ─────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  AUTO FILL — atau KOSONGKAN jika di luar batas
+// ══════════════════════════════════════════════════════════════════════
 function autoFillFromPoint(lat, lng) {
-    const result = detectFromPoint(lat, lng);
+    const result    = detectFromPoint(lat, lng);
     const kecBadge  = document.getElementById('kecAutoBadge');
     const kecText   = document.getElementById('kecAutoText');
     const desaBadge = document.getElementById('desaAutoBadge');
     const desaText  = document.getElementById('desaAutoText');
+    const kecOob    = document.getElementById('kecOobBadge');
+    const desaOob   = document.getElementById('desaOobBadge');
     const selectKec = document.getElementById('selectKecamatan');
+    const selectDes = document.getElementById('selectDesa');
+    const toast     = document.getElementById('mapOobToast');
 
+    // ── GeoJSON belum load — skip silently ───────────────────────────
+    if (!desaGeoJSON) return;
+
+    // ── TITIK DI LUAR BATAS ──────────────────────────────────────────
     if (!result) {
+        isOutOfBounds = true;
+
+        // Kosongkan & highlight merah kecamatan
+        selectKec.value = '';
+        selectKec.classList.add('select-cleared');
         kecBadge.classList.remove('show');
+        kecOob.classList.add('show');
+
+        // Kosongkan & disable desa
+        selectDes.innerHTML = '<option value="">-- Tidak terdeteksi (di luar Bantul) --</option>';
+        selectDes.value = '';
+        selectDes.disabled = true;
+        selectDes.classList.add('select-cleared');
         desaBadge.classList.remove('show');
+        desaOob.classList.add('show');
+
+        // Status badge header peta
+        const badge = document.getElementById('mapStatusBadge');
+        badge.textContent = '⚠ Di Luar Wilayah Bantul';
+        badge.classList.remove('detected');
+        badge.classList.add('out-of-bounds');
+
+        // Pill koordinat
+        const pill = document.getElementById('coordStatusPill');
+        pill.textContent = '⚠ Di Luar Bantul';
+        pill.classList.remove('ok');
+        pill.classList.add('out');
+
+        // Toast di atas peta
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+
+        console.warn('⚠️ Titik di luar wilayah Bantul — form dikosongkan');
         return;
     }
 
+    // ── TITIK DI DALAM BATAS ─────────────────────────────────────────
+    isOutOfBounds = false;
+    toast.classList.remove('show');
+    selectKec.classList.remove('select-cleared');
+    selectDes.classList.remove('select-cleared');
+    kecOob.classList.remove('show');
+    desaOob.classList.remove('show');
+
     const { kecamatan, desa } = result;
 
-    // ── Isi kecamatan ──
-    const opts = Array.from(selectKec.options);
+    // Isi kecamatan
+    const opts     = Array.from(selectKec.options);
     const matchKec = opts.find(o => o.value.toLowerCase() === kecamatan.toLowerCase());
+
     if (matchKec) {
         selectKec.value = matchKec.value;
         kecText.textContent = '✓ Terdeteksi: Kec. ' + matchKec.value;
         kecBadge.classList.add('show');
 
-        // ── Isi desa ──
+        // Isi desa
         populateDesaSelect(matchKec.value, desa, true);
 
-        // Cari & pilih desa yang cocok setelah populate
         setTimeout(() => {
-            const selDesa = document.getElementById('selectDesa');
+            const selDesa   = document.getElementById('selectDesa');
             const matchDesa = Array.from(selDesa.options).find(
                 o => o.value.toLowerCase() === desa.toLowerCase()
             );
@@ -439,17 +648,22 @@ function autoFillFromPoint(lat, lng) {
     }
 }
 
-// ── MAP INIT ──────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  INISIALISASI PETA
+// ══════════════════════════════════════════════════════════════════════
 function initMap() {
     map = L.map('locationMap', { center: BANTUL_CENTER, zoom: 11, zoomControl: true });
+
+    // Basemap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap', maxZoom: 19
+        attribution: '© OpenStreetMap contributors', maxZoom: 19
     }).addTo(map);
 
+    // Marker merah
     const markerIcon = L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        iconSize: [25,41], iconAnchor: [12,41], popupAnchor: [1,-34]
+        iconUrl:    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl:  'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        iconSize:   [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
     });
     marker = L.marker(BANTUL_CENTER, { draggable: true, icon: markerIcon }).addTo(map);
     marker.bindPopup(buildPopupContent(BANTUL_CENTER[0], BANTUL_CENTER[1]));
@@ -460,7 +674,7 @@ function initMap() {
         setLocation(p.lat, p.lng, 'drag');
     });
 
-    // Load GeoJSON batas desa
+    // Load GeoJSON
     loadDesaGeoJSON();
 
     @if(old('latitude') && old('longitude'))
@@ -468,83 +682,176 @@ function initMap() {
     @endif
 }
 
-// ── LOAD GEOJSON BATAS DESA ───────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  LOAD GEOJSON + WARNA PER KECAMATAN
+// ══════════════════════════════════════════════════════════════════════
+function getKecColor(kecNama) {
+    const key = (kecNama || '').toUpperCase().trim();
+    return KEC_COLORS[key] || { fill: '#B0BEC5', border: '#546E7A' };
+}
+
 function loadDesaGeoJSON() {
     fetch('/geojson/bantuldesa.geojson')
         .then(r => {
-            if (!r.ok) throw new Error('GeoJSON tidak ditemukan');
+            if (!r.ok) throw new Error('GeoJSON tidak ditemukan (' + r.status + ')');
             return r.json();
         })
         .then(data => {
             desaGeoJSON = data;
+
             adminLayer = L.geoJSON(data, {
-                style: {
-                    fillColor: 'rgba(8,145,178,0.04)',
-                    color: '#1e3c72',
-                    weight: 1.5,
-                    opacity: 0.6,
-                    dashArray: '4,4'
+                style: feature => {
+                    const kec   = (feature.properties.WADMKC || '').trim();
+                    const color = getKecColor(kec);
+                    return {
+                        fillColor:   color.fill,
+                        fillOpacity: 0.30,
+                        color:       color.border,
+                        weight:      2.2,
+                        opacity:     0.85,
+                        dashArray:   null,
+                    };
                 },
                 onEachFeature: (feature, layer) => {
                     const props = feature.properties;
-                    const kec  = props.WADMKC || '';
-                    const desa = props.WADMKD || props.NAMOBJ || '';
+                    const kec   = props.WADMKC || '';
+                    const desa  = props.WADMKD || props.NAMOBJ || '';
+                    const color = getKecColor(kec);
+
                     layer.bindTooltip(
-                        `<strong>${desa}</strong><br><small>Kec. ${kec}</small>`,
-                        { sticky: true, direction: 'top' }
+                        `<strong>${desa}</strong><br><small style="opacity:0.85;">Kec. ${kec}</small>`,
+                        { sticky: true, direction: 'top', offset: [0, -6] }
                     );
-                    layer.on('mouseover', function() {
-                        this.setStyle({ fillColor:'rgba(8,145,178,0.15)', weight: 2 });
+
+                    layer.on('mouseover', function () {
+                        this.setStyle({
+                            fillOpacity: 0.60,
+                            weight: 3,
+                            color: color.border,
+                        });
+                        this.bringToFront();
                     });
-                    layer.on('mouseout', function() {
+                    layer.on('mouseout', function () {
                         adminLayer.resetStyle(this);
+                    });
+                    layer.on('click', function (e) {
+                        // Klik di layer desa = pilih titik di tengah desa
+                        L.DomEvent.stopPropagation(e);
+                        setLocation(e.latlng.lat, e.latlng.lng, 'map');
                     });
                 }
             }).addTo(map);
+
+            // Sesuaikan batas peta dengan GeoJSON
+            try { map.fitBounds(adminLayer.getBounds(), { padding: [20, 20] }); } catch (e2) {}
+
             console.log('✅ GeoJSON desa berhasil dimuat:', data.features.length, 'desa');
+
+            // Bangun legenda
+            buildLegend(data);
         })
         .catch(err => {
-            console.warn('⚠️ GeoJSON desa tidak dimuat:', err.message);
+            console.warn('⚠️ GeoJSON tidak dimuat:', err.message);
+            // Fallback: tampilkan warning sederhana di legenda
+            document.getElementById('legendItems').innerHTML =
+                '<div style="color:#94a3b8;font-size:10.5px;font-style:italic;">GeoJSON belum tersedia</div>';
         });
 }
 
-// ── SET LOCATION ───────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  BUILD LEGENDA KECAMATAN
+// ══════════════════════════════════════════════════════════════════════
+function buildLegend(geojsonData) {
+    // Kumpulkan kecamatan unik dari GeoJSON
+    const kecSet = new Set();
+    geojsonData.features.forEach(f => {
+        const kec = (f.properties.WADMKC || '').trim();
+        if (kec) kecSet.add(kec);
+    });
+
+    const sorted = Array.from(kecSet).sort();
+    const container = document.getElementById('legendItems');
+    container.innerHTML = '';
+
+    sorted.forEach(kec => {
+        const color = getKecColor(kec);
+        const item  = document.createElement('div');
+        item.className = 'legend-item';
+        item.title     = 'Kec. ' + (color.label || kec);
+        item.innerHTML = `
+            <div class="legend-color" style="background:${color.fill};border-color:${color.border};"></div>
+            <div class="legend-label">${color.label || kec}</div>
+        `;
+        // Klik legenda → zoom ke kecamatan itu
+        item.addEventListener('click', () => zoomToKecamatan(kec, geojsonData));
+        container.appendChild(item);
+    });
+}
+
+function zoomToKecamatan(kecNama, geojsonData) {
+    const features = geojsonData.features.filter(
+        f => (f.properties.WADMKC || '').trim().toUpperCase() === kecNama.toUpperCase()
+    );
+    if (!features.length) return;
+    const tmpLayer = L.geoJSON({ type: 'FeatureCollection', features });
+    map.flyToBounds(tmpLayer.getBounds(), { padding: [30, 30], duration: 0.8 });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  SET LOCATION (dipanggil dari klik peta, GPS, drag, atau manual)
+// ══════════════════════════════════════════════════════════════════════
 function setLocation(lat, lng, source) {
     lat = parseFloat(parseFloat(lat).toFixed(6));
     lng = parseFloat(parseFloat(lng).toFixed(6));
 
+    // Update hidden inputs
     document.getElementById('latitude').value  = lat;
     document.getElementById('longitude').value = lng;
 
+    // Update input koordinat
     const iLat = document.getElementById('inputLat');
     const iLon = document.getElementById('inputLon');
     iLat.value = lat; iLon.value = lng;
     iLat.classList.add('has-value'); iLon.classList.add('has-value');
 
+    // Geser marker
     marker.setLatLng([lat, lng]);
     marker.setPopupContent(buildPopupContent(lat, lng));
 
-    if (source !== 'drag') map.flyTo([lat, lng], source === 'gps' ? 16 : 14, { duration: 1.2 });
+    if (source !== 'drag') {
+        map.flyTo([lat, lng], source === 'gps' ? 16 : 14, { duration: 1.2 });
+    }
 
+    // Update info koordinat di atas
     document.getElementById('infoLat').textContent = lat;
     document.getElementById('infoLon').textContent = lng;
+
+    // Reset badge status (akan di-update ulang oleh autoFillFromPoint)
     const pill = document.getElementById('coordStatusPill');
     pill.textContent = '✓ Lokasi Dipilih';
     pill.classList.add('ok');
-    document.getElementById('mapStatusBadge').textContent = '✓ Lokasi Dipilih';
-    document.getElementById('mapStatusBadge').classList.add('detected');
+    pill.classList.remove('out');
 
+    const badge = document.getElementById('mapStatusBadge');
+    badge.textContent = '✓ Lokasi Dipilih';
+    badge.classList.add('detected');
+    badge.classList.remove('out-of-bounds');
+
+    // Sembunyikan instruksi awal
     const instr = document.getElementById('mapInstruction');
     instr.style.opacity = '0';
-    setTimeout(() => instr.style.display = 'none', 400);
+    setTimeout(() => { instr.style.display = 'none'; }, 400);
 
     locationSet = true;
     checkCanSubmit();
 
-    // Auto-detect kecamatan & desa dari GeoJSON
+    // Auto-detect / kosongkan kecamatan & desa
     autoFillFromPoint(lat, lng);
 }
 
+// ══════════════════════════════════════════════════════════════════════
+//  POPUP CONTENT
+// ══════════════════════════════════════════════════════════════════════
 function buildPopupContent(lat, lng) {
     return `<div style="min-width:180px;padding:4px;">
         <div style="font-weight:800;color:#0c4a6e;margin-bottom:8px;font-size:14px;">
@@ -560,6 +867,9 @@ function buildPopupContent(lat, lng) {
     </div>`;
 }
 
+// ══════════════════════════════════════════════════════════════════════
+//  INPUT KOORDINAT MANUAL
+// ══════════════════════════════════════════════════════════════════════
 function onCoordInput() {
     const lat = parseFloat(document.getElementById('inputLat').value);
     const lng = parseFloat(document.getElementById('inputLon').value);
@@ -571,23 +881,32 @@ function onCoordChange() {
     const lat = parseFloat(document.getElementById('inputLat').value);
     const lng = parseFloat(document.getElementById('inputLon').value);
     if (isNaN(lat) || isNaN(lng)) return;
+
+    // Validasi kasar batas Bantul sebelum mengirim ke setLocation
     if (lat < -8.2 || lat > -7.6 || lng < 110.1 || lng > 110.7) {
         const ex = document.getElementById('coordErrorMsg');
         if (ex) ex.remove();
         const el = document.createElement('div');
         el.id = 'coordErrorMsg';
-        el.style.cssText = 'color:#ef4444;font-size:12px;font-weight:600;padding:6px 10px;background:#fee2e2;border-radius:8px;margin-top:8px;';
-        el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Koordinat di luar wilayah Bantul';
+        el.style.cssText = 'color:#ef4444;font-size:12px;font-weight:600;padding:6px 10px;' +
+                           'background:#fee2e2;border-radius:8px;margin-top:8px;';
+        el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Koordinat di luar batas wilayah Bantul';
         document.querySelector('.coord-row').after(el);
-        setTimeout(() => el.remove(), 4000);
+        setTimeout(() => { if (el.parentNode) el.remove(); }, 5000);
         return;
     }
     setLocation(lat, lng, 'manual');
 }
 
+// ══════════════════════════════════════════════════════════════════════
+//  GPS
+// ══════════════════════════════════════════════════════════════════════
 function detectGPS() {
-    if (!navigator.geolocation) { alert('❌ Browser tidak mendukung Geolocation!'); return; }
-    const btn = document.getElementById('btnGps');
+    if (!navigator.geolocation) {
+        alert('❌ Browser tidak mendukung Geolocation!');
+        return;
+    }
+    const btn  = document.getElementById('btnGps');
     const icon = document.getElementById('gpsIcon');
     const text = document.getElementById('gpsText');
     btn.classList.add('loading');
@@ -599,18 +918,30 @@ function detectGPS() {
             setLocation(pos.coords.latitude, pos.coords.longitude, 'gps');
             btn.classList.remove('loading'); btn.classList.add('success');
             icon.className = 'fas fa-check-circle'; text.textContent = 'GPS Aktif';
-            setTimeout(() => { btn.classList.remove('success'); icon.className = 'fas fa-crosshairs'; text.textContent = 'Deteksi GPS'; }, 3000);
+            setTimeout(() => {
+                btn.classList.remove('success');
+                icon.className = 'fas fa-crosshairs';
+                text.textContent = 'Deteksi GPS';
+            }, 3000);
         },
         err => {
-            btn.classList.remove('loading'); icon.className = 'fas fa-crosshairs'; text.textContent = 'Deteksi GPS';
-            const msgs = ['Izin akses lokasi ditolak.\nAktifkan izin lokasi di address bar.','Lokasi tidak tersedia. Pastikan GPS aktif.','Waktu habis. Coba lagi.'];
+            btn.classList.remove('loading');
+            icon.className = 'fas fa-crosshairs';
+            text.textContent = 'Deteksi GPS';
+            const msgs = [
+                'Izin akses lokasi ditolak.\nAktifkan izin lokasi di address bar.',
+                'Lokasi tidak tersedia. Pastikan GPS aktif.',
+                'Waktu habis. Coba lagi.'
+            ];
             alert('❌ Gagal Mendeteksi Lokasi\n\n' + (msgs[err.code - 1] || 'Terjadi kesalahan.'));
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
 }
 
-// ── FOTO PREVIEW ───────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  FOTO PREVIEW
+// ══════════════════════════════════════════════════════════════════════
 let fotoSelected = false;
 
 function checkCanSubmit() {
@@ -618,7 +949,7 @@ function checkCanSubmit() {
 }
 
 document.getElementById('fotoInput').addEventListener('change', function () {
-    const files = Array.from(this.files);
+    const files           = Array.from(this.files);
     const previewContainer = document.getElementById('previewContainer');
     const previewGrid      = document.getElementById('fotoPreviewGrid');
     previewContainer.innerHTML = '';
@@ -635,7 +966,7 @@ document.getElementById('fotoInput').addEventListener('change', function () {
     let valid = true;
     allowed.forEach((file, i) => {
         if (file.size > 2 * 1024 * 1024) {
-            alert(`⚠️ Foto ${i+1} melebihi 2MB!`); valid = false; return;
+            alert(`⚠️ Foto ${i + 1} melebihi 2MB!`); valid = false; return;
         }
         const reader = new FileReader();
         reader.onload = e2 => {
@@ -643,19 +974,25 @@ document.getElementById('fotoInput').addEventListener('change', function () {
             wrapper.style.cssText = 'position:relative;display:inline-block;';
             const img = document.createElement('img');
             img.src = e2.target.result;
-            img.style.cssText = 'width:90px;height:90px;object-fit:cover;border-radius:10px;border:2px solid #0891b2;box-shadow:0 4px 12px rgba(8,145,178,0.2);cursor:pointer;';
+            img.style.cssText = 'width:90px;height:90px;object-fit:cover;border-radius:10px;' +
+                                'border:2px solid #0891b2;box-shadow:0 4px 12px rgba(8,145,178,0.2);cursor:pointer;';
             img.onclick = () => {
                 const ov = document.createElement('div');
-                ov.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:99999;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+                ov.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;' +
+                                   'background:rgba(0,0,0,0.9);z-index:99999;display:flex;' +
+                                   'align-items:center;justify-content:center;cursor:pointer;';
                 const bi = document.createElement('img');
                 bi.src = e2.target.result;
                 bi.style.cssText = 'max-width:90%;max-height:90vh;border-radius:12px;';
-                ov.appendChild(bi); ov.onclick = () => document.body.removeChild(ov);
+                ov.appendChild(bi);
+                ov.onclick = () => document.body.removeChild(ov);
                 document.body.appendChild(ov);
             };
             const badge = document.createElement('span');
-            badge.textContent = `Foto ${i+1}`;
-            badge.style.cssText = 'position:absolute;bottom:4px;left:50%;transform:translateX(-50%);background:rgba(8,145,178,0.85);color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;white-space:nowrap;';
+            badge.textContent = `Foto ${i + 1}`;
+            badge.style.cssText = 'position:absolute;bottom:4px;left:50%;transform:translateX(-50%);' +
+                                  'background:rgba(8,145,178,0.85);color:white;font-size:9px;font-weight:700;' +
+                                  'padding:1px 6px;border-radius:4px;white-space:nowrap;';
             wrapper.appendChild(img); wrapper.appendChild(badge);
             previewContainer.appendChild(wrapper);
         };
@@ -666,18 +1003,27 @@ document.getElementById('fotoInput').addEventListener('change', function () {
     checkCanSubmit();
 });
 
-// ── SUBMIT VALIDATION ──────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  SUBMIT VALIDATION
+// ══════════════════════════════════════════════════════════════════════
 document.getElementById('formLaporan').addEventListener('submit', function (e) {
     if (!locationSet) {
         e.preventDefault();
         alert('❌ Lokasi belum ditentukan!\n\nKlik GPS, klik peta, atau masukkan koordinat manual.');
-        document.getElementById('locationMap').scrollIntoView({ behavior:'smooth', block:'center' });
+        document.getElementById('locationMap').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return false;
     }
     if (!fotoSelected) {
         e.preventDefault();
         alert('❌ Foto belum diupload!\n\nUpload minimal 1 foto sebagai bukti kejadian banjir.');
-        document.getElementById('fotoInput').scrollIntoView({ behavior:'smooth', block:'center' });
+        document.getElementById('fotoInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return false;
+    }
+    const kecVal = document.getElementById('selectKecamatan').value;
+    if (!kecVal) {
+        e.preventDefault();
+        alert('❌ Kecamatan belum dipilih!\n\nPilih titik di dalam wilayah Kabupaten Bantul, atau pilih kecamatan secara manual.');
+        document.getElementById('selectKecamatan').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return false;
     }
     return confirm('✓ Konfirmasi Pengiriman\n\nApakah data sudah benar?\nLaporan akan dikirim ke BPBD Bantul untuk diverifikasi.');
