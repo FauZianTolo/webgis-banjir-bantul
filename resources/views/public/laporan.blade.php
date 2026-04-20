@@ -341,15 +341,12 @@
 
             {{-- ══ KEBUTUHAN BANTUAN (BARU) ══ --}}
             <div class="mb-3">
-                <label class="form-label">
-                    <i class="fas fa-hands-helping"></i> Kebutuhan / Bantuan yang Diperlukan
-                    <span class="badge" style="background:#fef3c7;color:#92400e;font-size:0.75rem;margin-left:6px;">Opsional</span>
-                </label>
+                <label class="form-label">Kebutuhan / Bantuan yang Diperlukan <span class="text-danger">*</span></label>
                 <textarea name="kebutuhan_bantuan" class="form-control" rows="3"
                           placeholder="Contoh: Perahu karet, selimut, makanan siap saji, obat-obatan, pompa air, dll."
-                          style="border-color:#f59e0b;">{{ old('kebutuhan_bantuan') }}</textarea>
+                          required>{{ old('kebutuhan_bantuan') }}</textarea>
                 <small class="text-muted">
-                    <i class="fas fa-info-circle" style="color:#f59e0b;"></i>
+                    <i class="fas fa-hands-helping"></i>
                     Tuliskan barang atau alat yang dibutuhkan di lokasi kejadian agar BPBD dapat menyiapkan bantuan yang tepat
                 </small>
             </div>
