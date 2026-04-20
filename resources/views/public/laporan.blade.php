@@ -492,7 +492,7 @@ function initMap() {
 
 // ── LOAD BATAS ADMINISTRASI DI PETA LAPORAN ────────────────────────────
 function loadBatasAdminLaporan() {
-    fetch('/geojson/bantul.geojson')
+    fetch('/geojson/bantuldesa.geojson')
         .then(r => r.json())
         .then(data => {
             bantulGeoJSON = data;
