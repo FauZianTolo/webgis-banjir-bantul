@@ -1,728 +1,577 @@
 @extends('layouts.public')
 
 @section('styles')
-    <style>
-        /* ==================== HERO SECTION ==================== */
-        .statistik-hero {
-            background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
-            color: white;
-            padding: 4rem 0;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
+<style>
+/* ============================================================
+   STATISTIK PAGE — FULL REDESIGN
+   ============================================================ */
 
-        .statistik-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.3;
-        }
+/* ── HERO ── */
+.statistik-hero {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 55%, #06b6d4 100%);
+    color: white; padding: 4.5rem 0 3.5rem; position: relative; overflow: hidden;
+}
+.statistik-hero::before {
+    content:''; position:absolute; inset:0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.25;
+}
+.statistik-hero h1 { position:relative; z-index:2; font-weight:900; font-size:2.8rem; text-shadow:2px 2px 8px rgba(0,0,0,0.25); }
+.statistik-hero p  { position:relative; z-index:2; font-size:1.15rem; opacity:0.95; }
 
-        .statistik-hero h1 {
-            position: relative;
-            z-index: 2;
-            font-weight: 900;
-            font-size: 2.8rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
+/* ── STAT CARDS (summary) ── */
+.stat-card {
+    background: white; border-radius: 22px; padding: 2rem 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(.4,0,.2,1);
+    text-align: center; height: 100%; position: relative; overflow: hidden;
+    border: 2px solid transparent;
+}
+.stat-card::after {
+    content:''; position:absolute; top:0; left:0; right:0; height:5px; border-radius:22px 22px 0 0;
+}
+.stat-card.c-blue::after   { background: linear-gradient(90deg,#667eea,#764ba2); }
+.stat-card.c-green::after  { background: linear-gradient(90deg,#10b981,#059669); }
+.stat-card.c-yellow::after { background: linear-gradient(90deg,#f59e0b,#d97706); }
+.stat-card.c-red::after    { background: linear-gradient(90deg,#ef4444,#dc2626); }
+.stat-card:hover { transform:translateY(-8px); box-shadow:0 20px 55px rgba(0,0,0,0.13); border-color:rgba(8,145,178,0.25); }
+.stat-icon {
+    width:72px; height:72px; margin:0 auto 1.25rem;
+    border-radius:18px; display:flex; align-items:center; justify-content:center;
+    font-size:2.1rem; color:white; box-shadow:0 8px 24px rgba(0,0,0,0.18);
+}
+.stat-card.c-blue   .stat-icon { background:linear-gradient(135deg,#667eea,#764ba2); }
+.stat-card.c-green  .stat-icon { background:linear-gradient(135deg,#10b981,#059669); }
+.stat-card.c-yellow .stat-icon { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.stat-card.c-red    .stat-icon { background:linear-gradient(135deg,#ef4444,#dc2626); }
+.stat-num {
+    font-size:2.8rem; font-weight:900; line-height:1; margin-bottom:0.4rem;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.stat-card.c-blue   .stat-num { background:linear-gradient(135deg,#667eea,#764ba2); }
+.stat-card.c-green  .stat-num { background:linear-gradient(135deg,#10b981,#059669); }
+.stat-card.c-yellow .stat-num { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.stat-card.c-red    .stat-num { background:linear-gradient(135deg,#ef4444,#dc2626); }
+.stat-label { font-size:0.95rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.4px; }
 
-        .statistik-hero p {
-            position: relative;
-            z-index: 2;
-            font-size: 1.2rem;
-            opacity: 0.95;
-        }
+/* ── INFO BOX ── */
+.info-box {
+    background: linear-gradient(135deg,#0891b2,#0c4a6e);
+    color: white; border-radius: 22px; padding: 2.5rem;
+    margin-bottom: 2.5rem; box-shadow: 0 15px 50px rgba(8,145,178,0.3);
+    position: relative; overflow: hidden;
+}
+.info-box::before {
+    content:''; position:absolute; inset:0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.info-box h3 { position:relative; z-index:2; font-weight:800; font-size:1.4rem; }
+.info-box p  { position:relative; z-index:2; line-height:1.8; opacity:0.95; margin:0; }
 
-        /* ==================== STAT CARDS ==================== */
-        .stat-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-        }
+/* ── CHART CARDS ── */
+.chart-card {
+    background: white; border-radius: 22px; padding: 2rem 2rem 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    border: 1.5px solid rgba(8,145,178,0.1);
+    transition: box-shadow 0.3s;
+}
+.chart-card:hover { box-shadow: 0 18px 55px rgba(8,145,178,0.13); }
+.chart-card-title {
+    font-size:1.2rem; font-weight:800; color:#0c4a6e;
+    display:flex; align-items:center; gap:0.6rem; margin-bottom:1.5rem;
+}
+.chart-card-title .title-badge {
+    background: linear-gradient(135deg,#0891b2,#06b6d4);
+    color:white; font-size:11px; font-weight:700; padding:3px 10px;
+    border-radius:20px; margin-left:auto;
+}
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            transition: all 0.3s ease;
-        }
+/* ── YEAR PILLS ── */
+.year-pills { display:flex; gap:6px; flex-wrap:wrap; }
+.year-pill {
+    padding:5px 14px; border-radius:20px; font-weight:700; font-size:13px; cursor:pointer;
+    border: 2px solid #0891b2; color:#0891b2; background:white; transition:all 0.25s;
+}
+.year-pill:hover, .year-pill.active {
+    background: linear-gradient(135deg,#0891b2,#06b6d4); color:white;
+    box-shadow: 0 4px 14px rgba(8,145,178,0.35); transform:translateY(-1px);
+}
 
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            border-color: rgba(8, 145, 178, 0.3);
-        }
+/* ── DONUT CHART SECTION ── */
+.donut-wrapper {
+    display:flex; align-items:center; gap:2rem; flex-wrap:wrap;
+}
+.donut-canvas-wrap {
+    flex:0 0 auto; position:relative;
+    width:260px; height:260px;
+}
+.donut-center-label {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    text-align:center; pointer-events:none;
+}
+.donut-center-label .dc-num {
+    font-size:2rem; font-weight:900; color:#0c4a6e; line-height:1;
+}
+.donut-center-label .dc-sub {
+    font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;
+}
+.donut-legend { flex:1; min-width:220px; }
+.donut-legend-item {
+    display:flex; align-items:center; gap:10px;
+    padding:8px 12px; border-radius:10px; margin-bottom:5px;
+    transition:background 0.2s; cursor:default;
+}
+.donut-legend-item:hover { background:#f0f9ff; }
+.donut-legend-dot { width:14px; height:14px; border-radius:4px; flex-shrink:0; }
+.donut-legend-name { font-size:13px; font-weight:700; color:#334155; flex:1; }
+.donut-legend-val  { font-size:13px; font-weight:800; color:#0891b2; }
+.donut-legend-pct  { font-size:11px; font-weight:600; color:#94a3b8; }
 
-        .stat-card.bg-gradient-primary::before { background: linear-gradient(90deg, #667eea, #764ba2); }
-        .stat-card.bg-gradient-success::before { background: linear-gradient(90deg, #10b981, #059669); }
-        .stat-card.bg-gradient-warning::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .stat-card.bg-gradient-danger::before  { background: linear-gradient(90deg, #ef4444, #dc2626); }
+/* ── TREND CHART ── */
+.trend-header {
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:10px; margin-bottom:1.5rem;
+}
 
-        .stat-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, #0891b2, #22d3ee);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            box-shadow: 0 10px 30px rgba(8, 145, 178, 0.3);
-        }
+/* ── TABLE ── */
+.stats-table { border-radius:12px; overflow:hidden; }
+.stats-table thead { background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; }
+.stats-table thead th { border:none; padding:1rem 0.9rem; font-weight:800; font-size:0.88rem; letter-spacing:0.4px; white-space:nowrap; }
+.stats-table tbody tr { transition:all 0.25s; border-bottom:1px solid #e2e8f0; }
+.stats-table tbody tr:hover { background:linear-gradient(135deg,#f0f9ff,#e0f2fe); }
+.stats-table tbody td { padding:0.9rem; vertical-align:middle; }
+.rank-badge {
+    width:32px; height:32px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:13px; color:white;
+}
+.rank-1 { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.rank-2 { background:linear-gradient(135deg,#94a3b8,#64748b); }
+.rank-3 { background:linear-gradient(135deg,#cd7c3a,#b86a2a); }
+.rank-n { background:linear-gradient(135deg,#0891b2,#06b6d4); }
 
-        .stat-card.bg-gradient-primary .stat-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .stat-card.bg-gradient-success .stat-icon { background: linear-gradient(135deg, #10b981, #059669); }
-        .stat-card.bg-gradient-warning .stat-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .stat-card.bg-gradient-danger .stat-icon  { background: linear-gradient(135deg, #ef4444, #dc2626); }
+/* ── PROGRESS BAR ── */
+.prog-wrap { background:#e2e8f0; border-radius:8px; height:22px; overflow:hidden; }
+.prog-fill  { height:100%; border-radius:8px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-size:11px; font-weight:800; color:white; transition:width 1s ease; }
 
-        .stat-info h3 {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #0891b2, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+/* ── STATUS BADGE ── */
+.s-badge { padding:4px 12px; border-radius:20px; font-weight:700; font-size:12px; display:inline-block; }
+.s-high   { background:#fee2e2; color:#991b1b; }
+.s-medium { background:#fef3c7; color:#92400e; }
+.s-low    { background:#dbeafe; color:#1e40af; }
 
-        .stat-card.bg-gradient-primary .stat-info h3 { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-card.bg-gradient-success .stat-info h3 { background: linear-gradient(135deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-card.bg-gradient-warning .stat-info h3 { background: linear-gradient(135deg, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-card.bg-gradient-danger .stat-info h3  { background: linear-gradient(135deg, #ef4444, #dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+/* ── SOURCE ── */
+.source-note { margin-top:12px; padding:8px 14px; background:#f8fafc; border-radius:8px; border-left:3px solid #0891b2; font-size:11px; color:#64748b; }
+.source-note strong { color:#0c4a6e; }
 
-        .stat-info p {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #64748b;
-            margin: 0;
-        }
+/* ── CTA ── */
+.btn-cta {
+    padding:0.9rem 2.2rem; border-radius:14px; font-weight:800; font-size:1rem;
+    border:none; transition:all 0.3s; display:inline-flex; align-items:center; gap:8px;
+}
+.btn-cta-primary { background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; box-shadow:0 8px 24px rgba(8,145,178,0.3); }
+.btn-cta-primary:hover { transform:translateY(-4px); box-shadow:0 14px 36px rgba(8,145,178,0.45); color:white; }
+.btn-cta-success { background:linear-gradient(135deg,#10b981,#059669); color:white; box-shadow:0 8px 24px rgba(16,185,129,0.3); }
+.btn-cta-success:hover { transform:translateY(-4px); box-shadow:0 14px 36px rgba(16,185,129,0.45); color:white; }
 
-        /* ==================== INFO BOX ==================== */
-        .info-box {
-            background: linear-gradient(135deg, #0891b2, #06b6d4);
-            color: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 15px 50px rgba(8, 145, 178, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
+/* ── RESPONSIVE ── */
+@media (max-width:991px) {
+    .donut-canvas-wrap { width:220px; height:220px; }
+}
+@media (max-width:767px) {
+    .statistik-hero { padding:2.5rem 0 2rem; }
+    .statistik-hero h1 { font-size:1.75rem; }
+    .statistik-hero p { font-size:0.95rem; }
 
-        .info-box::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.2;
-        }
+    /* Stat cards 2 kolom */
+    .stat-cards-row .col-6 { padding:0 6px; }
+    .stat-card { padding:1.4rem 1rem; border-radius:16px; }
+    .stat-icon { width:54px; height:54px; font-size:1.5rem; border-radius:13px; margin-bottom:0.9rem; }
+    .stat-num { font-size:2rem; }
+    .stat-label { font-size:0.8rem; }
 
-        .info-box h3 { position: relative; z-index: 2; font-weight: 800; font-size: 1.5rem; }
-        .info-box p  { position: relative; z-index: 2; line-height: 1.8; opacity: 0.95; }
+    .info-box { padding:1.5rem; border-radius:16px; }
+    .info-box h3 { font-size:1.1rem; }
+    .info-box p { font-size:0.9rem; }
 
-        /* ==================== CHART CARDS ==================== */
-        .chart-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            height: 100%;
-            border: 2px solid rgba(8, 145, 178, 0.1);
-            transition: all 0.3s ease;
-        }
+    .chart-card { padding:1.25rem; border-radius:16px; }
+    .chart-card-title { font-size:1rem; }
+    .year-pills { gap:4px; }
+    .year-pill { padding:4px 10px; font-size:12px; }
 
-        .chart-card:hover {
-            box-shadow: 0 20px 60px rgba(8, 145, 178, 0.15);
-            border-color: rgba(8, 145, 178, 0.3);
-        }
+    .donut-wrapper { flex-direction:column; align-items:center; gap:1.2rem; }
+    .donut-canvas-wrap { width:200px; height:200px; }
+    .donut-center-label .dc-num { font-size:1.5rem; }
+    .donut-legend { width:100%; min-width:unset; }
 
-        .chart-card h5 {
-            color: #0c4a6e;
-            font-weight: 800;
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+    .stats-table thead th { padding:0.7rem 0.5rem; font-size:0.78rem; }
+    .stats-table tbody td { padding:0.65rem 0.5rem; font-size:0.82rem; }
 
-        .btn-group .btn {
-            border-radius: 8px;
-            font-weight: 700;
-            padding: 0.5rem 1.25rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-primary {
-            border-color: #0891b2;
-            color: #0891b2;
-        }
-
-        .btn-outline-primary:hover,
-        .btn-outline-primary.active {
-            background: #0891b2;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(8, 145, 178, 0.3);
-        }
-
-        /* ==================== KECAMATAN BARS ==================== */
-        .chart-container {
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            margin-bottom: 2rem;
-            border: 2px solid rgba(8, 145, 178, 0.1);
-        }
-
-        .chart-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #0c4a6e;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .kecamatan-bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.25rem;
-            padding: 1.25rem;
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .kecamatan-bar:hover {
-            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
-            transform: translateX(8px);
-            border-color: #0891b2;
-            box-shadow: 0 5px 20px rgba(8, 145, 178, 0.15);
-        }
-
-        .kecamatan-name {
-            width: 160px;
-            font-weight: 700;
-            color: #0c4a6e;
-            font-size: 1rem;
-        }
-
-        .bar-wrapper {
-            flex: 1;
-            height: 40px;
-            background: #e2e8f0;
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 0 1.25rem;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #0891b2, #22d3ee);
-            border-radius: 12px;
-            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 12px;
-            color: white;
-            font-weight: 800;
-            font-size: 1rem;
-            box-shadow: 0 2px 8px rgba(8, 145, 178, 0.4);
-        }
-
-        /* ==================== TABLE ==================== */
-        .table { border-radius: 12px; overflow: hidden; }
-
-        .table thead {
-            background: linear-gradient(135deg, #0891b2, #06b6d4);
-            color: white;
-        }
-
-        .table thead th {
-            border: none;
-            padding: 1.25rem 1rem;
-            font-weight: 800;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .table tbody tr:hover {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            transform: scale(1.01);
-        }
-
-        .table tbody td {
-            padding: 1.25rem 1rem;
-            vertical-align: middle;
-        }
-
-        .progress { box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); }
-
-        .badge {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        /* ==================== SOURCE BADGE ==================== */
-        .source-badge {
-            margin-top: 10px;
-            padding: 8px 14px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border-left: 3px solid #0891b2;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .source-badge i { color: #0891b2; font-size: 11px; margin-top: 2px; flex-shrink: 0; }
-        .source-badge span { font-size: 11px; color: #64748b; line-height: 1.5; }
-        .source-badge strong { color: #0c4a6e; }
-
-        /* ==================== CTA BUTTONS ==================== */
-        .btn-lg {
-            padding: 1rem 2.5rem;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #0891b2, #06b6d4);
-            border: none;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(8, 145, 178, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
-        }
-
-        /* ==================== RESPONSIVE ==================== */
-        @media (max-width: 768px) {
-            .statistik-hero h1 { font-size: 2rem; }
-            .kecamatan-name { width: 120px; font-size: 0.9rem; }
-            .bar-wrapper { height: 35px; }
-        }
-
-        /* ===== MOBILE RESPONSIVE TAMBAHAN (tidak menghapus apapun di atas) ===== */
-        @media (max-width: 767px) {
-            /* Hero statistik */
-            .statistik-hero { padding: 2rem 0; margin-bottom: 1.5rem; }
-            .statistik-hero h1 { font-size: 1.7rem; }
-            .statistik-hero p { font-size: 0.95rem; }
-
-            /* Stat cards: 2 kolom di HP */
-            .row.mb-5.g-4 .col-md-3 { flex: 0 0 50%; max-width: 50%; }
-            .stat-card { padding: 1.5rem 1rem; border-radius: 14px; }
-            .stat-icon { width: 58px; height: 58px; font-size: 1.6rem; margin-bottom: 0.9rem; }
-            .stat-info h3 { font-size: 2rem; }
-            .stat-info p { font-size: 0.88rem; }
-
-            /* Info box */
-            .info-box { padding: 1.5rem; border-radius: 14px; margin-bottom: 1.5rem; }
-            .info-box h3 { font-size: 1.2rem; }
-            .info-box p { font-size: 0.92rem; }
-
-            /* Chart card */
-            .chart-card { padding: 1.5rem; border-radius: 14px; }
-            .chart-card h5 { font-size: 1.05rem; flex-wrap: wrap; gap: 0.4rem; }
-            .btn-group { flex-wrap: wrap; gap: 4px; }
-            .btn-group .btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-
-            /* Kecamatan bar chart: lebih kompak */
-            .chart-container { padding: 1.5rem; border-radius: 14px; margin-bottom: 1.25rem; }
-            .chart-title { font-size: 1.1rem; margin-bottom: 1.25rem; }
-            .kecamatan-bar { padding: 0.85rem; margin-bottom: 0.75rem; }
-            .kecamatan-name { width: 100px; font-size: 0.82rem; }
-            .bar-wrapper { height: 30px; margin: 0 0.75rem; }
-            .bar-fill { font-size: 0.82rem; padding-right: 8px; }
-
-            /* Tabel */
-            .table thead th { padding: 0.75rem 0.6rem; font-size: 0.82rem; }
-            .table tbody td { padding: 0.75rem 0.6rem; font-size: 0.84rem; }
-
-            /* CTA buttons */
-            .btn-lg { padding: 0.8rem 1.6rem; font-size: 0.95rem; }
-        }
-        @media (max-width: 420px) {
-            .statistik-hero h1 { font-size: 1.45rem; }
-            .kecamatan-name { width: 85px; font-size: 0.78rem; }
-        }
-
-    </style>
+    .btn-cta { padding:0.75rem 1.5rem; font-size:0.9rem; }
+}
+@media (max-width:420px) {
+    .statistik-hero h1 { font-size:1.45rem; }
+    .stat-num { font-size:1.75rem; }
+}
+</style>
 @endsection
 
 @section('content')
-    <!-- Hero Section -->
-    <div class="statistik-hero">
-        <div class="container">
-            <h1 class="text-center mb-3">
-                <i class="fas fa-chart-bar"></i> Statistik Kejadian Banjir
-            </h1>
-            <p class="text-center lead">
-                Data dan Analisis Kejadian Banjir di Kabupaten Bantul
-            </p>
+
+{{-- ── HERO ── --}}
+<div class="statistik-hero">
+    <div class="container text-center">
+        <h1 class="mb-3"><i class="fas fa-chart-bar"></i> Statistik Kejadian Banjir</h1>
+        <p class="lead mb-0">Data & Analisis Kejadian Banjir Kabupaten Bantul — {{ now()->year }}</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+
+    {{-- ── STAT SUMMARY CARDS ── --}}
+    <div class="row g-3 mb-4 stat-cards-row">
+        <div class="col-6 col-md-3">
+            <div class="stat-card c-blue">
+                <div class="stat-icon"><i class="fas fa-database"></i></div>
+                <div class="stat-num">{{ number_format($totalLaporan) }}</div>
+                <div class="stat-label">Total Historis</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card c-green">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-num">{{ number_format($totalVerified) }}</div>
+                <div class="stat-label">Laporan Verified</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card c-yellow">
+                <div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <div class="stat-num">{{ count($kecamatanStats) }}</div>
+                <div class="stat-label">Kecamatan Terdampak</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card c-red">
+                <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-num">{{ $kecamatanStats[0]['total'] ?? 0 }}</div>
+                <div class="stat-label">Titik Terbanyak</div>
+            </div>
         </div>
     </div>
 
-    <div class="container mb-5">
+    {{-- ── INFO BOX ── --}}
+    <div class="info-box mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-9">
+                <h3 class="mb-2"><i class="fas fa-info-circle"></i> Tentang Data</h3>
+                <p>
+                    Data ini menampilkan <strong>{{ number_format($totalLaporan) }} titik historis</strong> kejadian banjir
+                    dari BPBD Bantul yang tersebar di <strong>{{ count($kecamatanStats) }} kecamatan</strong>.
+                    Analisis digunakan untuk mendukung mitigasi bencana dan pengambilan kebijakan.
+                </p>
+            </div>
+            <div class="col-md-3 text-end d-none d-md-block">
+                <i class="fas fa-chart-pie" style="font-size:5rem;opacity:0.25;"></i>
+            </div>
+        </div>
+    </div>
 
-        <!-- Stats Cards -->
-        <div class="row mb-5 g-4">
-            <div class="col-md-3">
-                <div class="stat-card bg-gradient-primary">
-                    <div class="stat-icon"><i class="fas fa-database"></i></div>
-                    <div class="stat-info">
-                        <h3>{{ number_format($totalLaporan) }}</h3>
-                        <p>Total Data Historis</p>
+    {{-- ── ROW: TREND + DONUT ── --}}
+    <div class="row g-4 mb-4">
+
+        {{-- Trend Bulanan --}}
+        <div class="col-12 col-lg-7">
+            <div class="chart-card h-100">
+                <div class="trend-header">
+                    <div class="chart-card-title mb-0">
+                        <i class="fas fa-chart-line" style="color:#0891b2;"></i>
+                        Tren Bulanan
+                        <span style="font-size:14px;font-weight:600;color:#64748b;">(<span id="current-year">{{ $selectedYear }}</span>)</span>
+                    </div>
+                    <div class="year-pills">
+                        @foreach ($availableYears as $year)
+                        <button class="year-pill {{ $year == $selectedYear ? 'active' : '' }}"
+                                data-year="{{ $year }}" onclick="changeYear({{ $year }})">{{ $year }}</button>
+                        @endforeach
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card bg-gradient-success">
-                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                    <div class="stat-info">
-                        <h3>{{ number_format($totalVerified) }}</h3>
-                        <p>Laporan Terverifikasi</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card bg-gradient-warning">
-                    <div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div>
-                    <div class="stat-info">
-                        <h3>{{ count($kecamatanStats) }}</h3>
-                        <p>Kecamatan Terdampak</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card bg-gradient-danger">
-                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                    <div class="stat-info">
-                        <h3>{{ $kecamatanStats[0]['total'] ?? 0 }}</h3>
-                        <p>Titik Terbanyak</p>
-                    </div>
+                <canvas id="trendChart" style="max-height:280px;"></canvas>
+                <div class="source-note mt-3">
+                    <strong>Sumber:</strong> Data historis BPBD Kabupaten Bantul 2020–2025.
                 </div>
             </div>
         </div>
 
-        <!-- Info Box -->
-        <div class="info-box">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h3><i class="fas fa-info-circle"></i> Tentang Data</h3>
-                    <p class="mb-0">
-                        Data statistik ini menampilkan {{ number_format($totalLaporan) }} titik historis kejadian banjir
-                        dari BPBD Bantul
-                        yang tersebar di {{ count($kecamatanStats) }} kecamatan. Grafik dan analisis membantu pemangku
-                        kebijakan
-                        dalam pengambilan keputusan terkait mitigasi banjir.
-                    </p>
+        {{-- Donut Kecamatan --}}
+        <div class="col-12 col-lg-5">
+            <div class="chart-card h-100">
+                <div class="chart-card-title">
+                    <i class="fas fa-chart-pie" style="color:#0891b2;"></i>
+                    Distribusi per Kecamatan
+                    <span class="title-badge">Top 10</span>
                 </div>
-                <div class="col-md-4 text-end">
-                    <i class="fas fa-chart-line" style="font-size: 6rem; opacity: 0.3;"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Chart: Tren Bulanan -->
-        <div class="chart-card mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                <h5 class="mb-2 mb-md-0">
-                    <i class="fas fa-chart-line"></i>
-                    Tren Kejadian Bulanan (<span id="current-year">{{ $selectedYear }}</span>)
-                </h5>
-                <div class="btn-group" role="group">
-                    @foreach ($availableYears as $year)
-                        <button type="button"
-                            class="btn btn-sm btn-outline-primary year-filter {{ $year == $selectedYear ? 'active' : '' }}"
-                            data-year="{{ $year }}" onclick="changeYear({{ $year }})">
-                            {{ $year }}
-                        </button>
-                    @endforeach
-                </div>
-            </div>
-            <canvas id="trendChart"></canvas>
-            <div class="source-badge">
-                <i class="fas fa-database"></i>
-                <span><strong>Sumber Data:</strong> Data kejadian banjir historis Kabupaten Bantul tahun 2020–2025. Sumber: Badan Penanggulangan Bencana Daerah (BPBD) Kabupaten Bantul.</span>
-            </div>
-        </div>
-
-        <!-- Top 10 Kecamatan Rawan -->
-        <div class="chart-container">
-            <h4 class="chart-title">
-                <i class="fas fa-map-marked-alt"></i>
-                10 Kecamatan Paling Rawan Banjir
-            </h4>
-
-            @php $maxTotal = collect($kecamatanStats)->max('total') ?? 1; @endphp
-
-            @forelse($kecamatanStats as $kec)
-                <div class="kecamatan-bar">
-                    <div class="kecamatan-name">{{ $kec['kecamatan'] }}</div>
-                    <div class="bar-wrapper">
-                        <div class="bar-fill" style="width: {{ ($kec['total'] / $maxTotal) * 100 }}%;">
-                            {{ $kec['total'] }}x
+                <div class="donut-wrapper">
+                    <div class="donut-canvas-wrap">
+                        <canvas id="donutChart"></canvas>
+                        <div class="donut-center-label">
+                            <div class="dc-num">{{ collect($kecamatanStats)->sum('total') }}</div>
+                            <div class="dc-sub">Total<br>Kejadian</div>
                         </div>
                     </div>
+                    <div class="donut-legend" id="donutLegend">
+                        {{-- filled by JS --}}
+                    </div>
                 </div>
-            @empty
-                <div class="text-center text-muted py-4">
-                    <i class="fas fa-inbox"></i> Tidak ada data
+                <div class="source-note mt-3">
+                    <strong>Sumber:</strong> Data historis BPBD Kabupaten Bantul 2020–2025.
                 </div>
-            @endforelse
-            <div class="source-badge">
-                <i class="fas fa-database"></i>
-                <span><strong>Sumber Data:</strong> Data kejadian banjir historis Kabupaten Bantul tahun 2020–2025. Sumber: Badan Penanggulangan Bencana Daerah (BPBD) Kabupaten Bantul.</span>
             </div>
         </div>
-
-        <!-- Tabel Detail Per Kecamatan -->
-        <div class="chart-container">
-            <h4 class="chart-title">
-                <i class="fas fa-table"></i>
-                Detail Statistik Per Kecamatan
-            </h4>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Ranking</th>
-                            <th>Kecamatan</th>
-                            <th class="text-center">Jumlah Titik</th>
-                            <th class="text-center">Persentase</th>
-                            <th class="text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $totalAll = collect($kecamatanStats)->sum('total'); @endphp
-                        @forelse($kecamatanStats as $index => $item)
-                            @php
-                                $percentage = $totalAll > 0 ? ($item['total'] / $totalAll) * 100 : 0;
-                                $status = $percentage >= 10 ? 'Tinggi' : ($percentage >= 7 ? 'Sedang' : 'Rendah');
-                                $badgeClass = $percentage >= 10 ? 'danger' : ($percentage >= 7 ? 'warning' : 'info');
-                            @endphp
-                            <tr>
-                                <td><strong>#{{ $index + 1 }}</strong></td>
-                                <td><strong>{{ $item['kecamatan'] }}</strong></td>
-                                <td class="text-center">{{ $item['total'] }} titik</td>
-                                <td>
-                                    <div class="progress" style="height: 28px;">
-                                        <div class="progress-bar bg-{{ $badgeClass }}"
-                                            style="width: {{ $percentage }}%" role="progressbar">
-                                            <strong>{{ number_format($percentage, 1) }}%</strong>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge bg-{{ $badgeClass }}">{{ $status }}</span>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted py-4">Tidak ada data</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            <div class="source-badge">
-                <i class="fas fa-database"></i>
-                <span><strong>Sumber Data:</strong> Data kejadian banjir historis Kabupaten Bantul tahun 2020–2025. Sumber: Badan Penanggulangan Bencana Daerah (BPBD) Kabupaten Bantul.</span>
-            </div>
-        </div>
-
-        <!-- CTA Section -->
-        <div class="text-center mt-5">
-            <a href="{{ route('peta') }}" class="btn btn-lg btn-primary me-2 mb-2">
-                <i class="fas fa-map"></i> Lihat Peta Interaktif
-            </a>
-            <a href="{{ route('laporan') }}" class="btn btn-lg btn-success mb-2">
-                <i class="fas fa-paper-plane"></i> Lapor Kejadian Banjir
-            </a>
-        </div>
-
     </div>
+
+    {{-- ── TABEL DETAIL ── --}}
+    <div class="chart-card mb-4">
+        <div class="chart-card-title">
+            <i class="fas fa-table" style="color:#0891b2;"></i>
+            Detail Statistik Per Kecamatan
+        </div>
+        <div class="table-responsive">
+            <table class="stats-table table table-hover w-100">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Kecamatan</th>
+                        <th class="text-center">Jumlah</th>
+                        <th>Proporsi</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $totalAll = collect($kecamatanStats)->sum('total'); @endphp
+                    @forelse($kecamatanStats as $idx => $item)
+                        @php
+                            $pct  = $totalAll > 0 ? ($item['total'] / $totalAll) * 100 : 0;
+                            $status = $pct >= 10 ? 'Tinggi' : ($pct >= 7 ? 'Sedang' : 'Rendah');
+                            $sClass = $pct >= 10 ? 's-high' : ($pct >= 7 ? 's-medium' : 's-low');
+                            $pFill  = $pct >= 10 ? 'linear-gradient(90deg,#ef4444,#dc2626)'
+                                    : ($pct >= 7 ? 'linear-gradient(90deg,#f59e0b,#d97706)'
+                                                 : 'linear-gradient(90deg,#3b82f6,#2563eb)');
+                            $rankClass = $idx === 0 ? 'rank-1' : ($idx === 1 ? 'rank-2' : ($idx === 2 ? 'rank-3' : 'rank-n'));
+                        @endphp
+                        <tr>
+                            <td>
+                                <span class="rank-badge {{ $rankClass }}">{{ $idx + 1 }}</span>
+                            </td>
+                            <td><strong style="color:#0c4a6e;">{{ $item['kecamatan'] }}</strong></td>
+                            <td class="text-center"><strong>{{ $item['total'] }}</strong> <small class="text-muted">titik</small></td>
+                            <td style="min-width:140px;">
+                                <div class="prog-wrap">
+                                    <div class="prog-fill" style="width:{{ $pct }}%;background:{{ $pFill }};">
+                                        {{ number_format($pct,1) }}%
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center"><span class="s-badge {{ $sClass }}">{{ $status }}</span></td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5" class="text-center text-muted py-4">Tidak ada data</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="source-note">
+            <strong>Sumber:</strong> Data kejadian banjir historis Kabupaten Bantul tahun 2020–2025.
+            Sumber: Badan Penanggulangan Bencana Daerah (BPBD) Kabupaten Bantul.
+        </div>
+    </div>
+
+    {{-- ── CTA ── --}}
+    <div class="text-center mt-4 d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{{ route('peta') }}" class="btn-cta btn-cta-primary">
+            <i class="fas fa-map-marked-alt"></i> Lihat Peta Interaktif
+        </a>
+        <a href="{{ route('laporan') }}" class="btn-cta btn-cta-success">
+            <i class="fas fa-paper-plane"></i> Lapor Kejadian Banjir
+        </a>
+    </div>
+
+</div>
 @endsection
 
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const kecamatanStats = @json($kecamatanStats);
-        let yearlyData = @json($yearlyData);
-        let selectedYear = {{ $selectedYear }};
-        const availableYears = @json($availableYears);
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+const kecamatanStats = @json($kecamatanStats);
+let yearlyData  = @json($yearlyData);
+let selectedYear = {{ $selectedYear }};
+let trendChart  = null;
+let donutChart  = null;
 
-        let trendChart = null;
+/* ── PALETTE ── */
+const PALETTE = [
+    '#0891b2','#10b981','#f59e0b','#ef4444','#8b5cf6',
+    '#ec4899','#06b6d4','#84cc16','#f97316','#6366f1'
+];
 
-        function initTrendChart(year) {
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-            const monthlyData = yearlyData[year] || {};
-            const trendValues = [];
+/* ───────────────────────────── DONUT CHART ─────────────────────────── */
+function initDonutChart() {
+    const top10 = kecamatanStats.slice(0, 10);
+    const total = top10.reduce((s, k) => s + k.total, 0);
+    const labels = top10.map(k => k.kecamatan);
+    const vals   = top10.map(k => k.total);
 
-            for (let i = 1; i <= 12; i++) {
-                trendValues.push(monthlyData[i] || 0);
-            }
-
-            if (trendChart) {
-                trendChart.destroy();
-            }
-
-            const ctx = document.getElementById('trendChart').getContext('2d');
-            trendChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: monthNames,
-                    datasets: [{
-                        label: 'Jumlah Kejadian',
-                        data: trendValues,
-                        borderColor: '#0891b2',
-                        backgroundColor: 'rgba(8, 145, 178, 0.1)',
-                        borderWidth: 4,
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 6,
-                        pointHoverRadius: 9,
-                        pointBackgroundColor: '#0891b2',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 3,
-                        pointHoverBorderWidth: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    aspectRatio: 2.5,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: { size: 14, weight: 'bold', family: 'Inter' },
-                                color: '#0c4a6e'
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: 'rgba(12, 74, 110, 0.95)',
-                            padding: 15,
-                            titleFont: { size: 15, weight: 'bold' },
-                            bodyFont: { size: 14 },
-                            borderColor: '#0891b2',
-                            borderWidth: 2,
-                            callbacks: {
-                                label: function(context) {
-                                    return 'Jumlah Kejadian: ' + context.parsed.y + ' titik';
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: Math.max(1, Math.ceil(Math.max(...trendValues) / 10)),
-                                font: { size: 13, weight: '600' },
-                                color: '#64748b'
-                            },
-                            grid: { color: 'rgba(0,0,0,0.05)' },
-                            title: {
-                                display: true,
-                                text: 'Jumlah Kejadian',
-                                font: { size: 14, weight: 'bold' },
-                                color: '#0c4a6e'
-                            }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: { size: 13, weight: '600' }, color: '#64748b' },
-                            title: {
-                                display: true,
-                                text: 'Bulan',
-                                font: { size: 14, weight: 'bold' },
-                                color: '#0c4a6e'
-                            }
+    const ctx = document.getElementById('donutChart').getContext('2d');
+    donutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels,
+            datasets: [{
+                data: vals,
+                backgroundColor: PALETTE,
+                borderColor: '#fff',
+                borderWidth: 3,
+                hoverBorderWidth: 4,
+                hoverOffset: 8,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '62%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(12,74,110,0.95)',
+                    padding: 12,
+                    titleFont: { size: 13, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    borderColor: '#0891b2',
+                    borderWidth: 1.5,
+                    callbacks: {
+                        label: ctx => {
+                            const pct = ((ctx.parsed / total) * 100).toFixed(1);
+                            return `  ${ctx.parsed} titik (${pct}%)`;
                         }
                     }
                 }
-            });
-
-            console.log(`✅ Chart loaded for year ${year}`);
+            },
+            animation: { animateRotate: true, duration: 1000 }
         }
+    });
 
-        function changeYear(year) {
-            selectedYear = year;
-            document.getElementById('current-year').textContent = year;
+    /* Custom Legend */
+    const legend = document.getElementById('donutLegend');
+    legend.innerHTML = top10.map((k, i) => {
+        const pct = ((k.total / total) * 100).toFixed(1);
+        return `<div class="donut-legend-item">
+            <span class="donut-legend-dot" style="background:${PALETTE[i]};"></span>
+            <span class="donut-legend-name">${k.kecamatan}</span>
+            <span class="donut-legend-val">${k.total}</span>
+            <span class="donut-legend-pct">&nbsp;${pct}%</span>
+        </div>`;
+    }).join('');
+}
 
-            document.querySelectorAll('.year-filter').forEach(btn => {
-                btn.classList.remove('active');
-                if (parseInt(btn.dataset.year) === year) {
-                    btn.classList.add('active');
+/* ───────────────────────────── TREND CHART ─────────────────────────── */
+function initTrendChart(year) {
+    const monthNames = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    const monthly = yearlyData[year] || {};
+    const vals = Array.from({length:12}, (_, i) => monthly[i+1] || 0);
+    const maxVal = Math.max(...vals, 1);
+
+    if (trendChart) trendChart.destroy();
+
+    const ctx = document.getElementById('trendChart').getContext('2d');
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, 0, 0, 280);
+    grad.addColorStop(0, 'rgba(8,145,178,0.25)');
+    grad.addColorStop(1, 'rgba(8,145,178,0.01)');
+
+    trendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: monthNames,
+            datasets: [{
+                label: 'Kejadian',
+                data: vals,
+                borderColor: '#0891b2',
+                backgroundColor: grad,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                pointBackgroundColor: '#0891b2',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2.5,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    mode: 'index', intersect: false,
+                    backgroundColor: 'rgba(12,74,110,0.95)',
+                    padding: 12,
+                    titleFont: { size: 13, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    borderColor: '#0891b2', borderWidth: 1.5,
+                    callbacks: {
+                        label: ctx => `  ${ctx.parsed.y} kejadian`
+                    }
                 }
-            });
-
-            initTrendChart(year);
-            console.log(`📅 Year changed to ${year}`);
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: Math.max(1, Math.ceil(maxVal / 8)),
+                        font: { size: 12, weight: '600' },
+                        color: '#64748b',
+                        padding: 6,
+                    },
+                    grid: { color: 'rgba(0,0,0,0.05)' },
+                    title: { display: true, text: 'Jumlah Kejadian', font: { size: 12, weight: 'bold' }, color: '#0c4a6e' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 12, weight: '600' }, color: '#64748b' }
+                }
+            },
+            animation: { duration: 700 }
         }
+    });
+}
 
-        document.addEventListener('DOMContentLoaded', function() {
-            initTrendChart(selectedYear);
+/* ───────────────────────────── CHANGE YEAR ─────────────────────────── */
+function changeYear(year) {
+    selectedYear = year;
+    document.getElementById('current-year').textContent = year;
+    document.querySelectorAll('.year-pill').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.year) === year);
+    });
+    initTrendChart(year);
+}
 
-            setTimeout(() => {
-                document.querySelectorAll('.bar-fill').forEach(bar => {
-                    const width = bar.style.width;
-                    bar.style.width = '0%';
-                    setTimeout(() => {
-                        bar.style.width = width;
-                    }, 100);
-                });
-            }, 300);
+/* ───────────────────────────── INIT ─────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+    initTrendChart(selectedYear);
+    initDonutChart();
+
+    /* Animate progress bars */
+    setTimeout(() => {
+        document.querySelectorAll('.prog-fill').forEach(el => {
+            const w = el.style.width;
+            el.style.width = '0';
+            requestAnimationFrame(() => {
+                setTimeout(() => { el.style.width = w; }, 80);
+            });
         });
-
-        console.log('✅ Statistik page loaded');
-    </script>
+    }, 200);
+});
+</script>
 @endsection
