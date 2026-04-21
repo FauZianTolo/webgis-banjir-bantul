@@ -15,11 +15,11 @@
             /* ==================== TABLE CARD ==================== */
             .table-card {
                 background: white;
-                border-radius: 20px;
-                padding: 2.5rem;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-                border: 2px solid rgba(8, 145, 178, 0.1);
-                margin-bottom: 2rem;
+                border-radius: 18px;
+                padding: 1.75rem;
+                box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+                border: 1.5px solid rgba(8, 145, 178, 0.1);
+                margin-bottom: 1.5rem;
             }
 
             .table-card-title {
@@ -394,6 +394,29 @@
             .modal-close-btn:hover {
                 background: #dc2626;
                 transform: scale(1.15) rotate(90deg);
+            }
+
+            /* ── MOBILE RESPONSIVE ── */
+            @media (max-width: 767px) {
+                .table-card { padding: 1rem; border-radius: 14px; margin-bottom: 1rem; }
+                .table-card-title { font-size: 1.05rem; margin-bottom: 1rem; }
+                .table thead th { padding: 0.6rem 0.4rem; font-size: 0.72rem; }
+                .table tbody td { padding: 0.6rem 0.4rem; font-size: 0.8rem; }
+                .badge { padding: 0.3rem 0.6rem; font-size: 0.72rem; }
+                /* Hide non-essential columns on mobile */
+                .table .d-mobile-none { display: none !important; }
+
+                /* Photo thumbnails smaller */
+                .table tbody td img { width: 40px !important; height: 40px !important; }
+
+                /* Filters */
+                .filter-row { flex-direction: column; gap: 0.5rem; }
+                .filter-row select,
+                .filter-row input { font-size: 0.82rem; width: 100%; }
+
+                /* Stats mini grid if present */
+                .stat-summary-grid { grid-template-columns: repeat(2,1fr) !important; gap: 0.75rem; }
+                .stat-summary-item { padding: 1rem !important; border-radius: 12px !important; }
             }
         </style>
     @endpush

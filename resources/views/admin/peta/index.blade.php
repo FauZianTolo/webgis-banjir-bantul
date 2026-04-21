@@ -18,7 +18,7 @@
         <style>
             /* ==================== MAP CONTAINER ==================== */
             .map-admin-container {
-                height: calc(100vh - 200px);
+                height: calc(100vh - 180px);
                 width: 100%;
                 border-radius: 20px;
                 box-shadow: 0 15px 50px rgba(8, 145, 178, 0.2);
@@ -28,9 +28,9 @@
             /* ==================== INFO BOX (STATS) ==================== */
             .info-box {
                 background: white;
-                padding: 2rem;
-                margin-bottom: 2rem;
-                border-radius: 20px;
+                padding: 1.5rem;
+                margin-bottom: 1.25rem;
+                border-radius: 16px;
                 box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
                 border: 2px solid rgba(8, 145, 178, 0.1);
             }
@@ -405,6 +405,25 @@
                 background: #dc2626;
                 transform: scale(1.1);
             }
+
+            /* ── MOBILE RESPONSIVE ── */
+            @media (max-width: 767px) {
+                .info-box { padding: 1rem; border-radius: 12px; margin-bottom: 1rem; }
+                .info-box h4 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+                .status-indicator { margin-right: 0.4rem; margin-bottom: 0.4rem; padding: 0.4rem 0.75rem; font-size: 0.82rem; }
+                .btn-kelola { padding: 0.6rem 1rem; font-size: 0.85rem; }
+                .map-admin-container {
+                    height: calc(100vh - 280px);
+                    min-height: 350px;
+                    border-radius: 14px;
+                }
+                .detail-modal-content { width: 96%; border-radius: 18px; max-height: 92vh; }
+                .detail-modal-header { padding: 1.25rem; border-radius: 18px 18px 0 0; }
+                .detail-modal-header h3 { font-size: 1.25rem; }
+                .detail-modal-body { padding: 1.25rem; }
+                .detail-grid { grid-template-columns: 1fr !important; }
+            }
+
         </style>
     @endpush
 

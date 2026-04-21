@@ -15,9 +15,9 @@
             /* ==================== STATS CARDS ==================== */
             .stats-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-                margin-bottom: 2.5rem;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
             }
 
             .stats-card {
@@ -149,8 +149,8 @@
 
             .quick-actions-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 1.5rem;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 1rem;
             }
 
             .quick-action-item {
@@ -199,9 +199,9 @@
             /* ==================== CHARTS ==================== */
             .charts-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-                gap: 2rem;
-                margin-bottom: 2.5rem;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
             }
 
             .chart-card {
@@ -364,20 +364,42 @@
             }
 
             /* ==================== RESPONSIVE ==================== */
-            @media (max-width: 768px) {
-
-                .stats-grid,
-                .charts-grid {
-                    grid-template-columns: 1fr;
+            @media (max-width: 767px) {
+                /* Stats - 2 kolom di HP */
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 0.75rem;
+                    margin-bottom: 1.25rem;
                 }
+                .stats-card { padding: 1.25rem 1rem; border-radius: 14px; }
+                .stats-icon { width: 50px; height: 50px; font-size: 1.4rem; margin-bottom: 1rem; border-radius: 12px; }
+                .stats-number { font-size: 2rem; }
+                .stats-label { font-size: 0.78rem; letter-spacing: 0; }
 
-                .welcome-content h3 {
-                    font-size: 1.75rem;
-                }
+                /* Quick actions - 2 kolom */
+                .quick-actions-card { padding: 1.25rem; border-radius: 16px; margin-bottom: 1.25rem; }
+                .quick-actions-title { font-size: 1.2rem; margin-bottom: 1rem; }
+                .quick-actions-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+                .quick-action-item { padding: 1.25rem 0.75rem; border-radius: 12px; }
+                .quick-action-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+                .quick-action-title { font-size: 0.88rem; margin-bottom: 0.25rem; }
+                .quick-action-subtitle { font-size: 0.75rem; }
 
-                .stats-number {
-                    font-size: 2.5rem;
-                }
+                /* Charts - 1 kolom */
+                .charts-grid { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+                .chart-card { padding: 1.25rem; border-radius: 14px; }
+                .chart-title { font-size: 1rem; margin-bottom: 1rem; }
+
+                /* Table */
+                .table-card { padding: 1.25rem; border-radius: 14px; }
+                .table-title { font-size: 1.1rem; margin-bottom: 1rem; }
+                .table thead th { padding: 0.65rem 0.5rem; font-size: 0.75rem; }
+                .table tbody td { padding: 0.65rem 0.5rem; font-size: 0.82rem; }
+            }
+            @media (max-width: 420px) {
+                .stats-number { font-size: 1.75rem; }
+                .quick-action-item { padding: 1rem 0.5rem; }
+                .quick-action-icon { font-size: 1.5rem; }
             }
         </style>
     @endpush

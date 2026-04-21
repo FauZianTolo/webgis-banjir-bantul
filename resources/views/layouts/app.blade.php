@@ -11,8 +11,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -40,7 +39,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             min-height: 100vh;
         }
@@ -141,7 +140,7 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-            min-width: 250px;
+            min-width: 220px;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -268,25 +267,39 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
             }
-
             .admin-sidebar.show {
                 transform: translateX(0);
             }
-
             .admin-main {
                 margin-left: 0;
+                padding: 1rem;
             }
-
             .topbar-content {
-                padding: 0 1rem;
+                padding: 0 0.75rem;
             }
-
             .admin-brand span {
                 display: none;
             }
-
             .mobile-menu-toggle {
                 display: block !important;
+            }
+        }
+        /* ── MOBILE GLOBAL HEADER CARD ── */
+        @media (max-width: 767px) {
+            .admin-main {
+                padding: 0.75rem;
+            }
+            .admin-main > .mb-4 > div {
+                padding: 1rem 1.25rem !important;
+                border-radius: 14px !important;
+            }
+            .admin-main > .mb-4 > div h2 {
+                font-size: 1.25rem !important;
+                line-height: 1.3;
+            }
+            .admin-main > .mb-4 > div p {
+                font-size: 0.82rem !important;
+                margin-top: 0.3rem !important;
             }
         }
 
@@ -373,7 +386,7 @@
             position: absolute;
             top: calc(100% + 15px);
             right: 0;
-            width: 380px;
+            width: 360px;
             max-height: 500px;
             background: white;
             border-radius: 15px;
@@ -384,6 +397,12 @@
             transition: all 0.3s ease;
             z-index: 9999;
             border: 2px solid #e2e8f0;
+        }
+        @media (max-width: 600px) {
+            .notification-dropdown {
+                width: calc(100vw - 20px);
+                right: -5px;
+            }
         }
 
         .notification-bell.show .notification-dropdown {

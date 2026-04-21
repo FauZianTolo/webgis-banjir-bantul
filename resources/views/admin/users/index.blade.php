@@ -15,7 +15,7 @@
         /* Stats Cards */
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -60,21 +60,9 @@
             font-weight: 900;
             line-height: 1;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--stat-color), var(--stat-color-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-
-        .stat-card-pending .stat-number {
-            --stat-color: #f59e0b;
-            --stat-color-light: #fbbf24;
-        }
-
-        .stat-card-approved .stat-number {
-            --stat-color: #10b981;
-            --stat-color-light: #34d399;
-        }
+        .stat-card-pending  .stat-number { color: #d97706; }
+        .stat-card-approved .stat-number { color: #059669; }
 
         .stat-label {
             color: #64748b;
@@ -226,6 +214,21 @@
             align-items: center;
             gap: 0.75rem;
             font-weight: 600;
+        }
+
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 767px) {
+            .stats-container { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+            .stat-card { padding: 1.25rem; border-radius: 14px; }
+            .stat-number { font-size: 2.2rem; }
+            .stat-label { font-size: 0.82rem; }
+
+            .table-card { padding: 1.25rem; border-radius: 14px; }
+            .table-card-title { font-size: 1.05rem; margin-bottom: 1rem; }
+            .table thead th { padding: 0.6rem 0.4rem; font-size: 0.72rem; }
+            .table tbody td { padding: 0.6rem 0.4rem; font-size: 0.8rem; }
+            .badge { padding: 0.3rem 0.7rem; font-size: 0.72rem; }
+            .btn-action { width: 30px; height: 30px; }
         }
     </style>
     @endpush

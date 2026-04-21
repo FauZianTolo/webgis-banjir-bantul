@@ -1,6 +1,6 @@
-    <x-app-layout>
+<x-app-layout>
         <x-slot name="header">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center header-flex-wrap">
                 <div>
                     <h2 style="color: #0c4a6e; font-weight: 900; font-size: 2rem; margin: 0;">
                         <i class="fas fa-clipboard-check"></i> Verifikasi Laporan Banjir
@@ -24,16 +24,16 @@
                 /* ==================== STATS CARDS ==================== */
                 .stats-mini-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                    gap: 1.5rem;
-                    margin-bottom: 2rem;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1rem;
+                    margin-bottom: 1.5rem;
                 }
 
                 .stats-mini {
                     background: white;
-                    border-radius: 20px;
-                    padding: 2rem;
-                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+                    border-radius: 16px;
+                    padding: 1.5rem;
+                    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
                     transition: all 0.3s ease;
                     border: 2px solid transparent;
                     position: relative;
@@ -103,7 +103,7 @@
                 }
 
                 .stats-mini h3 {
-                    font-size: 2.5rem;
+                    font-size: 2.2rem;
                     font-weight: 900;
                     margin-bottom: 0.5rem;
                 }
@@ -549,6 +549,42 @@
                 .modal-close-btn:hover {
                     background: #dc2626;
                     transform: scale(1.15) rotate(90deg);
+                }
+
+                /* ── MOBILE RESPONSIVE ── */
+                @media (max-width: 767px) {
+                    /* Header */
+                    .header-flex-wrap { flex-direction: column; align-items: flex-start !important; gap: 0.75rem; }
+                    .header-flex-wrap h2 { font-size: 1.3rem !important; }
+                    .header-flex-wrap p { font-size: 0.82rem !important; }
+                    .header-flex-wrap a[href*="exportPdf"] {
+                        padding: 0.5rem 0.9rem !important;
+                        font-size: 0.82rem !important;
+                    }
+
+                    /* Stats */
+                    .stats-mini-grid { grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+                    .stats-mini { padding: 1rem 0.75rem; border-radius: 12px; }
+                    .stats-mini h3 { font-size: 1.6rem; }
+                    .stats-mini p { font-size: 0.75rem; }
+                    .stats-mini-icon { width: 40px; height: 40px; font-size: 1.2rem; margin-bottom: 0.75rem; }
+
+                    /* Filter form */
+                    .filter-card { padding: 1.25rem; border-radius: 14px; }
+                    .filter-form-row { flex-wrap: wrap; gap: 0.5rem !important; }
+                    .filter-form-row select,
+                    .filter-form-row input { font-size: 0.82rem; padding: 0.5rem 0.75rem; }
+
+                    /* Table */
+                    .data-table-card { padding: 1.25rem; border-radius: 14px; }
+                    .data-table-card h4 { font-size: 1.05rem; }
+                    .table thead th { padding: 0.6rem 0.4rem; font-size: 0.72rem; }
+                    .table tbody td { padding: 0.6rem 0.4rem; font-size: 0.8rem; }
+                    .badge { padding: 0.3rem 0.6rem; font-size: 0.72rem; }
+                }
+                @media (max-width: 420px) {
+                    .stats-mini-grid { grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+                    .stats-mini h3 { font-size: 1.4rem; }
                 }
             </style>
         @endpush

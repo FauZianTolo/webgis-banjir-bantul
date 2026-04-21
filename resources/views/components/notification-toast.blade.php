@@ -1,4 +1,4 @@
-<div id="notification-container" style="position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 350px;"></div>
+<div id="notification-container" style="position: fixed; top: 80px; right: 16px; z-index: 9999; width: 340px; max-width: calc(100vw - 24px);"></div>
 
 <style>
     .toast-notification {
@@ -123,6 +123,28 @@
     .toast-rejected .toast-icon {
         background: #fffbeb;
         color: #f59e0b;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+        #notification-container {
+            right: 8px !important;
+            top: 76px !important;
+            width: calc(100vw - 16px) !important;
+            max-width: 100% !important;
+        }
+        .toast-notification {
+            padding: 0.85rem;
+            border-radius: 10px;
+        }
+        .toast-icon {
+            width: 34px;
+            height: 34px;
+            font-size: 1rem;
+        }
+        .toast-title { font-size: 0.88rem; }
+        .toast-message { font-size: 0.8rem; }
+        .toast-time { font-size: 0.7rem; }
     }
 </style>
 
