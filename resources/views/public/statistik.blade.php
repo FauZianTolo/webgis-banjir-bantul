@@ -239,10 +239,7 @@
    RESPONSIVE
 ══════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-    .statistik-hero { padding: 2.5rem 0; }
-    .statistik-hero::after { height: 35px; }
-    .statistik-hero h1 { font-size: 1.7rem; }
-    .statistik-hero p  { font-size: 0.95rem; }
+    .statistik-hero h1 { font-size: 2rem; }
 
     .stat-card { padding: 1.2rem 1rem; gap: 1rem; }
     .stat-icon { width: 50px; height: 50px; font-size: 1.3rem; border-radius: 12px; }
@@ -268,7 +265,6 @@
     .btn-cta { padding: 0.75rem 1.5rem; font-size: 0.88rem; width: 100%; justify-content: center; }
 }
 @media (max-width: 420px) {
-    .statistik-hero h1 { font-size: 1.4rem; }
     .stat-num { font-size: 1.5rem; }
 }
 </style>
@@ -279,7 +275,7 @@
 {{-- ── HERO ── --}}
 <div class="statistik-hero">
     <div class="container text-center">
-        <h1 class="mb-2"><i class="fas fa-chart-bar"></i> Statistik Kejadian Banjir</h1>
+        <h1 class="mb-3"><i class="fas fa-chart-bar"></i> Statistik Kejadian Banjir</h1>
         <p class="lead mb-0">Data &amp; Analisis Kejadian Banjir Kabupaten Bantul</p>
     </div>
 </div>

@@ -995,17 +995,8 @@
         @media (max-width: 767px) {
 
             /* Hero peta */
-            .peta-hero {
-                padding: 2rem 0;
-            }
-            .peta-hero::after {
-                height: 35px;
-            }
             .peta-hero h1 {
-                font-size: 1.6rem;
-            }
-            .peta-hero p {
-                font-size: 0.95rem;
+                font-size: 2rem;
             }
 
             /* Map lebih pendek */
@@ -1208,7 +1199,7 @@
 @section('content')
     <div class="peta-hero">
         <div class="container text-center">
-            <h1 class="mb-2"><i class="fas fa-map-marked-alt"></i> Peta Kerawanan Banjir</h1>
+            <h1 class="mb-3"><i class="fas fa-map-marked-alt"></i> Peta Kerawanan Banjir</h1>
             <p class="lead mb-0">Peta Interaktif Zona Kerawanan &amp; Data Kejadian Banjir Kabupaten Bantul</p>
         </div>
     </div>

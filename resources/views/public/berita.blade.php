@@ -8,11 +8,10 @@
             background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
             color: white;
             padding: 4rem 0;
-            margin-bottom: 3rem;
+            margin-bottom: 0;
             position: relative;
             overflow: hidden;
         }
-
         .berita-hero::before {
             content: '';
             position: absolute;
@@ -28,21 +27,8 @@
             background: #f0f9ff;
             clip-path: ellipse(55% 100% at 50% 100%);
         }
-
-        .berita-hero h1 {
-            position: relative;
-            z-index: 2;
-            font-weight: 900;
-            font-size: 2.8rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, .3);
-        }
-
-        .berita-hero p {
-            position: relative;
-            z-index: 2;
-            font-size: 1.2rem;
-            opacity: .95;
-        }
+        .berita-hero h1 { position:relative; z-index:2; font-weight:900; font-size:2.8rem; text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
+        .berita-hero p  { position:relative; z-index:2; font-size:1.2rem; opacity:0.95; }
 
         /* ================= WEATHER WRAPPER ================= */
         .weather-section {
@@ -862,14 +848,17 @@
                 justify-content: center;
             }
         }
-    </style>
+            @media (max-width: 767px) {
+            .berita-hero h1 { font-size: 2rem; }
+        }
+</style>
 @endsection
 
 @section('content')
     <div class="berita-hero">
-        <div class="container">
-            <h1 class="text-center mb-3"><i class="fas fa-newspaper"></i> Berita Banjir Terkini</h1>
-            <p class="text-center lead">Informasi dan Update Terbaru Seputar Banjir di Kabupaten Bantul</p>
+        <div class="container text-center">
+            <h1 class="mb-3"><i class="fas fa-newspaper"></i> Berita Banjir Terkini</h1>
+            <p class="lead mb-0">Informasi dan Update Terbaru Seputar Banjir di Kabupaten Bantul</p>
         </div>
     </div>
 

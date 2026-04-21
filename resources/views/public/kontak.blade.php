@@ -8,7 +8,7 @@
         background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
         color: white;
         padding: 4rem 0;
-        margin-bottom: 3rem;
+        margin-bottom: 0;
         position: relative;
         overflow: hidden;
     }
@@ -24,11 +24,11 @@
         position: absolute;
         bottom: -2px; left: 0; right: 0;
         height: 50px;
-        background: #f0f6ff;
+        background: #f0f9ff;
         clip-path: ellipse(55% 100% at 50% 100%);
     }
-    .kontak-hero h1 { position: relative; z-index: 2; font-weight: 900; font-size: 2.8rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-    .kontak-hero p  { position: relative; z-index: 2; font-size: 1.2rem; opacity: 0.95; }
+    .kontak-hero h1 { position:relative; z-index:2; font-weight:900; font-size:2.8rem; text-shadow:2px 2px 4px rgba(0,0,0,0.3); }
+    .kontak-hero p  { position:relative; z-index:2; font-size:1.2rem; opacity:0.95; }
 
     /* ── EMERGENCY BOX ── */
     .emergency-box {
@@ -159,10 +159,13 @@
     .info-box p  { font-size:1.1rem;margin:0;opacity:0.95;line-height:1.8; }
 
     @media(max-width:991px){
-        .kontak-hero h1{font-size:2.2rem;}
+
         .emergency-number{font-size:3.5rem;}
         #map-kontak{height:350px;}
         .info-box{text-align:center;}
+    }
+    @media(max-width:767px){
+        .kontak-hero h1 { font-size: 2rem; }
     }
 </style>
 @endsection
@@ -170,9 +173,9 @@
 @section('content')
 <!-- Hero -->
 <div class="kontak-hero">
-    <div class="container">
-        <h1 class="text-center mb-3"><i class="fas fa-phone-alt"></i> Kontak Bantuan</h1>
-        <p class="text-center lead">Hubungi Kami untuk Informasi dan Bantuan Darurat Banjir</p>
+    <div class="container text-center">
+        <h1 class="mb-3"><i class="fas fa-phone-alt"></i> Kontak Bantuan</h1>
+        <p class="lead mb-0">Hubungi Kami untuk Informasi dan Bantuan Darurat Banjir</p>
     </div>
 </div>
 
