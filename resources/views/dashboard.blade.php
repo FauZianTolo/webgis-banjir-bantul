@@ -111,35 +111,13 @@
                 font-size: 3rem;
                 font-weight: 900;
                 margin-bottom: 0.5rem;
-                background: linear-gradient(135deg, #0891b2, #06b6d4);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
+                color: #0891b2;
             }
 
-            .stats-card.blue .stats-number {
-                background: linear-gradient(135deg, #3b82f6, #2563eb);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-            .stats-card.green .stats-number {
-                background: linear-gradient(135deg, #10b981, #059669);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-            .stats-card.yellow .stats-number {
-                background: linear-gradient(135deg, #f59e0b, #d97706);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-            .stats-card.red .stats-number {
-                background: linear-gradient(135deg, #ef4444, #dc2626);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
+            .stats-card.blue .stats-number  { color: #2563eb; }
+            .stats-card.green .stats-number  { color: #059669; }
+            .stats-card.yellow .stats-number { color: #d97706; }
+            .stats-card.red .stats-number    { color: #dc2626; }
 
             .stats-label {
                 font-size: 1rem;
@@ -482,6 +460,26 @@
         </div>
 
 
+
+
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h5 class="chart-title">
+                    <i class="fas fa-chart-line" style="color:#0891b2;"></i>
+                    Tren Laporan Per Bulan ({{ now()->year }})
+                </h5>
+                <canvas id="chartLaporanBulan"></canvas>
+            </div>
+            <div class="chart-card">
+                <h5 class="chart-title">
+                    <i class="fas fa-map-marked-alt" style="color:#8b5cf6;"></i>
+                    Top 5 Kecamatan Terdampak
+                </h5>
+                <canvas id="chartKecamatan"></canvas>
+            </div>
+        </div>
 
         <!-- Recent Reports Table -->
         <div class="table-card">

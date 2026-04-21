@@ -10,8 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -44,7 +43,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             min-height: 100vh;
             color: #1e293b;
@@ -352,45 +351,31 @@
                             <i class="fas fa-phone"></i> Kontak
                         </a>
                     </li>
-                    <ul class="navbar-nav">
-                        <!-- Tampilkan Login hanya jika user belum login -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('login') ? 'active' : '' }}"
-                                    href="{{ route('login') }}">
-                                    <i class="fas fa-user"></i> Login
-                                </a>
-                            </li>
-                        @endguest
-
-                        <!-- Tampilkan Dashboard & Logout jika user sudah login -->
-                        @auth
-                            {{-- <!-- Bell Icon untuk Admin -->
-                            <div class="notification-bell-public"
-                                style="display: inline-block; position: relative; margin: 0 1rem;">
-                                <button class="bell-btn-public" onclick="toggleNotificationsPublic()"
-                                    style="background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); color: white; width: 40px; height: 40px; border-radius: 10px; cursor: pointer;">
-                                    <i class="fas fa-bell"></i>
-                                    <span class="bell-badge-public" id="notif-count-public"
-                                        style="display: none; position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; font-weight: 700; border: 2px solid white;">0</span>
+                    @guest
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('login') ? 'active' : '' }}"
+                                href="{{ route('login') }}">
+                                <i class="fas fa-user"></i> Login
+                            </a>
+                        </li>
+                    @endguest
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/*') || Request::is('dashboard') ? 'active' : '' }}"
+                                href="{{ route('dashboard') }}">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="nav-link btn btn-link">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
                                 </button>
-                            </div> --}}
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('admin/*') || Request::is('dashboard') ? 'active' : '' }}"
-                                    href="{{ route('dashboard') }}">
-                                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="nav-link btn btn-link">
-                                        <i class="fas fa-sign-out-alt"></i> Logout
-                                    </button>
-                                </form>
-                            </li>
-                        @endauth
-                    </ul>
+                            </form>
+                        </li>
+                    @endauth
+                </ul>
             </div>
         </div>
     </nav>
