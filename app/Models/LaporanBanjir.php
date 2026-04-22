@@ -20,6 +20,7 @@ class LaporanBanjir extends Model
         'kecamatan',
         'desa',
         'deskripsi',
+        'kebutuhan_bantuan',
         'foto',
         'foto2',
         'foto3',
