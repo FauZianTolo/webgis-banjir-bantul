@@ -874,6 +874,17 @@
                         </div>
                     </div>
 
+                    <!-- Kebutuhan / Bantuan -->
+                    <div class="detail-section" id="section-kebutuhan">
+                        <h4 class="detail-section-title">
+                            <i class="fas fa-hands-helping" style="color:#f59e0b;"></i> Kebutuhan / Bantuan yang Diperlukan
+                        </h4>
+                        <div class="detail-item">
+                            <div class="detail-item-value" id="detail-kebutuhan"
+                                style="font-weight:500;line-height:1.6;background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:10px 14px;color:#92400e;">-</div>
+                        </div>
+                    </div>
+
                     <!-- Foto Laporan -->
                     <div class="detail-section">
                         <h4 class="detail-section-title">
@@ -937,6 +948,16 @@
                     document.getElementById('detail-koordinat').textContent = `${laporan.latitude}, ${laporan.longitude}`;
                     document.getElementById('detail-kedalaman').textContent = `${laporan.kedalaman_cm || 0} cm`;
                     document.getElementById('detail-deskripsi').textContent = laporan.deskripsi || 'Tidak ada deskripsi';
+
+                    // Kebutuhan / Bantuan
+                    const kebutuhanEl = document.getElementById('detail-kebutuhan');
+                    const kebutuhanSection = document.getElementById('section-kebutuhan');
+                    if (laporan.kebutuhan_bantuan && laporan.kebutuhan_bantuan.trim()) {
+                        kebutuhanEl.textContent = laporan.kebutuhan_bantuan;
+                        kebutuhanSection.style.display = 'block';
+                    } else {
+                        kebutuhanSection.style.display = 'none';
+                    }
 
                     // Foto - render gallery hingga 3 foto
                     const fotoContainer = document.getElementById('detail-foto-container');

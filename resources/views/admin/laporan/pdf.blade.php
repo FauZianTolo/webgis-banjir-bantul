@@ -255,6 +255,25 @@
             margin-bottom: 12px;
         }
 
+        /* ===== KEBUTUHAN CELL ===== */
+        .kebutuhan-cell {
+            font-size: 10px;
+            color: #92400e;
+            line-height: 1.4;
+            background: #fffbeb;
+            border-radius: 4px;
+            padding: 3px 6px;
+            display: inline-block;
+            border: 1px solid #fde68a;
+            max-width: 130px;
+            word-break: break-word;
+        }
+        .no-kebutuhan {
+            color: #94a3b8;
+            font-size: 10px;
+            font-style: italic;
+        }
+
         /* ===== PRINT STYLES ===== */
         @media print {
             .print-controls { display: none !important; }
@@ -265,6 +284,7 @@
             .stats-grid    { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             thead tr       { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .badge         { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .kebutuhan-cell { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .depth-high, .depth-medium, .depth-low { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
             table { page-break-inside: auto; }
@@ -339,6 +359,7 @@
                 <th style="width:100px">Lokasi</th>
                 <th style="width:55px">Kedalaman</th>
                 <th>Deskripsi</th>
+                <th style="width:130px">Kebutuhan/Bantuan</th>
                 <th style="width:60px">Status</th>
                 <th style="width:100px">Foto</th>
             </tr>
@@ -379,6 +400,14 @@
                 </td>
 
                 <td>
+                    @if($item->kebutuhan_bantuan)
+                        <span class="kebutuhan-cell">{{ Str::limit($item->kebutuhan_bantuan, 60) }}</span>
+                    @else
+                        <span class="no-kebutuhan">-</span>
+                    @endif
+                </td>
+
+                <td>
                     <span class="badge badge-{{ $item->status }}">
                         {{ ucfirst($item->status) }}
                     </span>
@@ -402,7 +431,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="8" style="text-align:center; padding:20px; color:#94a3b8;">
+                <td colspan="9" style="text-align:center; padding:20px; color:#94a3b8;">
                     Tidak ada data laporan.
                 </td>
             </tr>
