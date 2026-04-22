@@ -84,16 +84,17 @@ public function route(Request $request)
      public function submitLaporan(Request $request)
 {
     $validated = $request->validate([
-        'nama_pelapor' => 'required|string|max:255',
-        'no_telp' => 'required|string|max:20',
-        'latitude' => 'required|numeric',
-        'longitude' => 'required|numeric',
-        'kecamatan' => 'required|string|max:100',
-        'desa' => 'nullable|string|max:100',
-        'deskripsi' => 'required|string',
-        'kedalaman_cm' => 'nullable|numeric',
-        'fotos' => 'nullable|array|max:3',
-        'fotos.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+        'nama_pelapor'      => 'required|string|max:255',
+        'no_telp'           => 'required|string|max:20',
+        'latitude'          => 'required|numeric',
+        'longitude'         => 'required|numeric',
+        'kecamatan'         => 'required|string|max:100',
+        'desa'              => 'nullable|string|max:100',
+        'deskripsi'         => 'required|string',
+        'kebutuhan_bantuan' => 'nullable|string|max:1000',
+        'kedalaman_cm'      => 'nullable|numeric',
+        'fotos'             => 'nullable|array|max:3',
+        'fotos.*'           => 'image|mimes:jpeg,png,jpg|max:2048',
     ]);
 
     // Handle multi-foto upload (max 3) ke Cloudinary
