@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
-    // Get unread count (untuk badge)
+    // Get unread count (untuk badge) — hanya milik user yang login
     public function getUnreadCount()
     {
         try {
-            $count = Notification::where('is_read', false)->count();
+            $count = Notification::where('is_read', false)
+                ->where('user_id', Auth::id())
+                ->count();
 
             return response()->json([
                 'count' => $count,
@@ -30,11 +32,12 @@ class NotificationController extends Controller
         }
     }
 
-    // Get all notifications (untuk dropdown list)
+    // Get all notifications (untuk dropdown list) — hanya milik user yang login
     public function getNotifications()
     {
         try {
             $notifications = Notification::with('laporan')
+                ->where('user_id', Auth::id())
                 ->orderBy('created_at', 'desc')
                 ->take(10)
                 ->get();
@@ -53,16 +56,17 @@ class NotificationController extends Controller
         }
     }
 
-    // Get latest notifications (untuk toast popup real-time)
+    // Get latest notifications (untuk toast popup real-time) — hanya milik user yang login
     public function getLatestNotifications(Request $request)
     {
         try {
             $afterId = $request->input('after', 0);
 
-            // Ambil notifikasi baru yang belum dibaca
+            // Ambil notifikasi baru yang belum dibaca, hanya untuk user ini
             $notifications = Notification::with('laporan')
                 ->where('id', '>', $afterId)
                 ->where('is_read', false)
+                ->where('user_id', Auth::id())
                 ->orderBy('created_at', 'desc')
                 ->take(5)
                 ->get();
@@ -103,11 +107,13 @@ class NotificationController extends Controller
         }
     }
 
-    // Mark all as read
+    // Mark all as read — hanya milik user yang login
     public function markAllAsRead()
     {
         try {
-            Notification::where('is_read', false)->update(['is_read' => true]);
+            Notification::where('is_read', false)
+                ->where('user_id', Auth::id())
+                ->update(['is_read' => true]);
 
             return response()->json([
                 'success' => true

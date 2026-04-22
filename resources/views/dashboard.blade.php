@@ -4,8 +4,16 @@
             <h2 style="color: #0c4a6e; font-weight: 900; font-size: 2rem; margin: 0;">
                 <i class="fas fa-tachometer-alt"></i> Dashboard Admin BPBD Bantul
             </h2>
-            <p style="color: #64748b; margin: 0.5rem 0 0 0; font-weight: 600;">
-                <i class="fas fa-calendar"></i> {{ now()->isoFormat('dddd, D MMMM YYYY') }}
+            <p style="color: #64748b; margin: 0.5rem 0 0 0; font-weight: 600; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
+                <span>
+                    <i class="fas fa-calendar"></i>
+                    {{ now()->isoFormat('dddd, D MMMM YYYY') }}
+                </span>
+                <span style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0891b2,#06b6d4);color:white;padding:4px 14px;border-radius:20px;font-size:0.95rem;font-weight:700;box-shadow:0 3px 10px rgba(8,145,178,0.3);">
+                    <i class="fas fa-clock"></i>
+                    <span id="live-clock" style="font-family:monospace;letter-spacing:1px;">--:--:--</span>
+                    <span style="font-size:0.75rem;opacity:0.85;">WIB</span>
+                </span>
             </p>
         </div>
     </x-slot>
@@ -781,6 +789,18 @@
             });
 
             console.log('✅ Dashboard loaded successfully');
+
+            // ── JAM DIGITAL BERJALAN ──────────────────────────────────────
+            function updateClock() {
+                var now = new Date();
+                var h   = String(now.getHours()).padStart(2, '0');
+                var m   = String(now.getMinutes()).padStart(2, '0');
+                var s   = String(now.getSeconds()).padStart(2, '0');
+                var el  = document.getElementById('live-clock');
+                if (el) el.textContent = h + ':' + m + ':' + s;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
         </script>
     @endpush
 </x-app-layout>
