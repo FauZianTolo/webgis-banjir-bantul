@@ -550,9 +550,149 @@
                 </table>
             </div>
 
-            <div class="mt-4">
-                {{ $laporan->links() }}
-            </div>
+            {{-- ── CUSTOM PAGINATION ── --}}
+            @if ($laporan->lastPage() > 1)
+                @php
+                    $cur   = $laporan->currentPage();
+                    $last  = $laporan->lastPage();
+                    $start = max(1, $cur - 2);
+                    $end   = min($last, $cur + 2);
+
+                    $styleBase = '
+                        display:inline-flex;align-items:center;justify-content:center;
+                        min-width:38px;height:38px;padding:0 10px;
+                        border-radius:10px;border:2px solid #e2e8f0;
+                        background:white;color:#475569;font-weight:700;font-size:0.82rem;
+                        text-decoration:none;transition:all 0.2s;cursor:pointer;white-space:nowrap;
+                    ';
+                    $styleActive = '
+                        display:inline-flex;align-items:center;justify-content:center;
+                        min-width:38px;height:38px;padding:0 10px;
+                        border-radius:10px;border:2px solid #0891b2;
+                        background:linear-gradient(135deg,#0891b2,#06b6d4);
+                        color:white;font-weight:800;font-size:0.82rem;
+                        text-decoration:none;white-space:nowrap;
+                        box-shadow:0 4px 14px rgba(8,145,178,0.35);
+                    ';
+                    $styleDisabled = '
+                        display:inline-flex;align-items:center;justify-content:center;
+                        min-width:38px;height:38px;padding:0 12px;
+                        border-radius:10px;border:2px solid #e2e8f0;
+                        background:#f8fafc;color:#cbd5e1;font-weight:700;font-size:0.82rem;
+                        cursor:not-allowed;white-space:nowrap;
+                    ';
+                    $styleDots = '
+                        display:inline-flex;align-items:center;justify-content:center;
+                        min-width:30px;height:38px;
+                        color:#94a3b8;font-weight:700;font-size:0.9rem;
+                        cursor:default;
+                    ';
+                @endphp
+                <div style="
+                    display:flex;align-items:center;justify-content:space-between;
+                    flex-wrap:wrap;gap:1rem;
+                    margin-top:1.5rem;padding-top:1.25rem;
+                    border-top:2px solid #e2e8f0;
+                ">
+                    {{-- Info kiri --}}
+                    <div style="color:#64748b;font-weight:600;font-size:0.83rem;line-height:1.5;">
+                        Menampilkan
+                        <strong style="color:#0c4a6e;">{{ $laporan->firstItem() }}–{{ $laporan->lastItem() }}</strong>
+                        dari
+                        <strong style="color:#0c4a6e;">{{ $laporan->total() }}</strong>
+                        laporan
+                        &nbsp;·&nbsp;
+                        Halaman
+                        <strong style="color:#0891b2;">{{ $cur }}</strong>
+                        /
+                        <strong style="color:#0c4a6e;">{{ $last }}</strong>
+                    </div>
+
+                    {{-- Tombol navigasi kanan --}}
+                    <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+
+                        {{-- ‹ Sebelumnya --}}
+                        @if ($laporan->onFirstPage())
+                            <span style="{{ $styleDisabled }}">
+                                <i class="fas fa-chevron-left" style="font-size:0.7rem;margin-right:5px;"></i> Sebelumnya
+                            </span>
+                        @else
+                            <a href="{{ $laporan->previousPageUrl() }}"
+                               style="{{ $styleBase }}gap:5px;"
+                               onmouseover="this.style.borderColor='#0891b2';this.style.color='#0891b2';this.style.transform='translateY(-1px)';"
+                               onmouseout="this.style.borderColor='#e2e8f0';this.style.color='#475569';this.style.transform='none';">
+                                <i class="fas fa-chevron-left" style="font-size:0.7rem;"></i> Sebelumnya
+                            </a>
+                        @endif
+
+                        {{-- Halaman 1 + ellipsis jika perlu --}}
+                        @if ($start > 1)
+                            <a href="{{ $laporan->url(1) }}"
+                               style="{{ $styleBase }}"
+                               onmouseover="this.style.borderColor='#0891b2';this.style.color='#0891b2';this.style.transform='translateY(-1px)';"
+                               onmouseout="this.style.borderColor='#e2e8f0';this.style.color='#475569';this.style.transform='none';">
+                                1
+                            </a>
+                            @if ($start > 2)
+                                <span style="{{ $styleDots }}">···</span>
+                            @endif
+                        @endif
+
+                        {{-- Nomor halaman di sekitar halaman aktif --}}
+                        @for ($p = $start; $p <= $end; $p++)
+                            @if ($p === $cur)
+                                <span style="{{ $styleActive }}">{{ $p }}</span>
+                            @else
+                                <a href="{{ $laporan->url($p) }}"
+                                   style="{{ $styleBase }}"
+                                   onmouseover="this.style.borderColor='#0891b2';this.style.color='#0891b2';this.style.transform='translateY(-1px)';"
+                                   onmouseout="this.style.borderColor='#e2e8f0';this.style.color='#475569';this.style.transform='none';">
+                                    {{ $p }}
+                                </a>
+                            @endif
+                        @endfor
+
+                        {{-- Halaman terakhir + ellipsis jika perlu --}}
+                        @if ($end < $last)
+                            @if ($end < $last - 1)
+                                <span style="{{ $styleDots }}">···</span>
+                            @endif
+                            <a href="{{ $laporan->url($last) }}"
+                               style="{{ $styleBase }}"
+                               onmouseover="this.style.borderColor='#0891b2';this.style.color='#0891b2';this.style.transform='translateY(-1px)';"
+                               onmouseout="this.style.borderColor='#e2e8f0';this.style.color='#475569';this.style.transform='none';">
+                                {{ $last }}
+                            </a>
+                        @endif
+
+                        {{-- Berikutnya › --}}
+                        @if ($laporan->hasMorePages())
+                            <a href="{{ $laporan->nextPageUrl() }}"
+                               style="{{ $styleBase }}gap:5px;"
+                               onmouseover="this.style.borderColor='#0891b2';this.style.color='#0891b2';this.style.transform='translateY(-1px)';"
+                               onmouseout="this.style.borderColor='#e2e8f0';this.style.color='#475569';this.style.transform='none';">
+                                Berikutnya <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
+                            </a>
+                        @else
+                            <span style="{{ $styleDisabled }}">
+                                Berikutnya <i class="fas fa-chevron-right" style="font-size:0.7rem;margin-left:5px;"></i>
+                            </span>
+                        @endif
+
+                    </div>
+                </div>
+            @else
+                {{-- Hanya 1 halaman → tampilkan info ringkas saja --}}
+                <div style="
+                    margin-top:1.25rem;padding-top:1rem;
+                    border-top:2px solid #e2e8f0;
+                    color:#64748b;font-weight:600;font-size:0.83rem;
+                ">
+                    Menampilkan semua
+                    <strong style="color:#0c4a6e;">{{ $laporan->total() }}</strong>
+                    laporan
+                </div>
+            @endif
         </div>
 
     </div>
