@@ -1334,6 +1334,16 @@
                                     <span class="layer-item-label">Titik Historis BPBD</span>
                                 </div>
                             </label>
+                            <label class="layer-item">
+                                <input type="checkbox" id="chk-stasiun" checked
+                                    onchange="toggleLayer('stasiun',this.checked)">
+                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
+                                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
+                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;"
+                                        alt="marker hijau">
+                                    <span class="layer-item-label">Stasiun Pemantau Hujan</span>
+                                </div>
+                            </label>
                         </div>
 
                         <hr class="panel-divider" style="margin:12px 0;">
@@ -1462,15 +1472,16 @@
                                 </div>
                                 <div class="tematik-item-body" id="acc-rain">
                                     <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
-                                        <div style="display:flex;align-items:center;gap:4px;"><span
-                                                style="width:12px;height:12px;background:#deebf7;border:1px solid #ccc;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">&lt;1500mm</span></div>
+                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Curah Hujan Tahunan (mm/thn)</div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#9ecae1;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">Sedang</span></div>
+                                                style="font-size:9px;color:#475569;">Rendah &nbsp;(1.000–1.500)</span></div>
+                                        <div style="display:flex;align-items:center;gap:4px;"><span
+                                                style="width:12px;height:12px;background:#6baed6;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="font-size:9px;color:#475569;">Sedang (1.500–2.000)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#2171b5;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">&gt;3000mm</span></div>
+                                                style="font-size:9px;color:#475569;">Tinggi &nbsp;(2.000–2.500)</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -1640,21 +1651,22 @@
                                 </div>
                                 <div class="tematik-item-body" id="acc-river">
                                     <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
+                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Jarak dari Sungai (Makin dekat = makin rawan)</div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#08519c;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">&lt;100m</span></div>
+                                                style="font-size:9px;color:#475569;">0 – 25 m &nbsp;&nbsp;&nbsp;(Skor 5)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#2171b5;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">100–200m</span></div>
+                                                style="font-size:9px;color:#475569;">25 – 100 m &nbsp;(Skor 4)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#4292c6;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">200–300m</span></div>
+                                                style="font-size:9px;color:#475569;">100 – 250 m (Skor 3)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#6baed6;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">300–500m</span></div>
+                                                style="font-size:9px;color:#475569;">250 – 550 m (Skor 2)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#deebf7;border:1px solid #ccc;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">&gt;500m</span></div>
+                                                style="font-size:9px;color:#475569;">&gt; 550 m &nbsp;&nbsp;(Skor 1)</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -2263,12 +2275,14 @@
             layerGroups.administrasi = L.layerGroup().addTo(map);
             layerGroups.laporan = L.layerGroup().addTo(map);
             layerGroups.historis = L.layerGroup().addTo(map);
+            layerGroups.stasiun = L.layerGroup().addTo(map);
 
             Promise.all([
                 loadZonaKerawanan(),
                 loadBatasAdministrasi(),
                 loadLaporanMasyarakat(),
-                loadTitikHistoris()
+                loadTitikHistoris(),
+                loadStasiunPemantau()
             ]).then(() => {
                 setTimeout(() => {
                     document.getElementById('loading-overlay').style.display = 'none';
@@ -2496,6 +2510,57 @@
                 });
         }
 
+        // ── LOAD STASIUN PEMANTAU HUJAN ───────────────────────────────────
+        function loadStasiunPemantau() {
+            return fetch('/geojson/stasiunpemantau.geojson')
+                .then(r => r.json())
+                .then(data => {
+                    const stasiunIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34]
+                    });
+                    L.geoJSON(data, {
+                        pointToLayer: (feature, latlng) => L.marker(latlng, { icon: stasiunIcon }),
+                        onEachFeature: (feature, layer) => {
+                            const p = feature.properties;
+                            const nama = p.Nama_Stasi || '-';
+                            const ch   = p.CH !== undefined ? parseFloat(p.CH).toFixed(2) : '-';
+                            layer.bindPopup(`
+                                <div style="min-width:220px;font-family:inherit;">
+                                    <div style="background:linear-gradient(135deg,#16a34a,#22c55e);
+                                                color:white;padding:10px 14px;border-radius:10px 10px 0 0;
+                                                margin:-1px -1px 0 -1px;">
+                                        <h6 style="margin:0;font-weight:800;font-size:13px;">
+                                            <i class="fas fa-tint"></i> Stasiun Pemantau Hujan
+                                        </h6>
+                                    </div>
+                                    <div style="padding:12px;background:#f0fdf4;border-radius:0 0 10px 10px;">
+                                        <p style="margin:4px 0;font-size:13px;">
+                                            <strong style="color:#14532d;">📍 Nama Stasiun:</strong>
+                                            <span style="color:#0f172a;font-weight:700;">${nama}</span>
+                                        </p>
+                                        <p style="margin:4px 0;font-size:13px;">
+                                            <strong style="color:#14532d;">🌧️ Curah Hujan:</strong>
+                                            <span style="background:#16a34a;color:white;padding:2px 10px;
+                                                         border-radius:12px;font-size:12px;font-weight:700;">
+                                                ${ch} mm/thn
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>`);
+                            layer.bindTooltip(`<strong>${nama}</strong><br>${ch} mm/thn`, {
+                                sticky: false, className: 'leaflet-tooltip'
+                            });
+                            layerGroups.stasiun.addLayer(layer);
+                        }
+                    });
+                })
+                .catch(err => console.warn('Stasiun pemantau tidak ditemukan:', err));
+        }
+
         function zoomToMarker(lat, lon, type) {
             map.flyTo([lat, lon], 16, {
                 duration: 1.5
@@ -2650,14 +2715,17 @@
                 def: '#d9d9d9'
             },
             rain: {
-                file: '/geojson/curah_hujan.geojson',
-                key: 'KELAS',
+                file: '/geojson/chch.geojson',
+                key: 'keterangan',
+                skorLabels: {
+                    2: 'Rendah',
+                    3: 'Sedang',
+                    4: 'Tinggi'
+                },
                 colors: {
-                    'Sangat Rendah': '#deebf7',
-                    'Rendah': '#9ecae1',
-                    'Sedang': '#6baed6',
-                    'Tinggi': '#2171b5',
-                    'Sangat Tinggi': '#08306b'
+                    '1.000 - 1.500 mm/thn': '#9ecae1',
+                    '1.500 - 2.000 mm/thn': '#6baed6',
+                    '2.000 - 2.500 mm/thn': '#2171b5',
                 },
                 def: '#deebf7'
             },
@@ -2729,14 +2797,21 @@
                 def: '#d9d9d9'
             },
             river: {
-                file: '/geojson/jarak_sungai.geojson',
-                key: 'KELAS',
+                file: '/geojson/jsjs.geojson',
+                key: 'Keterangan',
+                skorLabels: {
+                    1: 'Sangat Rendah',
+                    2: 'Rendah',
+                    3: 'Sedang',
+                    4: 'Tinggi',
+                    5: 'Sangat Tinggi'
+                },
                 colors: {
-                    '0-100m': '#08519c',
-                    '100-200m': '#2171b5',
-                    '200-300m': '#4292c6',
-                    '300-500m': '#6baed6',
-                    '>500m': '#deebf7'
+                    '0 - 25 m':    '#08519c',
+                    '25 - 100 m':  '#2171b5',
+                    '100 - 250 m': '#4292c6',
+                    '250 - 550 m': '#6baed6',
+                    '> 550 m':     '#deebf7',
                 },
                 def: '#deebf7'
             },
@@ -2784,7 +2859,7 @@
                         },
                         onEachFeature: (f, layer) => {
                             const val = f.properties[cfg.key] || '-';
-                            const skor = f.properties.skor;
+                            const skor = f.properties.skor !== undefined ? Math.round(f.properties.skor) : undefined;
                             const warna = cfg.colors[val] || cfg.def;
 
                             // Tooltip ringan saat hover
@@ -2809,7 +2884,7 @@
                                             color:white;padding:10px 14px;border-radius:10px 10px 0 0;
                                             margin:-1px -1px 0 -1px;">
                                     <h6 style="margin:0;font-weight:800;font-size:13px;">
-                                        <i class="fas fa-map"></i> ${name === 'landuse' ? 'Penggunaan Lahan' : name === 'soil' ? 'Jenis Tanah' : name === 'slope' ? 'Kemiringan Lereng' : name.charAt(0).toUpperCase() + name.slice(1)}
+                                        <i class="fas fa-map"></i> ${name === 'landuse' ? 'Penggunaan Lahan' : name === 'soil' ? 'Jenis Tanah' : name === 'slope' ? 'Kemiringan Lereng' : name === 'rain' ? 'Curah Hujan' : name === 'river' ? 'Jarak dari Sungai' : name.charAt(0).toUpperCase() + name.slice(1)}
                                     </h6>
                                 </div>
                                 <div style="padding:12px;background:#f8fafc;border-radius:0 0 10px 10px;">

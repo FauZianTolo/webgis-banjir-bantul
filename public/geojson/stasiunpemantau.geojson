@@ -1,0 +1,19 @@
+{
+"type": "FeatureCollection",
+"name": "titik_CH_NEWW_49s",
+"features": [
+{ "type": "Feature", "properties": { "Nama_Stasi": "RINGINHARJO", "X": 110.309869, "Y": -7.890946, "CH": 2020.67 }, "geometry": { "type": "Point", "coordinates": [ 110.309869, -7.890946 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "NYEMENGAN", "X": 110.34601, "Y": -7.8439, "CH": 1886.81 }, "geometry": { "type": "Point", "coordinates": [ 110.34601, -7.8439 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "GANDOK", "X": 110.375525, "Y": -7.858965, "CH": 1695.51 }, "geometry": { "type": "Point", "coordinates": [ 110.375525, -7.858965 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "KOTAGEDE", "X": 110.421586, "Y": -7.834666, "CH": 1733.14 }, "geometry": { "type": "Point", "coordinates": [ 110.421586, -7.834666 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "PUNDONG", "X": 110.34341, "Y": -7.95814, "CH": 1881.19 }, "geometry": { "type": "Point", "coordinates": [ 110.34341, -7.95814 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "BARONGAN", "X": 110.373352, "Y": -7.909144, "CH": 1695.53 }, "geometry": { "type": "Point", "coordinates": [ 110.373352, -7.909144 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "NGETAK", "X": 110.376271, "Y": -7.92047, "CH": 1575.71 }, "geometry": { "type": "Point", "coordinates": [ 110.376271, -7.92047 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "KEBONONGAN", "X": 110.267878, "Y": -7.953971, "CH": 2185.6 }, "geometry": { "type": "Point", "coordinates": [ 110.267878, -7.953971 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "PIYUNGAN", "X": 110.492468, "Y": -7.824263, "CH": 1310.08 }, "geometry": { "type": "Point", "coordinates": [ 110.492468, -7.824263 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "Sedayu", "X": 110.258448, "Y": -7.813358, "CH": 1443.71 }, "geometry": { "type": "Point", "coordinates": [ 110.258448, -7.813358 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "NGESTIHARJO", "X": 110.333803, "Y": -7.804429, "CH": 1927.17 }, "geometry": { "type": "Point", "coordinates": [ 110.333803, -7.804429 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "DLINGO", "X": 110.475677, "Y": -7.89183, "CH": 1892.47 }, "geometry": { "type": "Point", "coordinates": [ 110.475677, -7.89183 ] } },
+{ "type": "Feature", "properties": { "Nama_Stasi": "KARANG PLOSO", "X": 110.444593, "Y": -7.842433, "CH": 1969.57 }, "geometry": { "type": "Point", "coordinates": [ 110.444593, -7.842433 ] } }
+]
+}
