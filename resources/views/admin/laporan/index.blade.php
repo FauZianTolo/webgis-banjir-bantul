@@ -660,7 +660,7 @@
                                             <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
                                                 @foreach ($fotos as $fi => $f)
                                                     <div style="position:relative;">
-                                                        <img src="{{ str_starts_with($f, 'http') ? $f : asset('uploads/laporan/' . $f) }}"
+                                                        <img src="{{ str_starts_with($f, 'http') ? $f : asset('uploads/laporan/' . $f) }}" loading="lazy" decoding="async"
                                                             alt="Foto {{ $fi + 1 }}" class="rounded"
                                                             style="width:44px;height:44px;object-fit:cover;cursor:pointer;border:2px solid #e2e8f0;transition:all 0.2s;"
                                                             onclick="openImageModal('{{ asset('uploads/laporan/' . $f) }}')"

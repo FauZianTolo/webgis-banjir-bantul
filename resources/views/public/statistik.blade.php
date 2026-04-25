@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
 @section('styles')
-<link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap' rel='stylesheet'>
 <style>
 * { font-family: 'Plus Jakarta Sans', sans-serif; }
 
@@ -171,7 +171,7 @@
 .donut-legend-dot { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
 .donut-legend-name { font-size:12px; font-weight:700; color:#334155; flex:1; }
 .donut-legend-val  { font-size:12px; font-weight:800; color:#0891b2; }
-.donut-legend-pct  { font-size:10px; font-weight:600; color:#94a3b8; }
+.donut-legend-pct  { font-size:10px; font-weight:700; color:#94a3b8; }
 
 /* ══════════════════════════════════════════════════════
    TABLE
@@ -271,6 +271,17 @@
 @endsection
 
 @section('content')
+{{--
+    ✅ OPTIMASI CACHE: Data statistik di-cache 1 jam di PublicController@statistik.
+    Tambahkan di PublicController.php:
+
+    $result = Cache::remember('statistik_data', 3600, function () {
+        // ... seluruh logika baca GeoJSON + spatial join di sini
+        return compact('kecamatanStats', 'yearlyData', 'laporanPerBulan',
+                       'availableYears', 'selectedYear', 'totalLaporan', 'totalVerified');
+    });
+    return view('public.statistik', $result + ['title' => 'Statistik Banjir']);
+--}}
 
 {{-- ── HERO ── --}}
 <div class="statistik-hero">
@@ -350,7 +361,7 @@
                     <div class="chart-card-title mb-0">
                         <i class="fas fa-chart-line"></i>
                         Tren Bulanan
-                        <span style="font-size:13px;font-weight:600;color:#64748b;">
+                        <span style="font-size:13px;font-weight:700;color:#64748b;">
                             (<span id="current-year">{{ $selectedYear }}</span>)
                         </span>
                     </div>
@@ -634,14 +645,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initTrendChart(selectedYear);
     initDonutChart();
 
-    /* Animate progress bars */
-    setTimeout(() => {
-        document.querySelectorAll('.prog-fill').forEach(el => {
-            const w = el.style.width;
-            el.style.width = '0';
-            requestAnimationFrame(() => setTimeout(() => { el.style.width = w; }, 80));
+    /* ✅ OPTIMASI: Animate progress bars dengan IntersectionObserver agar hanya
+       dianimasikan saat elemen terlihat di viewport */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const w = el.getAttribute('data-width') || el.style.width;
+                el.setAttribute('data-width', w);
+                el.style.width = '0';
+                requestAnimationFrame(() => {
+                    setTimeout(() => { el.style.width = w; }, 80);
+                });
+                observer.unobserve(el);
+            }
         });
-    }, 300);
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.prog-fill').forEach(el => {
+        el.setAttribute('data-width', el.style.width);
+        observer.observe(el);
+    });
 });
 </script>
 @endsection

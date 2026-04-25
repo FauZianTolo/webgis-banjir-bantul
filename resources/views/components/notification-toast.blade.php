@@ -153,24 +153,34 @@
     let lastNotificationId = localStorage.getItem('lastNotificationId') || 0;
     let currentAudio = null; // ⭐ Variable untuk track audio yang sedang play
 
-    // Start checking notifications
+    // ✅ OPTIMASI: Satu polling terpusat — interval 30 detik + stop saat tab tidak aktif
     function startNotificationChecker() {
-        console.log('🔔 Starting notification checker...');
         checkNotifications();
-        notificationCheckInterval = setInterval(checkNotifications, 10000); // Check every 10s
+        notificationCheckInterval = setInterval(() => {
+            if (document.hidden) return; // ✅ Berhenti saat tab tidak aktif
+            checkNotifications();
+        }, 30000); // 30 detik — cukup untuk notifikasi real-time
     }
+
+    // ✅ Resume saat user kembali ke tab setelah lama pergi
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            checkNotifications(); // langsung cek saat tab aktif kembali
+        }
+    });
 
     function checkNotifications() {
         fetch('/api/notifications/latest?after=' + lastNotificationId)
             .then(response => response.json())
             .then(data => {
                 if (data.notifications && data.notifications.length > 0) {
-                    console.log('🆕 Found', data.notifications.length, 'new notifications');
                     data.notifications.forEach(notification => {
                         showToast(notification);
                         lastNotificationId = Math.max(lastNotificationId, notification.id);
                         localStorage.setItem('lastNotificationId', lastNotificationId);
                     });
+                    // ✅ Update bell badge setelah ada notif baru (satukan dengan app.blade bell)
+                    if (typeof updateNotifCount === 'function') updateNotifCount();
                 }
             })
             .catch(error => console.error('❌ Error checking notifications:', error));

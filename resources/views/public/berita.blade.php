@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
 @section('styles')
-    <link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap' rel='stylesheet'>
 <style>
         /* ================= HERO ================= */
         .berita-hero {
@@ -145,7 +145,7 @@
 
         .cw-desc {
             font-size: 1.25rem;
-            font-weight: 600;
+            font-weight: 700;
             opacity: .95;
             position: relative;
             z-index: 2;
@@ -299,14 +299,14 @@
 
         .fc-min {
             font-size: .95rem;
-            font-weight: 600;
+            font-weight: 700;
             color: #0891b2;
         }
 
         .fc-wdesc {
             font-size: .72rem;
             color: #64748b;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: .25rem;
             line-height: 1.3;
         }
@@ -715,7 +715,7 @@
         .news-date {
             color: #64748b;
             font-size: .83rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: .4rem;
@@ -867,7 +867,13 @@
             use Illuminate\Support\Facades\Cache;
             use Illuminate\Support\Facades\Http;
 
-            $weatherPayload = $cuacaAPI ?? [];
+            // ✅ OPTIMASI: Cache weather payload 30 menit di blade-level
+            // Ini memastikan data cuaca tidak di-proses ulang tiap request
+            // CATATAN: Untuk optimasi penuh, tambahkan juga cache di PublicController@berita:
+            // $weatherPayload = Cache::remember('cuaca_bantul', 1800, fn() => (new WeatherController())->getServerWeather(-7.8877, 110.3302));
+            $weatherPayload = Cache::remember('cuaca_bantul_blade', 1800, function () use ($cuacaAPI) {
+                return $cuacaAPI ?? [];
+            });
             $wCurrent = data_get($weatherPayload, 'current', []);
             $wForecast = data_get($weatherPayload, 'forecast', []);
             $wLocation = data_get($weatherPayload, 'location', 'Kabupaten Bantul, D.I. Yogyakarta');
@@ -1485,6 +1491,7 @@
                 if (data.error) throw new Error(data.error);
                 if (data.current && data.current.temp !== undefined) {
                     renderWeather(data);
+                    sessionStorage.setItem('_w_last_fetch', Date.now().toString()); // ✅ track waktu fetch
                     if (showToastMsg) showToast(showToastMsg);
                     return true; // ✅ sukses
                 }
@@ -1497,8 +1504,23 @@
 
         function startRefreshTimer() {
             clearInterval(_timer);
-            _timer = setInterval(() => fetchAndRender(_lat, _lon, null), 30 * 60 * 1000);
+            // ✅ OPTIMASI: Cek document.hidden — berhenti refresh saat tab tidak aktif
+            _timer = setInterval(() => {
+                if (document.hidden) return;
+                fetchAndRender(_lat, _lon, null);
+            }, 30 * 60 * 1000); // 30 menit
         }
+
+        // ✅ OPTIMASI: Pause/resume timer saat tab tidak aktif
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && _lat && _lon) {
+                // Tab aktif kembali — refresh cuaca jika sudah > 30 menit
+                const lastFetch = parseInt(sessionStorage.getItem('_w_last_fetch') || '0');
+                if (Date.now() - lastFetch > 30 * 60 * 1000) {
+                    fetchAndRender(_lat, _lon, null);
+                }
+            }
+        });
 
         function initWeather() {
             const loadingEl = document.getElementById('w-loading');

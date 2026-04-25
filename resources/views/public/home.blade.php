@@ -910,7 +910,7 @@
 
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
                     <div class="hero-image text-center">
-                        <img src="{{ asset('images/maskot.png') }}" alt="WebGIS Bantul" class="hero-img-anim"
+                        <img src="{{ asset('images/maskot.webp') }}" alt="WebGIS Bantul" class="hero-img-anim"
                             style="max-width:100%;height:auto;max-height:420px;filter:drop-shadow(0 20px 60px rgba(0,0,0,0.25));">
                     </div>
                 </div>

@@ -1338,13 +1338,13 @@
                             </label>
                         </div>
 
-                        <hr class="panel-divider" style="margin:12px 0;">
+                        <hr class="panel-divider" style="margin:3px 0;">
 
                         <!-- Peta Tematik Section -->
                         <div class="panel-section-hdr" id="tematikSectionHdr"
                             onclick="toggleSection('tematikSection','tematikSectionHdr')">
                             <span class="title"><i class="fas fa-layer-group"></i> Peta Tematik</span>
-                            <span class="arrow-sm">▼</span>
+                            <span class="arrow-sm">▲</span>
                         </div>
                         <div class="panel-section-body" id="tematikSection">
                             <div style="font-size:10px;color:#94a3b8;margin-bottom:8px;padding:0 2px;">
@@ -1358,7 +1358,7 @@
                                         onclick="event.stopPropagation();toggleTematik('banjir',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-mountain"
                                             style="color:#0891b2;margin-right:4px;"></i>Kerawanan Banjir</span>
-                                    <span class="tematik-item-arrow">▼</span>
+                                    <span class="tematik-item-arrow">▲</span>
                                 </div>
                                 <div class="tematik-item-body" id="acc-banjir">
                                     <div style="display:flex;flex-direction:column;gap:5px;padding:6px 0;">
@@ -1401,7 +1401,7 @@
                                         onclick="event.stopPropagation();toggleTematik('slope',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-angle-double-up"
                                             style="color:#0891b2;margin-right:4px;"></i>Kemiringan Lereng</span>
-                                    <span class="tematik-item-arrow">▼</span>
+                                    <span class="tematik-item-arrow">▲</span>
                                 </div>
                                 <div class="tematik-item-body" id="acc-slope">
                                     <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
@@ -1448,7 +1448,7 @@
                                         onclick="event.stopPropagation();toggleTematik('rain',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-cloud-rain"
                                             style="color:#0891b2;margin-right:4px;"></i>Curah Hujan</span>
-                                    <span class="tematik-item-arrow">▼</span>
+                                    <span class="tematik-item-arrow">▲</span>
                                 </div>
                                 <div class="tematik-item-body" id="acc-rain">
                                     <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
@@ -1476,7 +1476,7 @@
                                         onclick="event.stopPropagation();toggleTematik('landuse',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-map"
                                             style="color:#0891b2;margin-right:4px;"></i>Penggunaan Lahan</span>
-                                    <span class="tematik-item-arrow">▼</span>
+                                    <span class="tematik-item-arrow">▲</span>
                                 </div>
                                 <div class="tematik-item-body" id="acc-landuse">
                                     <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
@@ -1574,7 +1574,7 @@
                                         onclick="event.stopPropagation();toggleTematik('soil',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-seedling"
                                             style="color:#0891b2;margin-right:4px;"></i>Jenis Tanah</span>
-                                    <span class="tematik-item-arrow">▼</span>
+                                    <span class="tematik-item-arrow">▲</span>
                                 </div>
                                 <div class="tematik-item-body" id="acc-soil">
                                     <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
@@ -1630,7 +1630,7 @@
                                         onclick="event.stopPropagation();toggleTematik('river',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-water"
                                             style="color:#0891b2;margin-right:4px;"></i>Jarak dari Sungai</span>
-                                    <span class="tematik-item-arrow">▼</span>
+                                    <span class="tematik-item-arrow">▲</span>
                                 </div>
                                 <div class="tematik-item-body" id="acc-river">
                                     <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
@@ -1656,11 +1656,9 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div style="padding:6px 2px 4px;font-size:10px;color:#94a3b8;font-style:italic;">
-                                * File GeoJSON tematik perlu disiapkan di /geojson/
-                            </div>
                         </div>
+
+                        <hr class="panel-divider" style="margin:3px 0;">
 
                         <!-- Basemap Section -->
                         <div class="panel-section-hdr open" id="basemapSectionHdr"
@@ -1691,7 +1689,7 @@
                             </div>
                         </div>
 
-                        <hr class="panel-divider" style="margin:12px 0;">
+                        <hr class="panel-divider" style="margin:3px 0;">
 
                     </div>
                 </div>
@@ -2858,8 +2856,8 @@
 
                             // Tooltip ringan saat hover
                             layer.bindTooltip(
-                                `<strong>${val}</strong>` + (skor !== undefined && cfg.skorLabels ?
-                                    ` &nbsp;|&nbsp; Skor ${skor}: ${cfg.skorLabels[skor]}` :
+                                `<strong>${val}</strong>` + (skor !== undefined && cfg.skorLabels && cfg.skorLabels[skor] ?
+                                    ` &nbsp;|&nbsp; ${cfg.skorLabels[skor]}` :
                                     ''), {
                                     sticky: true,
                                     className: 'leaflet-tooltip'

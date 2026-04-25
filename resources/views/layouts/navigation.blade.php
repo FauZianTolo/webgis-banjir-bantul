@@ -432,10 +432,18 @@
             setTimeout(() => {
                 checkNewNotifications();
 
-                // Then check every 10 seconds
-                notificationCheckInterval = setInterval(checkNewNotifications, 10000);
+                // ✅ OPTIMASI: 30 detik + skip saat tab tidak aktif
+                notificationCheckInterval = setInterval(() => {
+                    if (document.hidden) return;
+                    checkNewNotifications();
+                }, 30000);
             }, 3000);
         }
+
+        // ✅ OPTIMASI: Resume cek notifikasi saat user kembali ke tab
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) checkNewNotifications();
+        });
 
         // ========== AUTO START ==========
         if (document.readyState === 'loading') {

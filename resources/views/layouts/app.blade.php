@@ -11,7 +11,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,8 +19,7 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    {{-- Leaflet CSS dimuat hanya di halaman peta via @push('styles') --}}
 
     <style>
         /* ==================== GLOBAL VARIABLES ==================== */
@@ -679,8 +678,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    {{-- Leaflet JS dimuat hanya di halaman peta via @push('scripts') --}}
 
     <script>
         // Toggle User Menu
@@ -711,8 +709,6 @@
     @stack('scripts')
     <!-- ⭐⭐⭐ NOTIFICATION BELL JAVASCRIPT ⭐⭐⭐ -->
     <script>
-        let notificationBellInterval;
-
         function toggleNotifications() {
             const bell = document.querySelector('.notification-bell');
             bell.classList.toggle('show');
@@ -804,15 +800,10 @@
             }
         });
 
-        // Initialize on page load
+        // ✅ OPTIMASI: Bell hanya load awal — polling disatukan di notification-toast.blade.php
+        // Fungsi updateNotifCount() tetap tersedia untuk dipanggil dari toast setelah ada notif baru
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔔 Initializing notification system...');
             updateNotifCount();
-            notificationBellInterval = setInterval(updateNotifCount, 15000);
-        });
-
-        window.addEventListener('beforeunload', () => {
-            if (notificationBellInterval) clearInterval(notificationBellInterval);
         });
     </script>
     <!-- ⭐⭐⭐ AUTO POPUP NOTIFICATION TOAST ⭐⭐⭐ -->
