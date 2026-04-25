@@ -1971,7 +1971,7 @@
             return f.startsWith('http') ? f : '/uploads/laporan/' + f;
         }
         // ── DATA ───────────────────────────────────────────────────────────
-        const laporanData = @json($laporan->keyBy('id'));
+        const laporanData = {!! json_encode($laporan->keyBy('id'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) !!};
 
         // Koordinat pusat tiap kecamatan Bantul
         const kecamatanCenter = {
@@ -2664,7 +2664,6 @@
         const tematikLayers = {};
         const tematikConfig = {
             banjir: {
-                file: '/geojson/banjir: {
                 file: '/geojson/kerawanan.geojson',
                 key: 'Keterangan',
                 skorField: 'TOTAL',
@@ -2853,8 +2852,8 @@
                         },
                         onEachFeature: (f, layer) => {
                             const val = f.properties[cfg.key] || '-';
-                            const skor = f.properties.skor !== undefined ? Math.round(f.properties.skor) :
-                                undefined;
+                            const skorRaw = cfg.skorField ? f.properties[cfg.skorField] : f.properties.skor;
+                            const skor = skorRaw !== undefined ? Math.round(skorRaw) : undefined;
                             const warna = cfg.colors[val] || cfg.def;
 
                             // Tooltip ringan saat hover
@@ -2879,7 +2878,7 @@
                                             color:white;padding:10px 14px;border-radius:10px 10px 0 0;
                                             margin:-1px -1px 0 -1px;">
                                     <h6 style="margin:0;font-weight:800;font-size:13px;">
-                                        <i class="fas fa-map"></i> ${name === 'landuse' ? 'Penggunaan Lahan' : name === 'soil' ? 'Jenis Tanah' : name === 'slope' ? 'Kemiringan Lereng' : name === 'rain' ? 'Curah Hujan' : name === 'river' ? 'Jarak dari Sungai' : name.charAt(0).toUpperCase() + name.slice(1)}
+                                        <i class="fas fa-map"></i> ${name === 'banjir' ? 'Kerawanan Banjir' : name === 'landuse' ? 'Penggunaan Lahan' : name === 'soil' ? 'Jenis Tanah' : name === 'slope' ? 'Kemiringan Lereng' : name === 'rain' ? 'Curah Hujan' : name === 'river' ? 'Jarak dari Sungai' : name.charAt(0).toUpperCase() + name.slice(1)}
                                     </h6>
                                 </div>
                                 <div style="padding:12px;background:#f8fafc;border-radius:0 0 10px 10px;">
