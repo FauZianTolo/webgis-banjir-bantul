@@ -1,10 +1,14 @@
 @extends('layouts.public')
 
 @section('styles')
-<link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap'
+        rel='stylesheet'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
         /* ==================== HERO ==================== */
         .peta-hero {
             background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
@@ -14,22 +18,27 @@
             overflow: hidden;
             margin-bottom: 0;
         }
+
         .peta-hero::before {
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.07) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(6,182,212,0.15) 0%, transparent 50%);
+                radial-gradient(ellipse at 20% 50%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
         }
+
         .peta-hero::after {
             content: '';
             position: absolute;
-            bottom: -2px; left: 0; right: 0;
+            bottom: -2px;
+            left: 0;
+            right: 0;
             height: 50px;
             background: #f0f9ff;
             clip-path: ellipse(55% 100% at 50% 100%);
         }
+
         .peta-hero h1 {
             font-weight: 900;
             font-size: 2.8rem;
@@ -37,6 +46,7 @@
             position: relative;
             z-index: 2;
         }
+
         .peta-hero p {
             font-size: 1.2rem;
             opacity: 0.95;
@@ -1019,7 +1029,7 @@
             }
 
             /* KUNCI: Search panel dipindah ke kiri (bawah toolbar)
-                                                           agar tidak BERTABRAKAN dengan layer panel di kanan */
+                                                                   agar tidak BERTABRAKAN dengan layer panel di kanan */
             .search-panel {
                 top: 8px;
                 left: 52px;
@@ -1285,23 +1295,6 @@
                             <span class="arrow-sm">▲</span>
                         </div>
                         <div class="panel-section-body open" id="layerSection">
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-kerawanan" checked
-                                    onchange="toggleLayer('kerawanan',this.checked)">
-                                <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
-                                    <div style="display:flex;align-items:center;gap:6px;"><span class="legend-box"
-                                            style="background:#ef4444;"></span><span class="layer-item-label">Zona
-                                            Tinggi</span></div>
-                                    <div style="display:flex;align-items:center;gap:6px;"><span class="legend-box"
-                                            style="background:#f59e0b;"></span><span class="layer-item-label">Zona
-                                            Sedang</span></div>
-                                    <div style="display:flex;align-items:center;gap:6px;"><span class="legend-box"
-                                            style="background:#10b981;"></span><span class="layer-item-label">Zona
-                                            Rendah</span></div>
-                                    <div style="font-size:10px;color:#94a3b8;margin-top:2px;padding-left:22px;">Zona
-                                        Kerawanan Banjir</div>
-                                </div>
-                            </label>
                             <hr class="panel-divider">
                             <label class="layer-item">
                                 <input type="checkbox" id="chk-administrasi" checked
@@ -1319,8 +1312,7 @@
                                     onchange="toggleLayer('laporan',this.checked)">
                                 <div style="display:flex;align-items:center;gap:6px;flex:1;">
                                     <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png"
-                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;"
-                                        alt="marker merah">
+                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;" alt="marker merah">
                                     <span class="layer-item-label">Laporan Masyarakat</span>
                                 </div>
                             </label>
@@ -1348,37 +1340,6 @@
 
                         <hr class="panel-divider" style="margin:12px 0;">
 
-                        <!-- Basemap Section -->
-                        <div class="panel-section-hdr open" id="basemapSectionHdr"
-                            onclick="toggleSection('basemapSection','basemapSectionHdr')">
-                            <span class="title"><i class="fas fa-globe"></i> Basemap</span>
-                            <span class="arrow-sm">▲</span>
-                        </div>
-                        <div class="panel-section-body open" id="basemapSection">
-                            <div class="basemap-grid">
-                                <button class="basemap-btn active" id="btn-streets" onclick="switchBasemap('streets')">
-                                    <div class="basemap-icon"
-                                        style="background-image:url('https://tile.openstreetmap.org/11/1620/1012.png');">
-                                    </div>
-                                    <span class="basemap-label">Streets</span>
-                                </button>
-                                <button class="basemap-btn" id="btn-satellite" onclick="switchBasemap('satellite')">
-                                    <div class="basemap-icon"
-                                        style="background-image:url('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/11/1012/1620');">
-                                    </div>
-                                    <span class="basemap-label">Satellite</span>
-                                </button>
-                                <button class="basemap-btn" id="btn-topo" onclick="switchBasemap('topo')">
-                                    <div class="basemap-icon"
-                                        style="background-image:url('https://tile.opentopomap.org/11/1620/1012.png');">
-                                    </div>
-                                    <span class="basemap-label">Topo</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <hr class="panel-divider" style="margin:12px 0;">
-
                         <!-- Peta Tematik Section -->
                         <div class="panel-section-hdr" id="tematikSectionHdr"
                             onclick="toggleSection('tematikSection','tematikSectionHdr')">
@@ -1396,20 +1357,39 @@
                                     <input type="checkbox" id="chk-banjir"
                                         onclick="event.stopPropagation();toggleTematik('banjir',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-mountain"
-                                            style="color:#0891b2;margin-right:4px;"></i>Kerawanan banjir</span>
+                                            style="color:#0891b2;margin-right:4px;"></i>Kerawanan Banjir</span>
                                     <span class="tematik-item-arrow">▼</span>
                                 </div>
                                 <div class="tematik-item-body" id="acc-banjir">
-                                    <div style="display:flex;gap:3px;flex-wrap:wrap;padding:4px 0;">
-                                        <div style="display:flex;align-items:center;gap:4px;"><span
-                                                style="width:12px;height:12px;background:#10b981;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">Rendah</span></div>
-                                        <div style="display:flex;align-items:center;gap:4px;margin-left:6px;"><span
-                                                style="width:12px;height:12px;background:#f59e0b;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">Sedang</span></div>
-                                        <div style="display:flex;align-items:center;gap:4px;margin-left:6px;"><span
-                                                style="width:12px;height:12px;background:#ef4444;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">Tinggi</span></div>
+                                    <div style="display:flex;flex-direction:column;gap:5px;padding:6px 0;">
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <span
+                                                style="width:14px;height:14px;background:#10b981;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.1);"></span>
+                                            <span style="font-size:9px;color:#475569;font-weight:600;">Sangat Rendah</span>
+                                        </div>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <span
+                                                style="width:14px;height:14px;background:#84cc16;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.1);"></span>
+                                            <span style="font-size:9px;color:#475569;font-weight:600;">Rendah</span>
+                                        </div>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <span
+                                                style="width:14px;height:14px;background:#f4ad33;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.1);"></span>
+                                            <span style="font-size:9px;color:#475569;font-weight:600;">Sedang</span>
+                                        </div>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <span
+                                                style="width:14px;height:14px;background:#ef4444;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.1);"></span>
+                                            <span style="font-size:9px;color:#475569;font-weight:600;">Tinggi</span>
+                                        </div>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <span
+                                                style="width:14px;height:14px;background:#991b1b;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.1);"></span>
+                                            <span style="font-size:9px;color:#475569;font-weight:600;">Sangat Tinggi</span>
+                                        </div>
+                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">
+                                            Field: Keterangan | Total: nilai skor
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1472,16 +1452,19 @@
                                 </div>
                                 <div class="tematik-item-body" id="acc-rain">
                                     <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
-                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Curah Hujan Tahunan (mm/thn)</div>
+                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Curah
+                                            Hujan Tahunan (mm/thn)</div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#9ecae1;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">Rendah &nbsp;(1.000–1.500)</span></div>
+                                                style="font-size:9px;color:#475569;">Rendah &nbsp;(1.000–1.500)</span>
+                                        </div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#6baed6;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:9px;color:#475569;">Sedang (1.500–2.000)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#2171b5;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">Tinggi &nbsp;(2.000–2.500)</span></div>
+                                                style="font-size:9px;color:#475569;">Tinggi &nbsp;(2.000–2.500)</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1651,10 +1634,12 @@
                                 </div>
                                 <div class="tematik-item-body" id="acc-river">
                                     <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0;">
-                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Jarak dari Sungai (Makin dekat = makin rawan)</div>
+                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Jarak
+                                            dari Sungai (Makin dekat = makin rawan)</div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#08519c;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">0 – 25 m &nbsp;&nbsp;&nbsp;(Skor 5)</span></div>
+                                                style="font-size:9px;color:#475569;">0 – 25 m &nbsp;&nbsp;&nbsp;(Skor
+                                                5)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#2171b5;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:9px;color:#475569;">25 – 100 m &nbsp;(Skor 4)</span></div>
@@ -1666,7 +1651,8 @@
                                                 style="font-size:9px;color:#475569;">250 – 550 m (Skor 2)</span></div>
                                         <div style="display:flex;align-items:center;gap:4px;"><span
                                                 style="width:12px;height:12px;background:#deebf7;border:1px solid #ccc;border-radius:2px;flex-shrink:0;"></span><span
-                                                style="font-size:9px;color:#475569;">&gt; 550 m &nbsp;&nbsp;(Skor 1)</span></div>
+                                                style="font-size:9px;color:#475569;">&gt; 550 m &nbsp;&nbsp;(Skor 1)</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1675,6 +1661,37 @@
                                 * File GeoJSON tematik perlu disiapkan di /geojson/
                             </div>
                         </div>
+
+                        <!-- Basemap Section -->
+                        <div class="panel-section-hdr open" id="basemapSectionHdr"
+                            onclick="toggleSection('basemapSection','basemapSectionHdr')">
+                            <span class="title"><i class="fas fa-globe"></i> Basemap</span>
+                            <span class="arrow-sm">▲</span>
+                        </div>
+                        <div class="panel-section-body open" id="basemapSection">
+                            <div class="basemap-grid">
+                                <button class="basemap-btn active" id="btn-streets" onclick="switchBasemap('streets')">
+                                    <div class="basemap-icon"
+                                        style="background-image:url('https://tile.openstreetmap.org/11/1620/1012.png');">
+                                    </div>
+                                    <span class="basemap-label">Streets</span>
+                                </button>
+                                <button class="basemap-btn" id="btn-satellite" onclick="switchBasemap('satellite')">
+                                    <div class="basemap-icon"
+                                        style="background-image:url('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/11/1012/1620');">
+                                    </div>
+                                    <span class="basemap-label">Satellite</span>
+                                </button>
+                                <button class="basemap-btn" id="btn-topo" onclick="switchBasemap('topo')">
+                                    <div class="basemap-icon"
+                                        style="background-image:url('https://tile.opentopomap.org/11/1620/1012.png');">
+                                    </div>
+                                    <span class="basemap-label">Topo</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr class="panel-divider" style="margin:12px 0;">
 
                     </div>
                 </div>
@@ -1922,7 +1939,8 @@
                     </h4>
                     <div class="detail-item">
                         <div class="detail-item-value" id="detail-kebutuhan"
-                            style="font-weight:500;line-height:1.6;background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:10px 14px;color:#92400e;">-</div>
+                            style="font-weight:500;line-height:1.6;background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:10px 14px;color:#92400e;">
+                            -</div>
                     </div>
                 </div>
 
@@ -2271,14 +2289,12 @@
             });
             basemaps.streets.addTo(map);
 
-            layerGroups.kerawanan = L.layerGroup().addTo(map);
             layerGroups.administrasi = L.layerGroup().addTo(map);
             layerGroups.laporan = L.layerGroup().addTo(map);
             layerGroups.historis = L.layerGroup().addTo(map);
             layerGroups.stasiun = L.layerGroup().addTo(map);
 
             Promise.all([
-                loadZonaKerawanan(),
                 loadBatasAdministrasi(),
                 loadLaporanMasyarakat(),
                 loadTitikHistoris(),
@@ -2307,43 +2323,7 @@
             document.getElementById(`btn-${type}`).classList.add('active');
         }
 
-        // ── LOAD LAYERS ────────────────────────────────────────────────────
-        function loadZonaKerawanan() {
-            return fetch('/geojson/bantul_dummy.geojson')
-                .then(r => r.json())
-                .then(data => {
-                    L.geoJSON(data, {
-                        style: feature => {
-                            const zona = feature.properties.ZONA;
-                            const color = zona === 'Tinggi' ? '#ef4444' :
-                                zona === 'Sedang' ? '#f59e0b' :
-                                '#10b981';
-                            return {
-                                fillColor: color,
-                                fillOpacity: 0.4,
-                                color,
-                                weight: 2,
-                                opacity: 0.8
-                            };
-                        },
-                        onEachFeature: (feature, layer) => {
-                            const zona = feature.properties.ZONA;
-                            const color = zona === 'Tinggi' ? 'danger' : zona === 'Sedang' ? 'warning' :
-                                'success';
-                            layer.bindPopup(`
-                                <div style="min-width:180px;">
-                                    <h6 class="mb-2"><strong>Zona Kerawanan</strong></h6>
-                                    <p class="mb-1"><strong>Tingkat:</strong>
-                                        <span class="badge bg-${color}">${zona}</span></p>
-                                    <p class="mb-0"><strong>Kecamatan:</strong>
-                                        ${feature.properties.KECAMATAN || '-'}</p>
-                                </div>`);
-                            layerGroups.kerawanan.addLayer(layer);
-                        }
-                    });
-                }).catch(err => console.error('Error zona kerawanan:', err));
-        }
-
+        // ── LOAD LAYERS ──────────────────────────────────────────────────
         function loadBatasAdministrasi() {
             return fetch('/geojson/bantul.geojson')
                 .then(r => r.json())
@@ -2523,11 +2503,13 @@
                         popupAnchor: [1, -34]
                     });
                     L.geoJSON(data, {
-                        pointToLayer: (feature, latlng) => L.marker(latlng, { icon: stasiunIcon }),
+                        pointToLayer: (feature, latlng) => L.marker(latlng, {
+                            icon: stasiunIcon
+                        }),
                         onEachFeature: (feature, layer) => {
                             const p = feature.properties;
                             const nama = p.Nama_Stasi || '-';
-                            const ch   = p.CH !== undefined ? parseFloat(p.CH).toFixed(2) : '-';
+                            const ch = p.CH !== undefined ? parseFloat(p.CH).toFixed(2) : '-';
                             layer.bindPopup(`
                                 <div style="min-width:220px;font-family:inherit;">
                                     <div style="background:linear-gradient(135deg,#16a34a,#22c55e);
@@ -2552,7 +2534,8 @@
                                     </div>
                                 </div>`);
                             layer.bindTooltip(`<strong>${nama}</strong><br>${ch} mm/thn`, {
-                                sticky: false, className: 'leaflet-tooltip'
+                                sticky: false,
+                                className: 'leaflet-tooltip'
                             });
                             layerGroups.stasiun.addLayer(layer);
                         }
@@ -2681,12 +2664,23 @@
         const tematikLayers = {};
         const tematikConfig = {
             banjir: {
-                file: '/geojson/kerawanan_banjir.geojson',
-                key: 'KELAS',
+                file: '/geojson/banjir: {
+                file: '/geojson/kerawanan.geojson',
+                key: 'Keterangan',
+                skorField: 'TOTAL',
                 colors: {
-                    'Rendah': '#10b981',
+                    'Sangat Rendah': '#10b981',
+                    'Rendah': '#84cc16',
                     'Sedang': '#f59e0b',
-                    'Tinggi': '#ef4444'
+                    'Tinggi': '#ef4444',
+                    'Sangat Tinggi': '#991b1b'
+                },
+                skorLabels: {
+                    1: 'Sangat Rendah',
+                    2: 'Rendah',
+                    3: 'Sedang',
+                    4: 'Tinggi',
+                    5: 'Sangat Tinggi'
                 },
                 def: '#94a3b8'
             },
@@ -2807,11 +2801,11 @@
                     5: 'Sangat Tinggi'
                 },
                 colors: {
-                    '0 - 25 m':    '#08519c',
-                    '25 - 100 m':  '#2171b5',
+                    '0 - 25 m': '#08519c',
+                    '25 - 100 m': '#2171b5',
                     '100 - 250 m': '#4292c6',
                     '250 - 550 m': '#6baed6',
-                    '> 550 m':     '#deebf7',
+                    '> 550 m': '#deebf7',
                 },
                 def: '#deebf7'
             },
@@ -2859,7 +2853,8 @@
                         },
                         onEachFeature: (f, layer) => {
                             const val = f.properties[cfg.key] || '-';
-                            const skor = f.properties.skor !== undefined ? Math.round(f.properties.skor) : undefined;
+                            const skor = f.properties.skor !== undefined ? Math.round(f.properties.skor) :
+                                undefined;
                             const warna = cfg.colors[val] || cfg.def;
 
                             // Tooltip ringan saat hover
