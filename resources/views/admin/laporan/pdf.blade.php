@@ -85,11 +85,6 @@
             margin-bottom: 4px;
         }
 
-        .stat-box.total   .num { color: #0891b2; }
-        .stat-box.pending .num { color: #d97706; }
-        .stat-box.verified.num { color: #059669; }
-        .stat-box.rejected .num { color: #dc2626; }
-
         .stat-box .label {
             font-size: 11px;
             font-weight: 700;
@@ -174,11 +169,12 @@
         }
 
         .foto-thumb {
-            width: 40px;
-            height: 40px;
+            width: 52px;
+            height: 52px;
             object-fit: cover;
             border-radius: 5px;
             border: 1px solid #e2e8f0;
+            display: block;
         }
 
         .no-foto {
@@ -207,6 +203,7 @@
             gap: 10px;
             justify-content: flex-end;
             margin-bottom: 16px;
+            align-items: center;
         }
 
         .btn-print {
@@ -226,6 +223,25 @@
 
         .btn-print:hover {
             background: linear-gradient(135deg, #0e7490, #0891b2);
+        }
+
+        .btn-excel {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-excel:hover {
+            background: linear-gradient(135deg, #15803d, #16a34a);
         }
 
         .btn-back {
@@ -290,6 +306,8 @@
             table { page-break-inside: auto; }
             tr    { page-break-inside: avoid; }
             thead { display: table-header-group; }
+
+            .foto-thumb { width: 48px; height: 48px; }
         }
     </style>
 </head>
@@ -299,6 +317,10 @@
     <div class="print-controls">
         <a class="btn-back" href="{{ route('admin.laporan.index') }}">
             ← Kembali
+        </a>
+        {{-- Tombol Export Excel --}}
+        <a class="btn-excel" href="{{ route('admin.laporan.exportExcel') }}{{ request('status') ? '?status=' . request('status') : '' }}">
+            📊 Export Excel
         </a>
         <button class="btn-print" onclick="window.print()">
             🖨️ Cetak / Simpan PDF
@@ -361,7 +383,7 @@
                 <th>Deskripsi</th>
                 <th style="width:130px">Kebutuhan/Bantuan</th>
                 <th style="width:60px">Status</th>
-                <th style="width:100px">Foto</th>
+                <th style="width:120px">Foto</th>
             </tr>
         </thead>
         <tbody>
@@ -413,15 +435,42 @@
                     </span>
                 </td>
 
+                {{-- ✅ FOTO: base64 agar muncul saat print/PDF (support Cloudinary & lokal) --}}
                 <td>
-                    @php $fotos = array_filter([$item->foto, $item->foto2 ?? null, $item->foto3 ?? null]); @endphp
+                    @php
+                        $fotos = array_values(array_filter([
+                            $item->foto,
+                            $item->foto2 ?? null,
+                            $item->foto3 ?? null,
+                        ]));
+                    @endphp
                     @if(count($fotos) > 0)
                         <div class="foto-grid">
                             @foreach($fotos as $foto)
-                            <img src="{{ public_path('uploads/laporan/' . $foto) }}"
-                                 alt="Foto"
-                                 class="foto-thumb"
-                                 onerror="this.style.display='none'">
+                                @php
+                                    $imgData = null;
+                                    try {
+                                        if (str_starts_with($foto, 'http')) {
+                                            // Cloudinary atau URL eksternal
+                                            $ctx = stream_context_create(['http' => ['timeout' => 5]]);
+                                            $raw = @file_get_contents($foto, false, $ctx);
+                                        } else {
+                                            // File lokal
+                                            $path = public_path('uploads/laporan/' . $foto);
+                                            $raw  = file_exists($path) ? @file_get_contents($path) : false;
+                                        }
+                                        if ($raw) {
+                                            $imgData = 'data:image/jpeg;base64,' . base64_encode($raw);
+                                        }
+                                    } catch (\Exception $e) {
+                                        $imgData = null;
+                                    }
+                                @endphp
+                                @if($imgData)
+                                    <img src="{{ $imgData }}" class="foto-thumb" alt="Foto">
+                                @else
+                                    <span style="font-size:9px;color:#94a3b8;">Foto<br>gagal</span>
+                                @endif
                             @endforeach
                         </div>
                     @else

@@ -93,6 +93,7 @@ Route::get('/check-approval-status', function() {
     Route::prefix('laporan')->name('admin.laporan.')->group(function () {
         Route::get('/', [LaporanController::class, 'index'])->name('index');
         Route::get('/export-pdf', [LaporanController::class, 'exportPdf'])->name('exportPdf');
+        Route::get('/export-excel', [LaporanController::class, 'exportExcel'])->name('exportExcel');
         Route::post('/{id}/verify', [LaporanController::class, 'verify'])->name('verify');
         Route::post('/{id}/reject', [LaporanController::class, 'reject'])->name('reject');
         Route::delete('/{id}/delete-rejected', [LaporanController::class, 'destroyRejected'])->name('destroyRejected');

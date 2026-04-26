@@ -190,7 +190,7 @@
 <!-- ⭐⭐⭐ NOTIFICATION SCRIPTS (REAL-TIME) ⭐⭐⭐ -->
 @auth
     <script>
-        let lastNotificationId = 0;
+        let lastNotificationId = parseInt(localStorage.getItem('lastNotificationId') || '0');
         let notificationCheckInterval;
 
         // ========== TOAST POPUP FUNCTIONS ==========
@@ -302,6 +302,7 @@
                         data.notifications.forEach(notification => {
                             showToast(notification);
                             lastNotificationId = Math.max(lastNotificationId, notification.id);
+                            localStorage.setItem('lastNotificationId', lastNotificationId); // ✅ persist antar halaman
 
                             // Refresh dashboard stats jika di halaman dashboard
                             if (window.location.pathname === '/dashboard') {

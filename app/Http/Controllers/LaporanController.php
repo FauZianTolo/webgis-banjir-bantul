@@ -16,10 +16,10 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        // ✅ OPTIMASI: Paginate 20 per halaman — tidak ambil semua sekaligus
+        // ✅ OPTIMASI: Paginate 20 per halaman
         $laporan = LaporanBanjir::orderBy('waktu_laporan', 'desc')->paginate(20);
 
-        // ✅ OPTIMASI: Cache count stats 5 menit — 3 query jadi 1x per 5 menit
+        // ✅ OPTIMASI: Cache count stats 5 menit
         $stats = Cache::remember('laporan_stats_admin', 300, function () {
             return [
                 'pending'  => LaporanBanjir::where('status', 'pending')->count(),
@@ -30,8 +30,8 @@ class LaporanController extends Controller
 
         $data = [
             'title'       => 'Verifikasi Laporan Banjir',
-            'laporanList' => $laporan,  // ⭐ UNTUK TABEL (sudah paginate)
-            'laporan'     => $laporan,  // ⭐ UNTUK BACKWARD COMPATIBILITY
+            'laporanList' => $laporan,
+            'laporan'     => $laporan,
             'pending'     => $stats['pending'],
             'verified'    => $stats['verified'],
             'rejected'    => $stats['rejected'],
@@ -42,7 +42,6 @@ class LaporanController extends Controller
 
     /**
      * Verifikasi (Setujui) Laporan
-     * ✅ OPTIMASI: tambah forget laporan_stats_admin
      */
     public function verify($id)
     {
@@ -51,10 +50,9 @@ class LaporanController extends Controller
             $laporan->status = 'verified';
             $laporan->save();
 
-            // ✅ Hapus semua cache terkait laporan
             Cache::forget('laporan_verified');
             Cache::forget('dashboard_stats');
-            Cache::forget('laporan_stats_admin'); // ✅ BARU
+            Cache::forget('laporan_stats_admin');
 
             NotificationController::createVerifiedNotification($laporan);
 
@@ -66,7 +64,6 @@ class LaporanController extends Controller
 
     /**
      * Tolak Laporan
-     * ✅ OPTIMASI: tambah forget laporan_stats_admin
      */
     public function reject($id)
     {
@@ -75,10 +72,9 @@ class LaporanController extends Controller
             $laporan->status = 'rejected';
             $laporan->save();
 
-            // ✅ Hapus semua cache terkait laporan
             Cache::forget('laporan_verified');
             Cache::forget('dashboard_stats');
-            Cache::forget('laporan_stats_admin'); // ✅ BARU
+            Cache::forget('laporan_stats_admin');
 
             NotificationController::createRejectedNotification($laporan);
 
@@ -90,7 +86,6 @@ class LaporanController extends Controller
 
     /**
      * Delete rejected report
-     * ✅ OPTIMASI: tambah forget laporan_stats_admin
      */
     public function destroyRejected($id)
     {
@@ -107,10 +102,9 @@ class LaporanController extends Controller
 
             $laporan->delete();
 
-            // ✅ Hapus semua cache terkait laporan
             Cache::forget('dashboard_stats');
             Cache::forget('laporan_verified');
-            Cache::forget('laporan_stats_admin'); // ✅ BARU
+            Cache::forget('laporan_stats_admin');
 
             return redirect()->route('admin.laporan.index')->with('success', 'Laporan yang ditolak berhasil dihapus!');
         } catch (\Exception $e) {
@@ -119,22 +113,20 @@ class LaporanController extends Controller
     }
 
     /**
-     * Export laporan ke PDF (browser print)
-     * ✅ Tetap pakai ->get() karena PDF butuh semua data
+     * ✅ Export laporan ke PDF (browser print)
+     * Foto ditampilkan via base64 agar ikut tercetak
      */
     public function exportPdf(Request $request)
     {
         $query = LaporanBanjir::orderBy('waktu_laporan', 'desc');
 
-        // Filter by status jika ada
         if ($request->status && in_array($request->status, ['pending', 'verified', 'rejected'])) {
             $query->where('status', $request->status);
         }
 
         $laporan = $query->get();
 
-        // ✅ OPTIMASI: Cache stats untuk PDF juga
-        $stats = Cache::remember('laporan_stats_admin', 300, function () {
+        $stats = Cache::remember('laporan_stats_export', 300, function () {
             return [
                 'total'    => LaporanBanjir::count(),
                 'pending'  => LaporanBanjir::where('status', 'pending')->count(),
@@ -144,5 +136,40 @@ class LaporanController extends Controller
         });
 
         return view('admin.laporan.pdf', compact('laporan', 'stats'));
+    }
+
+    /**
+     * ✅ Export laporan ke Excel (.xls)
+     * Tidak memerlukan package tambahan — menggunakan HTML table dengan header Excel
+     * Foto disertakan sebagai URL yang bisa diklik di Excel
+     */
+    public function exportExcel(Request $request)
+    {
+        $query = LaporanBanjir::orderBy('waktu_laporan', 'desc');
+
+        if ($request->status && in_array($request->status, ['pending', 'verified', 'rejected'])) {
+            $query->where('status', $request->status);
+        }
+
+        $laporan = $query->get();
+
+        $stats = Cache::remember('laporan_stats_export', 300, function () {
+            return [
+                'total'    => LaporanBanjir::count(),
+                'pending'  => LaporanBanjir::where('status', 'pending')->count(),
+                'verified' => LaporanBanjir::where('status', 'verified')->count(),
+                'rejected' => LaporanBanjir::where('status', 'rejected')->count(),
+            ];
+        });
+
+        $filename = 'laporan-banjir-bantul-' . now()->format('Ymd-His') . '.xls';
+
+        return response()
+            ->view('admin.laporan.excel', compact('laporan', 'stats'))
+            ->header('Content-Type', 'application/vnd.ms-excel')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->header('Pragma', 'no-cache')
+            ->header('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+            ->header('Expires', '0');
     }
 }
