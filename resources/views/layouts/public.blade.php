@@ -396,16 +396,16 @@
                         di Kabupaten Bantul secara real-time.
                     </p>
                     <div class="social-links">
-                        <a href="#" class="social-link" title="Facebook">
+                        <a href="https://www.facebook.com/bpbdbantul" class="social-link" title="Facebook">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="social-link" title="Twitter">
+                        <a href="https://twitter.com/BPBDBantul" class="social-link" title="Twitter">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="social-link" title="Instagram">
+                        <a href="https://www.instagram.com/bpbdbantul" class="social-link" title="Instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="social-link" title="YouTube">
+                        <a href="https://www.youtube.com/@bpbdbantul" class="social-link" title="YouTube">
                             <i class="fab fa-youtube"></i>
                         </a>
                     </div>
@@ -422,7 +422,7 @@
                 <div class="col-lg-4 mb-4">
                     <h5><i class="fas fa-phone"></i> Kontak Darurat</h5>
                     <p><i class="fas fa-map-marker-alt"></i> BPBD Kabupaten Bantul<br>Yogyakarta</p>
-                    <p><i class="fas fa-phone-alt"></i> (0274) 367319</p>
+                    <p><i class="fas fa-phone-alt"></i> (0274) 6462100</p>
                     <p><i class="fas fa-envelope"></i> bpbd@bantulkab.go.id</p>
                     <p
                         style="background: rgba(239, 68, 68, 0.2); padding: 0.75rem; border-radius: 8px; border-left: 4px solid #ef4444;">
@@ -431,7 +431,7 @@
                 </div>
             </div>
 
-            <!-- Tambahan: Logo Prodi & Universitas -->
+            {{-- <!-- Tambahan: Logo Prodi & Universitas -->
             <div class="row justify-content-center mb-3">
                 <div class="col-auto text-center">
                     <img src="{{ asset('images/sig.png') }}" alt="Logo Prodi"
@@ -439,13 +439,12 @@
                     <img src="{{ asset('images/ugm.png') }}" alt="Logo Universitas"
                         style="height:80px; width:auto;">
                 </div>
-            </div>
+            </div> --}}
 
             <div class="footer-bottom text-center">
                 <p class="mb-0">
-                    &copy; {{ date('Y') }} WebGIS Banjir Bantul.
-                    Dikembangkan oleh <strong>Muhammad Nashan Fauzian</strong> |
-                    Sarjana Terapan - Sistem Informasi Geografis
+                    &copy; {{ date('Y') }} <strong>BANTARA</strong> |
+                    WebGIS Banjir BPBD Kabupaten Bantul
                 </p>
             </div>
         </div>

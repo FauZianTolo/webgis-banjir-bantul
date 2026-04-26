@@ -220,7 +220,7 @@
 
         {{-- Card 2: Telepon → klik untuk call --}}
         <div class="col-lg-4 col-md-6">
-            <a href="tel:+62274368222" class="contact-card">
+            <a href="tel:+622746462100" class="contact-card">
                 <div class="contact-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c);">
                     <i class="fas fa-phone"></i>
                 </div>
@@ -229,12 +229,12 @@
                     <p>
                         <i class="fas fa-phone text-success"></i><br>
                         <strong>Telepon:</strong><br>
-                        <span style="color:#0891b2;font-weight:700;">(0274) 368222</span>
+                        <span style="color:#0891b2;font-weight:700;">(0274) 6462100</span>
                     </p>
                     <p class="mb-2">
                         <i class="fas fa-fax text-info"></i><br>
                         <strong>Fax:</strong><br>
-                        (0274) 368222
+                        (0274) 6462100
                     </p>
                     <div class="contact-action-btn" style="background:linear-gradient(135deg,#f093fb,#f5576c);">
                         <i class="fas fa-phone-alt"></i> Telepon Sekarang
@@ -429,14 +429,14 @@
                 </p>
                 <p style="margin-bottom:10px;font-size:13px;color:#475569;">
                     <i class="fas fa-phone" style="color:#10b981;"></i>
-                    <a href="tel:+620274368222" style="color:#0891b2;font-weight:700;text-decoration:none;">(0274) 368222</a>
+                    <a href="tel:+6202746462100" style="color:#0891b2;font-weight:700;text-decoration:none;">(0274) 6462100</a>
                 </p>
                 <div style="display:flex;gap:7px;flex-wrap:wrap;">
                     <a href="https://www.google.com/maps/dir/?api=1&destination=${BPBD_LAT},${BPBD_LNG}" target="_blank"
                        style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#0891b2,#06b6d4);color:white;padding:7px 13px;border-radius:8px;font-weight:700;font-size:12px;text-decoration:none;">
                         <i class="fas fa-directions"></i> Google Maps
                     </a>
-                    <a href="tel:+620274368222"
+                    <a href="tel:+6202746462100"
                        style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:7px 13px;border-radius:8px;font-weight:700;font-size:12px;text-decoration:none;">
                         <i class="fas fa-phone-alt"></i> Telepon
                     </a>

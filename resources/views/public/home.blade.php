@@ -1020,7 +1020,7 @@
                             <div class="feature-icon"><i class="fas fa-bell"></i></div>
                             <h4>Peringatan Dini</h4>
                             <p>Sistem notifikasi otomatis untuk peringatan dini banjir. Tetap waspada dengan alert
-                                real-time.</p>
+                                cuaca terkini.</p>
                             <span class="feature-link">Info Peringatan <i class="fas fa-arrow-right"></i></span>
                         </div>
                     </a>
@@ -1099,7 +1099,7 @@
                         <div class="col-6">
                             <div class="about-mini">
                                 <i class="fas fa-bell"></i>
-                                <h6 style="font-weight:800;color:#0c4a6e;margin-bottom:.4rem;">Monitoring Real-time</h6>
+                                <h6 style="font-weight:800;color:#0c4a6e;margin-bottom:.4rem;">Monitoring</h6>
                                 <p style="color:#64748b;font-size:.9rem;margin:0;line-height:1.6;">Laporan terbaru membantu
                                     pemantauan kejadian banjir secara cepat.</p>
                             </div>
@@ -1208,15 +1208,15 @@
                             <i class="fas fa-headset" style="color:#0891b2;"></i> Hubungi Kami
                         </h5>
 
-                        <a href="tel:+620274367319" class="pesan-info-item">
+                        <a href="tel:+6202746462100" class="pesan-info-item">
                             <div class="pesan-info-icon"><i class="fas fa-phone"></i></div>
                             <div class="pesan-info-text">
                                 <strong>Telepon BPBD Bantul</strong>
-                                <span>(0274) 367319</span>
+                                <span>(0274) 6462100</span>
                             </div>
                         </a>
 
-                        <a href="https://wa.me/620274367319" target="_blank" class="pesan-info-item">
+                        <a href="https://wa.me/6202746462100" target="_blank" class="pesan-info-item">
                             <div class="pesan-info-icon" style="background:linear-gradient(135deg,#25D366,#128C7E);">
                                 <i class="fab fa-whatsapp"></i>
                             </div>
