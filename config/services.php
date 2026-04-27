@@ -31,4 +31,19 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+
+    'whatsapp' => [
+        'enabled' => env('WHATSAPP_ENABLED', false),
+        'api_version' => env('WHATSAPP_API_VERSION', 'v20.0'),
+        'phone_number_id' => env('WHATSAPP_PHONE_NUMBER_ID'),
+        'token' => env('WHATSAPP_ACCESS_TOKEN'),
+        'admin_phone' => env('WHATSAPP_ADMIN_PHONE', '6287834755177'),
+        'use_template' => env('WHATSAPP_USE_TEMPLATE', false),
+        'template_language' => env('WHATSAPP_TEMPLATE_LANGUAGE', 'id'),
+        'templates' => [
+            'laporan_diterima' => env('WHATSAPP_TEMPLATE_LAPORAN_DITERIMA'),
+            'laporan_diverifikasi' => env('WHATSAPP_TEMPLATE_LAPORAN_DIVERIFIKASI'),
+            'laporan_ditolak' => env('WHATSAPP_TEMPLATE_LAPORAN_DITOLAK'),
+        ],
+    ],
 ];

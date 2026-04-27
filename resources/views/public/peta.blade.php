@@ -4,6 +4,8 @@
     <link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap'
         rel='stylesheet'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <style>
         * {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -1203,6 +1205,70 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* ==================== MARKER CLUSTER & LAYER GROUPING ==================== */
+        .layer-subgroup-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 8px 0 6px;
+            padding: 7px 9px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ecfeff, #f0f9ff);
+            color: #0c4a6e;
+            font-size: 10.5px;
+            font-weight: 900;
+            letter-spacing: .02em;
+            text-transform: uppercase;
+            border: 1px solid rgba(8, 145, 178, .18);
+        }
+
+        .layer-subgroup-note {
+            font-size: 9.5px;
+            color: #64748b;
+            margin: -2px 2px 8px;
+            line-height: 1.45;
+        }
+
+        .flood-marker-cluster {
+            background: transparent;
+            border: none;
+        }
+
+        .flood-marker-cluster div {
+            width: 100%;
+            height: 100%;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 12px;
+            border: 3px solid rgba(255, 255, 255, .92);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, .32);
+        }
+
+        .flood-marker-cluster-laporan div {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+        }
+
+        .flood-marker-cluster-historis div {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+
+        .flood-marker-cluster-stasiun div {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+        }
+
+        .layer-item small {
+            display: block;
+            font-size: 8.5px;
+            font-weight: 600;
+            color: #94a3b8;
+            line-height: 1.25;
+        }
+
     </style>
 @endsection
 
@@ -1222,7 +1288,7 @@
                 <div class="col-md-8">
                     <h5 class="mb-2"><i class="fas fa-info-circle"></i> Panduan Peta</h5>
                     <p class="mb-0 text-sm">
-                        <strong>Layer:</strong> Klik <strong>🗂 Layer & Legenda</strong> di kanan atas peta.
+                        <strong>Layer:</strong> Klik <strong>🗂 Layer Peta</strong> di kanan atas peta.
                         <strong>Cari Kecamatan:</strong> Gunakan kotak pencarian di tengah atas peta.
                         <strong>Fullscreen:</strong> Klik <i class="fas fa-expand"></i> di kiri atas peta untuk tampilan
                         penuh.
@@ -1282,7 +1348,7 @@
             <!-- ── LAYER PANEL KANAN ATAS ── -->
             <div class="layer-panel">
                 <button class="layer-panel-toggle open" id="layerPanelToggle" onclick="toggleLayerPanel()">
-                    <span><i class="fas fa-layer-group"></i> Layer &amp; Legenda</span>
+                    <span><i class="fas fa-layer-group"></i>Keterangan Peta</span>
                     <span class="arrow">▲</span>
                 </button>
                 <div class="layer-panel-body open" id="layerPanelBody">
@@ -1295,58 +1361,10 @@
                             <span class="arrow-sm">▲</span>
                         </div>
                         <div class="panel-section-body open" id="layerSection">
-                            <hr class="panel-divider">
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-administrasi" checked
-                                    onchange="toggleLayer('administrasi',this.checked)">
-                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
-                                    <div
-                                        style="width:16px;height:16px;border:2px dashed #1e3c72;border-radius:3px;flex-shrink:0;">
-                                    </div>
-                                    <span class="layer-item-label">Batas Administrasi</span>
-                                </div>
-                            </label>
-                            <hr class="panel-divider">
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-laporan" checked
-                                    onchange="toggleLayer('laporan',this.checked)">
-                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
-                                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png"
-                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;" alt="marker merah">
-                                    <span class="layer-item-label">Laporan Masyarakat</span>
-                                </div>
-                            </label>
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-historis" checked
-                                    onchange="toggleLayer('historis',this.checked)">
-                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
-                                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png"
-                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;"
-                                        alt="marker biru">
-                                    <span class="layer-item-label">Titik Historis BPBD</span>
-                                </div>
-                            </label>
-                            <label class="layer-item">
-                                <input type="checkbox" id="chk-stasiun" checked
-                                    onchange="toggleLayer('stasiun',this.checked)">
-                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
-                                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
-                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;"
-                                        alt="marker hijau">
-                                    <span class="layer-item-label">Stasiun Pemantau Hujan</span>
-                                </div>
-                            </label>
-                        </div>
+                            <div class="layer-subgroup-title">
+                                <i class="fas fa-layer-group"></i> Peta Tematik
+                            </div>
 
-                        <hr class="panel-divider" style="margin:3px 0;">
-
-                        <!-- Peta Tematik Section -->
-                        <div class="panel-section-hdr" id="tematikSectionHdr"
-                            onclick="toggleSection('tematikSection','tematikSectionHdr')">
-                            <span class="title"><i class="fas fa-layer-group"></i> Peta Tematik</span>
-                            <span class="arrow-sm">▲</span>
-                        </div>
-                        <div class="panel-section-body" id="tematikSection">
                             <div style="font-size:10px;color:#94a3b8;margin-bottom:8px;padding:0 2px;">
                                 <i class="fas fa-info-circle"></i> Klik nama layer untuk buka legenda
                             </div>
@@ -1354,13 +1372,15 @@
                             <!-- 1. Kerawanan banjir -->
                             <div class="tematik-item">
                                 <div class="tematik-item-header" onclick="toggleTematikAccordion('acc-banjir',this)">
-                                    <input type="checkbox" id="chk-banjir"
+                                    <input type="checkbox" id="chk-banjir" checked
                                         onclick="event.stopPropagation();toggleTematik('banjir',this.checked)">
                                     <span class="tematik-item-title"><i class="fas fa-mountain"
                                             style="color:#0891b2;margin-right:4px;"></i>Kerawanan Banjir</span>
-                                    <span class="tematik-item-arrow">▲</span>
+                                    <span class="tematik-item-arrow open">▲</span>
                                 </div>
-                                <div class="tematik-item-body" id="acc-banjir">
+                                <div class="tematik-item-body open" id="acc-banjir"> <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">
+                                            Field: Keterangan | Total: nilai skor
+                                        </div>
                                     <div style="display:flex;flex-direction:column;gap:5px;padding:6px 0;">
                                         <div style="display:flex;align-items:center;gap:6px;">
                                             <span
@@ -1388,7 +1408,7 @@
                                             <span style="font-size:9px;color:#475569;font-weight:600;">Sangat Tinggi</span>
                                         </div>
                                         <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">
-                                            Field: Keterangan | Total: nilai skor
+                                            Sumber:Weighted Overlay dengan Metode AHP
                                         </div>
                                     </div>
                                 </div>
@@ -1403,7 +1423,8 @@
                                             style="color:#0891b2;margin-right:4px;"></i>Kemiringan Lereng</span>
                                     <span class="tematik-item-arrow">▲</span>
                                 </div>
-                                <div class="tematik-item-body" id="acc-slope">
+                                <div class="tematik-item-body" id="acc-slope"> <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">Makin datar
+                                        = makin rawan genangan</div>
                                     <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
                                         Sangat Rendah</div>
                                     <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
@@ -1436,8 +1457,7 @@
                                                 style="width:10px;height:10px;background:#991b1b;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">0–2° (Datar)</span></div>
                                     </div>
-                                    <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">Makin datar
-                                        = makin rawan genangan</div>
+                                    <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">Sumber:DEMNAS</div>
                                 </div>
                             </div>
 
@@ -1465,6 +1485,7 @@
                                                 style="width:12px;height:12px;background:#2171b5;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:9px;color:#475569;">Tinggi &nbsp;(2.000–2.500)</span>
                                         </div>
+                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Sumber:Dinas PU SDA</div>
                                     </div>
                                 </div>
                             </div>
@@ -1564,6 +1585,7 @@
                                                 style="width:9px;height:9px;background:#8e44ad;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Kuburan/Makam</span></div>
                                     </div>
+                                    <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Sumber:Badan Pertanahan Nasional Kabupaten Bantul</div>
                                 </div>
                             </div>
 
@@ -1620,6 +1642,7 @@
                                                 style="width:10px;height:10px;background:#991b1b;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">Aluvial</span></div>
                                     </div>
+                                    <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Sumber:Badan Pertanahan Nasional Kabupaten Bantul</div>
                                 </div>
                             </div>
 
@@ -1653,9 +1676,56 @@
                                                 style="width:12px;height:12px;background:#deebf7;border:1px solid #ccc;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:9px;color:#475569;">&gt; 550 m &nbsp;&nbsp;(Skor 1)</span>
                                         </div>
+                                        <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-bottom:2px;">Sumber:Dinas PU SDA</div>
                                     </div>
                                 </div>
                             </div>
+
+                            <hr class="panel-divider" style="margin:8px 0;">
+
+                            <div class="layer-subgroup-title">
+                                <i class="fas fa-map-marker-alt"></i> Titik &amp; Batas Peta
+                            </div>
+
+                            <label class="layer-item">
+                                <input type="checkbox" id="chk-laporan"
+                                    onchange="toggleLayer('laporan',this.checked)">
+                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
+                                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png"
+                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;" alt="marker merah">
+                                    <span class="layer-item-label">Laporan Masyarakat<small>Sumber:Laporan Masyarakat Terverifikasi</small></span>
+                                </div>
+                            </label>
+                            <label class="layer-item">
+                                <input type="checkbox" id="chk-historis"
+                                    onchange="toggleLayer('historis',this.checked)">
+                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
+                                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png"
+                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;"
+                                        alt="marker biru">
+                                    <span class="layer-item-label">Titik Kejadian Banjir<small>Sumber:BPBD Kabupaten Bantul (2021-2025)</small></span>
+                                </div>
+                            </label>
+                            <label class="layer-item">
+                                <input type="checkbox" id="chk-stasiun"
+                                    onchange="toggleLayer('stasiun',this.checked)">
+                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
+                                    <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
+                                        style="width:13px;height:21px;object-fit:contain;flex-shrink:0;"
+                                        alt="marker hijau">
+                                    <span class="layer-item-label">Stasiun Pemantau Hujan<small>Sumber:Dinas PU SDA</small></span>
+                                </div>
+                            </label>
+                            <label class="layer-item">
+                                <input type="checkbox" id="chk-administrasi"
+                                    onchange="toggleLayer('administrasi',this.checked)">
+                                <div style="display:flex;align-items:center;gap:6px;flex:1;">
+                                    <div
+                                        style="width:16px;height:16px;border:2px dashed #1e3c72;border-radius:3px;flex-shrink:0;">
+                                    </div>
+                                    <span class="layer-item-label">Batas Kecamatan</span>
+                                </div>
+                            </label>
                         </div>
 
                         <hr class="panel-divider" style="margin:3px 0;">
@@ -1790,7 +1860,7 @@
                                                 class="btn btn-sm btn-info me-1"><i class="fas fa-info-circle"></i>
                                                 Detail</button>
                                             <button
-                                                onclick="zoomToMarker({{ $item->latitude }},{{ $item->longitude }},'laporan',{{ $item->id }})"
+                                                onclick="showTableFocus('laporan', {{ $item->id }})"
                                                 class="btn btn-sm btn-outline-primary"><i
                                                     class="fas fa-search-location"></i> Lihat</button>
                                         </td>
@@ -1962,11 +2032,23 @@
 
 @section('script')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js"></script>
     <script>
         // Helper: handle Cloudinary URL atau local file
         function getFotoUrl(f) {
             if (!f) return '';
             return f.startsWith('http') ? f : '/uploads/laporan/' + f;
+        }
+
+        function esc(value) {
+            if (value === null || value === undefined) return '-';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
         }
         // ── DATA ───────────────────────────────────────────────────────────
         const laporanData = {!! json_encode($laporan->keyBy('id'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) !!};
@@ -1996,11 +2078,96 @@
         let map, layerGroups = {},
             basemaps = {},
             currentBasemap = 'streets';
-        let canvasRenderer; // ✅ FIX 4: Dideklarasi di luar initMap agar bisa diakses toggleTematik
         let historisData = [],
             bantulGeoJSON = null,
-            searchHighlightLayer = null;
+            searchHighlightLayer = null,
+            tableFocusMarker = null;
         let isFullscreen = false;
+
+        // ── RESPONSIVE MARKER CLUSTER ─────────────────────────────────────
+        const pointIconUrls = {
+            laporan: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            historis: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+            stasiun: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'
+        };
+
+        function initMapPanes() {
+            if (!map.getPane('tematikPane')) {
+                map.createPane('tematikPane');
+                map.getPane('tematikPane').style.zIndex = 350;
+            }
+            if (!map.getPane('adminPane')) {
+                map.createPane('adminPane');
+                map.getPane('adminPane').style.zIndex = 430;
+            }
+            if (!map.getPane('pointPane')) {
+                map.createPane('pointPane');
+                map.getPane('pointPane').style.zIndex = 650;
+            }
+        }
+
+        function createPointIcon(type) {
+            return L.icon({
+                iconUrl: pointIconUrls[type] || pointIconUrls.laporan,
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+                iconSize: [22, 36],
+                iconAnchor: [11, 36],
+                popupAnchor: [1, -30],
+                shadowSize: [36, 36]
+            });
+        }
+
+        function createPointClusterGroup(type) {
+            if (!L.markerClusterGroup) return L.layerGroup();
+
+            return L.markerClusterGroup({
+                showCoverageOnHover: false,
+                spiderfyOnMaxZoom: true,
+                disableClusteringAtZoom: 17,
+                removeOutsideVisibleBounds: true,
+                chunkedLoading: true,
+                chunkDelay: 40,
+                chunkInterval: 180,
+                maxClusterRadius: function(zoom) {
+                    if (zoom <= 11) return 76;
+                    if (zoom <= 13) return 58;
+                    if (zoom <= 15) return 42;
+                    return 28;
+                },
+                clusterPane: 'pointPane',
+                iconCreateFunction: function(cluster) {
+                    const count = cluster.getChildCount();
+                    const size = count < 10 ? 36 : count < 50 ? 44 : count < 100 ? 50 : 58;
+                    const label = count > 999 ? '999+' : count;
+                    return L.divIcon({
+                        html: `<div style="font-size:${count < 10 ? 12 : count < 100 ? 13 : 11}px;">${label}</div>`,
+                        className: `flood-marker-cluster flood-marker-cluster-${type}`,
+                        iconSize: L.point(size, size, true)
+                    });
+                }
+            });
+        }
+
+        function applyDefaultLayerState() {
+            ['administrasi', 'laporan', 'historis', 'stasiun'].forEach(name => {
+                const chk = document.getElementById('chk-' + name);
+                if (chk) chk.checked = false;
+                if (layerGroups[name] && map.hasLayer(layerGroups[name])) map.removeLayer(layerGroups[name]);
+            });
+
+            Object.keys(tematikConfig).forEach(name => {
+                const chk = document.getElementById('chk-' + name);
+                if (chk) chk.checked = name === 'banjir';
+            });
+
+            const banjirBody = document.getElementById('acc-banjir');
+            const banjirHeader = banjirBody?.previousElementSibling;
+            const banjirArrow = banjirHeader?.querySelector('.tematik-item-arrow');
+            if (banjirBody) banjirBody.classList.add('open');
+            if (banjirArrow) banjirArrow.classList.add('open');
+
+            toggleTematik('banjir', true);
+        }
 
         // ── FULLSCREEN ─────────────────────────────────────────────────────
         function toggleFullscreen() {
@@ -2106,9 +2273,9 @@
             if (kecFeature) {
                 searchHighlightLayer = L.geoJSON(kecFeature, {
                     style: {
-                        fillColor: '#fbbf24',
+                        fillColor: '#f7f7f7',
                         fillOpacity: 0.35,
-                        color: '#f59e0b',
+                        color: '#050505',
                         weight: 3,
                         opacity: 1
                     }
@@ -2263,18 +2430,17 @@
         document.addEventListener('DOMContentLoaded', initMap);
 
         function initMap() {
-            // ✅ FIX 4: Canvas renderer — declare here, accessible globally via outer let
-            canvasRenderer = L.canvas({ padding: 0.5, tolerance: 5 });
-
             map = L.map('map', {
                 center: [-7.8700, 110.3300],
                 zoom: 11,
                 zoomControl: false,
-                preferCanvas: true  // ✅ FIX 4: Gunakan Canvas renderer secara global
+                preferCanvas: true
             });
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(map);
+
+            initMapPanes();
 
             basemaps.streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap',
@@ -2292,10 +2458,12 @@
             });
             basemaps.streets.addTo(map);
 
-            layerGroups.administrasi = L.layerGroup().addTo(map);
-            layerGroups.laporan = L.layerGroup().addTo(map);
-            layerGroups.historis = L.layerGroup().addTo(map);
-            layerGroups.stasiun = L.layerGroup().addTo(map);
+            layerGroups.administrasi = L.layerGroup();
+            layerGroups.laporan = createPointClusterGroup('laporan');
+            layerGroups.historis = createPointClusterGroup('historis');
+            layerGroups.stasiun = createPointClusterGroup('stasiun');
+
+            applyDefaultLayerState();
 
             Promise.all([
                 loadBatasAdministrasi(),
@@ -2311,8 +2479,11 @@
         }
 
         function toggleLayer(name, visible) {
+            if (!layerGroups[name]) return;
+
             if (visible) {
                 if (!map.hasLayer(layerGroups[name])) layerGroups[name].addTo(map);
+                if (name === 'administrasi' && layerGroups[name].bringToFront) layerGroups[name].bringToFront();
             } else {
                 if (map.hasLayer(layerGroups[name])) map.removeLayer(layerGroups[name]);
             }
@@ -2333,6 +2504,7 @@
                 .then(data => {
                     bantulGeoJSON = data;
                     L.geoJSON(data, {
+                        pane: 'adminPane',
                         style: {
                             fillColor: 'transparent',
                             color: '#1e3c72',
@@ -2355,17 +2527,12 @@
 
         function loadLaporanMasyarakat() {
             const laporanArr = Object.values(laporanData);
-            const laporanIcon = L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34]
-            });
+            const laporanIcon = createPointIcon('laporan');
 
             laporanArr.forEach(laporan => {
                 const marker = L.marker([laporan.latitude, laporan.longitude], {
-                    icon: laporanIcon
+                    icon: laporanIcon,
+                    pane: 'pointPane'
                 });
                 marker._laporanId = laporan.id;
 
@@ -2430,14 +2597,17 @@
         function focusLaporanFromHome() {
             const targetId = sessionStorage.getItem('bantara_focus_laporan');
             if (!targetId) return;
-            let targetMarker = null;
-            layerGroups.laporan.eachLayer(function(marker) {
-                if (String(marker._laporanId) === String(targetId)) targetMarker = marker;
-            });
-            if (targetMarker) {
-                map.setView(targetMarker.getLatLng(), 16);
-                setTimeout(() => targetMarker.openPopup(), 300);
+
+            const laporan = laporanData[targetId];
+            if (laporan?.latitude && laporan?.longitude) {
+                showTemporaryMarker(
+                    Number(laporan.latitude),
+                    Number(laporan.longitude),
+                    buildLaporanPopup(laporan),
+                    'laporan'
+                );
             }
+
             sessionStorage.removeItem('bantara_focus_laporan');
         }
 
@@ -2447,16 +2617,11 @@
                 .then(r => r.json())
                 .then(data => {
                     historisData = data.features;
-                    const historisIcon = L.icon({
-                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                        popupAnchor: [1, -34]
-                    });
+                    const historisIcon = createPointIcon('historis');
                     L.geoJSON(data, {
                         pointToLayer: (feature, latlng) => L.marker(latlng, {
-                            icon: historisIcon
+                            icon: historisIcon,
+                            pane: 'pointPane'
                         }),
                         onEachFeature: (feature, layer) => {
                             const props = feature.properties;
@@ -2498,16 +2663,11 @@
             return fetch('/geojson/stasiunpemantau.geojson')
                 .then(r => r.json())
                 .then(data => {
-                    const stasiunIcon = L.icon({
-                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                        popupAnchor: [1, -34]
-                    });
+                    const stasiunIcon = createPointIcon('stasiun');
                     L.geoJSON(data, {
                         pointToLayer: (feature, latlng) => L.marker(latlng, {
-                            icon: stasiunIcon
+                            icon: stasiunIcon,
+                            pane: 'pointPane'
                         }),
                         onEachFeature: (feature, layer) => {
                             const p = feature.properties;
@@ -2547,124 +2707,104 @@
                 .catch(err => console.warn('Stasiun pemantau tidak ditemukan:', err));
         }
 
-        // ✅ FIX: Marker sementara + popup lengkap (auto-hilang saat ditutup)
-        let _tempViewMarker = null;
+        function buildLaporanPopup(laporan) {
+            const fotos = [laporan.foto, laporan.foto2, laporan.foto3].filter(Boolean);
+            const fotoHtml = fotos.length ? `
+                <div style="display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;">
+                    ${fotos.map((f) => `<img src="${esc(getFotoUrl(f))}"
+                        style="width:${fotos.length === 1 ? '100%' : fotos.length === 2 ? 'calc(50% - 2px)' : 'calc(33.3% - 3px)'};height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid #e2e8f0;"
+                        onclick="openImageModal('${esc(getFotoUrl(f))}')">`).join('')}
+                </div>` : '';
 
-        function zoomToMarker(lat, lon, type, laporanId, props) {
-            // Hapus temp marker sebelumnya
-            if (_tempViewMarker) {
-                map.removeLayer(_tempViewMarker);
-                _tempViewMarker = null;
+            const kedalaman = Number(laporan.kedalaman_cm || 0);
+            const kdStyle = kedalaman >= 70 ? 'background:#fee2e2;color:#991b1b;' :
+                kedalaman >= 40 ? 'background:#fef3c7;color:#92400e;' : 'background:#dbeafe;color:#1e40af;';
+
+            return `<div style="min-width:250px;max-width:300px;">
+                <h6 class="mb-2" style="font-weight:bold;font-size:14px;">
+                    <i class="fas fa-users"></i> Laporan Masyarakat #${esc(laporan.id)}
+                </h6>
+                ${fotoHtml}
+                <p style="margin-bottom:6px;"><strong>Lokasi:</strong> ${esc(laporan.kecamatan)}, ${esc(laporan.desa)}</p>
+                <p style="margin-bottom:6px;"><strong>Kedalaman:</strong>
+                    <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:bold;${kdStyle}">${esc(laporan.kedalaman_cm || 0)} cm</span></p>
+                <p style="margin-bottom:6px;"><strong>Pelapor:</strong> ${esc(laporan.nama_pelapor)}</p>
+                <p style="margin-bottom:12px;"><strong>Waktu:</strong> ${esc(formatDateTime(laporan.waktu_laporan))}</p>
+                <div style="display:flex;gap:8px;">
+                    <button class="popup-btn-detail" onclick="showDetail(${Number(laporan.id)})" style="flex:1;">
+                        <i class="fas fa-info-circle"></i> Detail
+                    </button>
+                    <button class="popup-btn-route" onclick="goToRoute(${Number(laporan.latitude)},${Number(laporan.longitude)},'Laporan #${Number(laporan.id)}')" style="flex:1;">
+                        <i class="fas fa-route"></i> Rute
+                    </button>
+                </div>
+            </div>`;
+        }
+
+        function buildHistorisPopup(feature) {
+            const props = feature.properties || {};
+            const coords = feature.geometry?.coordinates || [];
+            return `<div style="min-width:250px;max-width:300px;">
+                <h6 class="mb-2" style="font-weight:bold;font-size:14px;color:#0c4a6e;">
+                    <i class="fas fa-database"></i> Data Historis BPBD #${esc(props.No || '-')}
+                </h6>
+                <div style="background:#f0f9ff;padding:10px;border-radius:8px;margin-bottom:10px;">
+                    <p style="margin:4px 0;"><strong>📍 Kecamatan:</strong> ${esc(props.Kecamatan || '-')}</p>
+                    <p style="margin:4px 0;"><strong>📅 Tanggal:</strong> ${esc(props.Tanggal || '-')}</p>
+                    <p style="margin:4px 0;"><strong>⚠️ Jenis:</strong> ${esc(props.Penyebab || '-')}</p>
+                    <p style="margin:4px 0 0;"><strong>💧 Pemicu:</strong> ${esc(props.p || '-')}</p>
+                </div>
+                <button class="popup-btn-route" onclick="goToRoute(${Number(coords[1])},${Number(coords[0])},'Historis ${esc(props.Kecamatan || '')}')" style="width:100%;">
+                    <i class="fas fa-route"></i> Lihat Rute ke Lokasi
+                </button>
+            </div>`;
+        }
+
+        function removeTableFocusMarker() {
+            if (tableFocusMarker && map.hasLayer(tableFocusMarker)) {
+                map.removeLayer(tableFocusMarker);
+            }
+            tableFocusMarker = null;
+        }
+
+        function showTemporaryMarker(lat, lon, popupHtml, type = 'laporan') {
+            removeTableFocusMarker();
+            const iconUrl = type === 'historis'
+                ? 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png'
+                : 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png';
+            const icon = L.icon({
+                iconUrl,
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34]
+            });
+
+            tableFocusMarker = L.marker([lat, lon], { icon, zIndexOffset: 10000 })
+                .addTo(map)
+                .bindPopup(popupHtml, { maxWidth: 330, closeButton: true });
+
+            tableFocusMarker.on('popupclose', removeTableFocusMarker);
+
+            map.flyTo([lat, lon], 16, { duration: 1.1 });
+            document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+                if (tableFocusMarker) tableFocusMarker.openPopup();
+            }, 900);
+        }
+
+        function showTableFocus(type, key) {
+            if (type === 'laporan') {
+                const laporan = laporanData[key];
+                if (!laporan) return alert('Data laporan tidak ditemukan');
+                showTemporaryMarker(Number(laporan.latitude), Number(laporan.longitude), buildLaporanPopup(laporan), 'laporan');
+                return;
             }
 
-            map.flyTo([lat, lon], 16, { duration: 1.5 });
-            document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            setTimeout(() => {
-                if (type === 'laporan' && laporanId) {
-                    // ── LAPORAN: buka popup marker yang sudah ada (by _laporanId) ──
-                    let found = null;
-                    layerGroups.laporan.eachLayer(layer => {
-                        if (String(layer._laporanId) === String(laporanId)) found = layer;
-                    });
-                    if (found) {
-                        found.openPopup();
-                        return; // pakai marker existing, tidak perlu temp
-                    }
-                    // Fallback: buat popup dari laporanData jika marker tidak ditemukan
-                    const lap = laporanData[laporanId];
-                    if (lap) {
-                        const kd = lap.kedalaman_cm >= 70
-                            ? 'background:#fee2e2;color:#991b1b;'
-                            : lap.kedalaman_cm >= 40
-                            ? 'background:#fef3c7;color:#92400e;'
-                            : 'background:#dbeafe;color:#1e40af;';
-                        const fotos = [lap.foto, lap.foto2, lap.foto3].filter(Boolean);
-                        let fotoHtml = '';
-                        if (fotos.length > 0) {
-                            fotoHtml = `<div style="display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;">`;
-                            fotos.forEach(f => {
-                                const url = getFotoUrl(f);
-                                const w = fotos.length === 1 ? '100%' : fotos.length === 2 ? 'calc(50% - 2px)' : 'calc(33.3% - 3px)';
-                                fotoHtml += `<img src="${url}" style="width:${w};height:75px;object-fit:cover;border-radius:7px;cursor:pointer;border:2px solid #e2e8f0;" onclick="openImageModal('${url}')">`;
-                            });
-                            fotoHtml += `</div>`;
-                        }
-                        const popupHtml = `
-                            <div style="min-width:260px;max-width:300px;">
-                                <h6 style="font-weight:900;font-size:14px;color:#0c4a6e;margin-bottom:8px;">
-                                    🚨 Laporan Masyarakat #${lap.id}
-                                </h6>
-                                ${fotoHtml}
-                                <table style="width:100%;font-size:12px;border-collapse:collapse;margin-bottom:10px;">
-                                    <tr><td style="color:#64748b;padding:3px 0;width:40%;">📍 Lokasi</td>
-                                        <td><strong>${lap.kecamatan}${lap.desa ? ', '+lap.desa : ''}</strong></td></tr>
-                                    <tr><td style="color:#64748b;padding:3px 0;">👤 Pelapor</td>
-                                        <td>${lap.nama_pelapor}</td></tr>
-                                    <tr><td style="color:#64748b;padding:3px 0;">💧 Kedalaman</td>
-                                        <td><span style="padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;${kd}">${lap.kedalaman_cm} cm</span></td></tr>
-                                    <tr><td style="color:#64748b;padding:3px 0;">📅 Waktu</td>
-                                        <td>${new Date(lap.waktu_laporan).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</td></tr>
-                                    <tr><td style="color:#64748b;padding:3px 0;vertical-align:top;">📝 Deskripsi</td>
-                                        <td style="font-size:11px;">${(lap.deskripsi||'').substring(0,80)}${(lap.deskripsi||'').length>80?'…':''}</td></tr>
-                                    ${lap.kebutuhan_bantuan ? `<tr><td style="color:#64748b;padding:3px 0;vertical-align:top;">🆘 Kebutuhan</td><td style="font-size:11px;color:#92400e;">${lap.kebutuhan_bantuan}</td></tr>` : ''}
-                                </table>
-                                <div style="display:flex;gap:8px;">
-                                    <button class="popup-btn-detail" onclick="showDetail(${lap.id})" style="flex:1;">
-                                        <i class="fas fa-info-circle"></i> Detail Lengkap
-                                    </button>
-                                    <button class="popup-btn-route" onclick="goToRoute(${lap.latitude},${lap.longitude},'Laporan #${lap.id}')" style="flex:1;">
-                                        <i class="fas fa-route"></i> Rute
-                                    </button>
-                                </div>
-                            </div>`;
-                        const icon = L.icon({
-                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                            iconSize: [25,41], iconAnchor: [12,41], popupAnchor: [1,-34]
-                        });
-                        _tempViewMarker = L.marker([lat, lon], { icon }).bindPopup(popupHtml, { maxWidth: 320 }).addTo(map);
-                        _tempViewMarker.on('popupclose', () => { if(_tempViewMarker){ map.removeLayer(_tempViewMarker); _tempViewMarker = null; } });
-                        _tempViewMarker.openPopup();
-                    }
-                } else if (type === 'historis') {
-                    // ── HISTORIS: buat temp marker dengan popup lengkap ──
-                    const p = props || {};
-                    const icon = L.icon({
-                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                        iconSize: [25,41], iconAnchor: [12,41], popupAnchor: [1,-34]
-                    });
-                    const popupHtml = `
-                        <div style="min-width:250px;max-width:290px;">
-                            <div style="background:linear-gradient(135deg,#0891b2,#06b6d4);
-                                color:white;padding:10px 14px;border-radius:10px 10px 0 0;margin:-1px -1px 0;">
-                                <h6 style="margin:0;font-weight:800;font-size:13px;">
-                                    <i class="fas fa-database"></i> Data Historis BPBD #${p.No||'-'}
-                                </h6>
-                            </div>
-                            <div style="padding:12px;background:#f0f9ff;border-radius:0 0 10px 10px;">
-                                <table style="width:100%;font-size:12px;border-collapse:collapse;">
-                                    <tr><td style="color:#64748b;padding:3px 0;width:40%;">📍 Kecamatan</td>
-                                        <td><strong>${p.Kecamatan||'-'}</strong></td></tr>
-                                    <tr><td style="color:#64748b;padding:3px 0;">📅 Tanggal</td>
-                                        <td>${p.Tanggal||'-'}</td></tr>
-                                    <tr><td style="color:#64748b;padding:3px 0;">⚠️ Jenis</td>
-                                        <td>${p.Penyebab||'-'}</td></tr>
-                                    <tr><td style="color:#64748b;padding:3px 0;">💧 Pemicu</td>
-                                        <td>${p.p||'-'}</td></tr>
-                                </table>
-                                <button class="popup-btn-route" onclick="goToRoute(${lat},${lon},'Historis ${(p.Kecamatan||'').replace(/'/g,'')}')"
-                                    style="width:100%;margin-top:10px;">
-                                    <i class="fas fa-route"></i> Lihat Rute ke Lokasi
-                                </button>
-                            </div>
-                        </div>`;
-                    _tempViewMarker = L.marker([lat, lon], { icon }).bindPopup(popupHtml, { maxWidth: 300 }).addTo(map);
-                    _tempViewMarker.on('popupclose', () => { if(_tempViewMarker){ map.removeLayer(_tempViewMarker); _tempViewMarker = null; } });
-                    _tempViewMarker.openPopup();
-                }
-            }, 1600);
+            const feature = historisData[Number(key)];
+            const coords = feature?.geometry?.coordinates;
+            if (!feature || !coords || coords.length < 2) return alert('Data historis tidak ditemukan');
+            showTemporaryMarker(Number(coords[1]), Number(coords[0]), buildHistorisPopup(feature), 'historis');
         }
 
         function goToRoute(lat, lng, title) {
@@ -2706,7 +2846,7 @@
                     <td>${p.Penyebab || '-'}</td>
                     <td>${p.p || '-'}</td>
                     <td>
-                        <button onclick="zoomToMarker(${c[1]},${c[0]},'historis',null,${JSON.stringify(p).replace(/'/g,'\'\'')})"
+                        <button onclick="showTableFocus('historis', ${start + i})"
                             class="btn btn-sm btn-outline-primary">
                             <i class="fas fa-search-location"></i> Lihat
                         </button>
@@ -2925,16 +3065,134 @@
             return map[skor] || '#64748b';
         }
 
+        function createTematikStyle(cfg) {
+            return function(properties) {
+                const val = properties[cfg.key] || '';
+                const fillCol = cfg.colors[val] || cfg.def;
+                return {
+                    fill: true,
+                    fillColor: fillCol,
+                    fillOpacity: 0.7,
+                    color: fillCol,
+                    weight: 0.5,
+                    opacity: 0.65
+                };
+            };
+        }
+
+        function buildTematikPopup(name, cfg, props) {
+            const val = props[cfg.key] || '-';
+            const skorRaw = cfg.skorField ? props[cfg.skorField] : props.skor;
+            const skor = skorRaw !== undefined && skorRaw !== null && skorRaw !== '' ? Math.round(Number(skorRaw)) : undefined;
+            const warna = cfg.colors[val] || cfg.def;
+            const title = name === 'banjir' ? 'Kerawanan Banjir' :
+                name === 'landuse' ? 'Penggunaan Lahan' :
+                name === 'soil' ? 'Jenis Tanah' :
+                name === 'slope' ? 'Kemiringan Lereng' :
+                name === 'rain' ? 'Curah Hujan' :
+                name === 'river' ? 'Jarak dari Sungai' :
+                name.charAt(0).toUpperCase() + name.slice(1);
+
+            if (cfg.skorLabels && skor !== undefined && !Number.isNaN(skor)) {
+                const skorLabel = cfg.skorLabels[skor] || '-';
+                const luas = props.luas ? parseFloat(props.luas).toFixed(2) + ' ha' : '-';
+                return `<div style="min-width:230px;font-family:inherit;">
+                    <div style="background:linear-gradient(135deg,#0891b2,#06b6d4);color:white;padding:10px 14px;border-radius:10px 10px 0 0;margin:-1px -1px 0 -1px;">
+                        <h6 style="margin:0;font-weight:800;font-size:13px;"><i class="fas fa-map"></i> ${esc(title)}</h6>
+                    </div>
+                    <div style="padding:12px;background:#f8fafc;border-radius:0 0 10px 10px;">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                            <span style="width:18px;height:18px;background:${warna};border-radius:4px;flex-shrink:0;border:2px solid rgba(0,0,0,0.15);box-shadow:0 2px 4px rgba(0,0,0,0.1);"></span>
+                            <strong style="color:#0f172a;font-size:14px;">${esc(val)}</strong>
+                        </div>
+                        <table style="width:100%;font-size:12px;border-collapse:collapse;">
+                            <tr><td style="color:#64748b;padding:3px 0;width:55%;">🎯 Skor Kerawanan</td><td style="font-weight:700;color:#0f172a;">${esc(skor)}</td></tr>
+                            <tr><td style="color:#64748b;padding:3px 0;">📊 Kategori</td><td><span style="background:${getSkorColor(skor)};color:white;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;">${esc(skorLabel)}</span></td></tr>
+                            <tr><td style="color:#64748b;padding:3px 0;">📐 Luas</td><td style="font-weight:600;color:#0f172a;">${esc(luas)}</td></tr>
+                        </table>
+                    </div>
+                </div>`;
+            }
+
+            return `<div style="min-width:180px;padding:6px;">
+                <h6 style="color:#0c4a6e;font-weight:700;margin-bottom:6px;">${esc(title)}</h6>
+                <p style="margin:0;"><strong>${esc(cfg.key)}:</strong> ${esc(val)}</p>
+            </div>`;
+        }
+
+        function createTiledTematikLayer(name, data, cfg) {
+            if (!window.L?.vectorGrid?.slicer) {
+                return L.geoJSON(data, {
+                    pane: 'tematikPane',
+                    style: f => createTematikStyle(cfg)(f.properties || {}),
+                    onEachFeature: (f, layer) => {
+                        layer.bindTooltip(`<strong>${esc((f.properties || {})[cfg.key] || '-')}</strong>`, {
+                            sticky: true,
+                            className: 'leaflet-tooltip'
+                        });
+                        layer.bindPopup(buildTematikPopup(name, cfg, f.properties || {}), { maxWidth: 280 });
+                    }
+                });
+            }
+
+            const tiledLayer = L.vectorGrid.slicer(data, {
+                pane: 'tematikPane',
+                rendererFactory: L.canvas.tile,
+                interactive: true,
+                maxZoom: 18,
+                tolerance: 3,
+                extent: 4096,
+                buffer: 64,
+                vectorTileLayerStyles: {
+                    sliced: createTematikStyle(cfg)
+                },
+                getFeatureId: function(feature) {
+                    const props = feature.properties || {};
+                    return props.id || props.ID || props.No || props.OBJECTID || L.Util.stamp(feature);
+                }
+            });
+
+            tiledLayer.on('click', function(e) {
+                const props = e.layer?.properties || e.properties || {};
+                L.popup({ maxWidth: 280 })
+                    .setLatLng(e.latlng)
+                    .setContent(buildTematikPopup(name, cfg, props))
+                    .openOn(map);
+            });
+
+            tiledLayer.on('mouseover', function(e) {
+                const props = e.layer?.properties || e.properties || {};
+                const val = props[cfg.key] || '-';
+                if (!tiledLayer._hoverTooltip) {
+                    tiledLayer._hoverTooltip = L.tooltip({ sticky: true, className: 'leaflet-tooltip' });
+                }
+                tiledLayer._hoverTooltip
+                    .setLatLng(e.latlng)
+                    .setContent(`<strong>${esc(val)}</strong>`)
+                    .addTo(map);
+            });
+
+            tiledLayer.on('mouseout', function() {
+                if (tiledLayer._hoverTooltip) map.removeLayer(tiledLayer._hoverTooltip);
+            });
+
+            return tiledLayer;
+        }
+
         function toggleTematik(name, visible) {
             if (!visible) {
-                if (tematikLayers[name] && map.hasLayer(tematikLayers[name]))
+                if (tematikLayers[name] && map.hasLayer(tematikLayers[name])) {
                     map.removeLayer(tematikLayers[name]);
+                }
                 return;
             }
+
             if (tematikLayers[name]) {
                 tematikLayers[name].addTo(map);
+                if (tematikLayers[name].bringToBack) tematikLayers[name].bringToBack();
                 return;
             }
+
             const cfg = tematikConfig[name];
             fetch(cfg.file)
                 .then(r => {
@@ -2942,110 +3200,14 @@
                     return r.json();
                 })
                 .then(data => {
-                    tematikLayers[name] = L.geoJSON(data, {
-                        renderer: canvasRenderer, // ✅ FIX 4: Canvas renderer
-                        style: f => {
-                            const val = f.properties[cfg.key] || '';
-                            const fillCol = cfg.colors[val] || cfg.def;
-                            return {
-                                fillColor: fillCol,
-                                fillOpacity: 0.7,
-                                color: fillCol,
-                                weight: 0.5,
-                                opacity: 0.6
-                            };
-                        },
-                        onEachFeature: (f, layer) => {
-                            const val = f.properties[cfg.key] || '-';
-                            const skorRaw = cfg.skorField ? f.properties[cfg.skorField] : f.properties.skor;
-                            const skor = skorRaw !== undefined ? Math.round(skorRaw) : undefined;
-                            const warna = cfg.colors[val] || cfg.def;
-
-                            // Tooltip ringan saat hover
-                            layer.bindTooltip(
-                                `<strong>${val}</strong>` + (skor !== undefined && cfg.skorLabels ?
-                                    ` &nbsp;|&nbsp; Skor ${skor}: ${cfg.skorLabels[skor]}` :
-                                    ''), {
-                                    sticky: true,
-                                    className: 'leaflet-tooltip'
-                                }
-                            );
-
-                            // Popup interaktif saat klik (khusus landuse tampil lengkap)
-                            if (cfg.skorLabels && skor !== undefined) {
-                                const skorLabel = cfg.skorLabels[skor] || '-';
-                                const luas = f.properties.luas ?
-                                    parseFloat(f.properties.luas).toFixed(2) + ' ha' :
-                                    '-';
-                                layer.bindPopup(`
-                            <div style="min-width:230px;font-family:inherit;">
-                                <div style="background:linear-gradient(135deg,#0891b2,#06b6d4);
-                                            color:white;padding:10px 14px;border-radius:10px 10px 0 0;
-                                            margin:-1px -1px 0 -1px;">
-                                    <h6 style="margin:0;font-weight:800;font-size:13px;">
-                                        <i class="fas fa-map"></i> ${name === 'banjir' ? 'Kerawanan Banjir' : name === 'landuse' ? 'Penggunaan Lahan' : name === 'soil' ? 'Jenis Tanah' : name === 'slope' ? 'Kemiringan Lereng' : name === 'rain' ? 'Curah Hujan' : name === 'river' ? 'Jarak dari Sungai' : name.charAt(0).toUpperCase() + name.slice(1)}
-                                    </h6>
-                                </div>
-                                <div style="padding:12px;background:#f8fafc;border-radius:0 0 10px 10px;">
-                                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                                        <span style="width:18px;height:18px;background:${warna};
-                                                     border-radius:4px;flex-shrink:0;
-                                                     border:2px solid rgba(0,0,0,0.15);
-                                                     box-shadow:0 2px 4px rgba(0,0,0,0.1);"></span>
-                                        <strong style="color:#0f172a;font-size:14px;">${val}</strong>
-                                    </div>
-                                    <table style="width:100%;font-size:12px;border-collapse:collapse;">
-                                        <tr>
-                                            <td style="color:#64748b;padding:3px 0;width:55%;">🎯 Skor Kerawanan</td>
-                                            <td style="font-weight:700;color:#0f172a;">${skor}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="color:#64748b;padding:3px 0;">📊 Kategori</td>
-                                            <td>
-                                                <span style="background:${getSkorColor(skor)};color:white;
-                                                             padding:2px 8px;border-radius:20px;
-                                                             font-size:11px;font-weight:700;">
-                                                    ${skorLabel}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="color:#64748b;padding:3px 0;">📐 Luas</td>
-                                            <td style="font-weight:600;color:#0f172a;">${luas}</td>
-                                        </tr>
-                                    </table>
-                                    <div style="margin-top:10px;padding:7px 10px;
-                                                background:white;border-radius:8px;
-                                                border:1px solid #e2e8f0;font-size:10px;color:#64748b;">
-                                        <strong style="color:#0c4a6e;">Keterangan Skor:</strong><br>
-                                        <span style="color:#10b981;">1</span> = Sangat Rendah &nbsp;
-                                        <span style="color:#84cc16;">2</span> = Rendah &nbsp;
-                                        <span style="color:#f59e0b;">3</span> = Sedang<br>
-                                        <span style="color:#ef4444;">4</span> = Tinggi &nbsp;
-                                        <span style="color:#991b1b;">5</span> = Sangat Tinggi
-                                    </div>
-                                </div>
-                            </div>
-                        `, {
-                                    maxWidth: 280
-                                });
-                            } else {
-                                layer.bindPopup(`
-                            <div style="min-width:180px;padding:6px;">
-                                <h6 style="color:#0c4a6e;font-weight:700;margin-bottom:6px;">
-                                    ${name.charAt(0).toUpperCase() + name.slice(1)}
-                                </h6>
-                                <p style="margin:0;"><strong>${cfg.key}:</strong> ${val}</p>
-                            </div>`);
-                            }
-                        }
-                    }).addTo(map);
+                    tematikLayers[name] = createTiledTematikLayer(name, data, cfg).addTo(map);
+                    if (tematikLayers[name].bringToBack) tematikLayers[name].bringToBack();
                 })
                 .catch(() => {
                     const chk = document.getElementById('chk-' + name);
                     if (chk) chk.checked = false;
                     alert('⚠️ File GeoJSON "' + cfg.file +
-                        '" belum tersedia.\nSiapkan file di /geojson/ terlebih dahulu.');
+                        '" belum tersedia.\\nSiapkan file di public/geojson terlebih dahulu.');
                 });
         }
 

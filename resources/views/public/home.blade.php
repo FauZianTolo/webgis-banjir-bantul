@@ -1115,17 +1115,17 @@
                         <div class="col-6">
                             <div class="about-mini">
                                 <i class="fas fa-database"></i>
-                                <h6 style="font-weight:800;color:#0c4a6e;margin-bottom:.4rem;">Data Historis BPBD</h6>
-                                <p style="color:#64748b;font-size:.9rem;margin:0;line-height:1.6;">Tersedia data historis
-                                    kejadian banjir 2020–2025 Kab. Bantul.</p>
+                                <h6 style="font-weight:800;color:#0c4a6e;margin-bottom:.4rem;">Data Kejadian Banjir BPBD</h6>
+                                <p style="color:#64748b;font-size:.9rem;margin:0;line-height:1.6;">Tersedia data historis/riwayat
+                                    kejadian banjir tahun 2021–2025 Kabupaten Bantul.</p>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="about-mini">
                                 <i class="fas fa-graduation-cap"></i>
                                 <h6 style="font-weight:800;color:#0c4a6e;margin-bottom:.4rem;">Riset & TA UGM</h6>
-                                <p style="color:#64748b;font-size:.9rem;margin:0;line-height:1.6;">Dikembangkan sebagai
-                                    Tugas Akhir Program Studi SIG Sekolah Vokasi UGM.</p>
+                                <p style="color:#64748b;font-size:.9rem;margin:0;line-height:1.6;">Dikembangkan oleh Muhammad Nashan Fauzian sebagai
+                                    Tugas Akhir Program Studi SIG Sekolah Vokasi UGM, dengan Dosen Pembimbing Dr. Ari Cahyono, S.Si., M.Sc.</p>
                             </div>
                         </div>
                     </div>

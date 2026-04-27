@@ -1257,12 +1257,12 @@
                 </div>
                 <div class="col-md-10">
                     <div class="bmkg-content">
-                        <div class="bmkg-badge"><i class="fas fa-broadcast-tower"></i> INFORMASI BMKG</div>
+                        <div class="bmkg-badge"><i class="fas fa-broadcast-tower"></i> INFORMASI TERKINI</div>
                         <h5 class="bmkg-title" id="bmkgTitle">Kondisi Cuaca Kabupaten Bantul</h5>
                         <p class="bmkg-desc" id="bmkgDesc">Memuat analisis cuaca...</p>
                         <div class="bmkg-actions">
                             <a href="https://www.bmkg.go.id/cuaca/prakiraan-cuaca.bmkg" target="_blank" class="btn-bmkg">
-                                <i class="fas fa-cloud-sun-rain"></i> Prakiraan BMKG
+                                <i class="fas fa-cloud-sun-rain"></i> Lihat Prakiraan BMKG
                             </a>
                             <a href="https://www.bmkg.go.id/peringatan-dini" target="_blank" class="btn-bmkg">
                                 <i class="fas fa-bell"></i> Peringatan Dini

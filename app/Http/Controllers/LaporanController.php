@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Cache;
+use App\Services\WhatsAppNotificationService;
 
 class LaporanController extends Controller
 {
@@ -56,6 +57,9 @@ class LaporanController extends Controller
 
             NotificationController::createVerifiedNotification($laporan);
 
+            // Kirim WhatsApp otomatis saat laporan diverifikasi admin.
+            app(WhatsAppNotificationService::class)->sendLaporanDiverifikasi($laporan);
+
             return redirect()->route('admin.laporan.index')->with('success', 'Laporan berhasil diverifikasi!');
         } catch (\Exception $e) {
             return redirect()->route('admin.laporan.index')->with('error', 'Gagal memverifikasi laporan: ' . $e->getMessage());
@@ -77,6 +81,9 @@ class LaporanController extends Controller
             Cache::forget('laporan_stats_admin');
 
             NotificationController::createRejectedNotification($laporan);
+
+            // Kirim WhatsApp otomatis saat laporan ditolak admin.
+            app(WhatsAppNotificationService::class)->sendLaporanDitolak($laporan);
 
             return redirect()->route('admin.laporan.index')->with('success', 'Laporan berhasil ditolak.');
         } catch (\Exception $e) {

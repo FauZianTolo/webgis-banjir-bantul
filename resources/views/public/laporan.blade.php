@@ -819,7 +819,10 @@
                         <label class="form-label">No. Telepon / WhatsApp <span class="text-danger">*</span></label>
                         <input type="text" name="no_telp" class="form-control" required placeholder="08xxxxxxxxxx"
                             value="{{ old('no_telp') }}">
-                        <small class="text-muted">Wajib — untuk konfirmasi laporan oleh BPBD</small>
+                        <small class="text-muted">Wajib — untuk konfirmasi laporan oleh BPBD melalui WhatsApp/status laporan.</small>
+                        <small class="d-block mt-1" style="color:#0891b2;font-weight:600;">
+                            <i class="fab fa-whatsapp"></i> Dengan mengirim laporan, Anda bersedia menerima notifikasi status laporan melalui WhatsApp.
+                        </small>
                     </div>
                 </div>
 

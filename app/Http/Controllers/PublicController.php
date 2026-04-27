@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Services\WhatsAppNotificationService;
 
 class PublicController extends Controller
 {
@@ -130,7 +131,13 @@ public function route(Request $request)
 
     NotificationController::createLaporanNotification($laporan);
 
-    return redirect()->route('laporan')->with('success', 'Laporan berhasil dikirim! Terima kasih atas partisipasinya.');
+    // Kirim notifikasi WhatsApp otomatis kepada pelapor.
+    // Jika konfigurasi WhatsApp belum lengkap, proses submit tetap berhasil dan detail error dicatat di storage/logs/laravel.log.
+    app(WhatsAppNotificationService::class)->sendLaporanDiterima($laporan);
+
+    return redirect()
+        ->route('laporan.status', ['q' => $laporan->no_telp])
+        ->with('success', 'Laporan berhasil dikirim. Gunakan nomor HP yang sama untuk memantau status verifikasi laporan secara berkala.');
 }
 
     public function statistik()
@@ -180,6 +187,7 @@ public function route(Request $request)
         // ========== GABUNGKAN & PROSES DATA ==========
         $kecamatanCount = [];
         $yearlyData = [];
+        $verifiedByYear = [];
         $unmatchedCount = 0;
 
         // 1. PROSES DATA HISTORIS (dari GeoJSON)
@@ -254,6 +262,11 @@ public function route(Request $request)
                 if ($month >= 1 && $month <= 12) {
                     $yearlyData[$year][$month]++;
                 }
+
+                if (!isset($verifiedByYear[$year])) {
+                    $verifiedByYear[$year] = 0;
+                }
+                $verifiedByYear[$year]++;
             }
         }
 
@@ -346,6 +359,7 @@ public function route(Request $request)
             'kecamatanStats' => $kecamatanStats,
             'laporanPerBulan' => $laporanPerBulan,
             'yearlyData' => $yearlyData,
+            'verifiedByYear' => $verifiedByYear,
             'kecamatanByYear' => $kecamatanByYear, // ✅ FIX 2: per-tahun per-kecamatan
             'availableYears' => $availableYears,
             'selectedYear' => $selectedYear
@@ -362,6 +376,8 @@ public function route(Request $request)
             'kecamatanStats' => [],
             'laporanPerBulan' => [],
             'yearlyData' => [],
+            'verifiedByYear' => [],
+            'kecamatanByYear' => [],
             'availableYears' => [],
             'selectedYear' => date('Y')
         ]);
@@ -562,36 +578,83 @@ private function parseIndonesianDate($dateString)
 
 
     /**
-     * ✅ FIX 3: Cek status laporan oleh pelapor (publik)
-     * Route: GET /laporan/status?q=0812xxx atau ?q=46
+     * Cek status laporan oleh pelapor (publik).
+     * Pencarian dibuat ketat agar input pendek seperti "11" dibaca sebagai ID laporan,
+     * bukan dicocokkan sebagian ke nomor HP, kedalaman, atau field lain.
+     *
+     * Aturan:
+     * - ID laporan: angka pendek / format #11 / ID-11, dicari exact ke kolom id.
+     * - Nomor HP: minimal 8 digit, dicari exact setelah normalisasi angka telepon.
+     *
+     * Route: GET /laporan/status?q=0812xxx atau /laporan/status?q=11
      */
     public function cekStatusLaporan(Request $request)
     {
-        $query = trim($request->get('q', ''));
+        $query = trim((string) $request->get('q', ''));
         $results = null;
+        $inputError = null;
+        $searchMode = null;
 
         if ($query !== '') {
-            // Bersihkan prefix # jika user ketik "#46"
-            $cleanQuery = ltrim($query, '#');
+            // Ambil angka saja dari input agar format seperti 0812-xxxx, 0812 xxxx, +62812 tetap bisa diproses.
+            $digits = preg_replace('/\D+/', '', $query);
 
-            $results = \App\Models\LaporanBanjir::where(function ($q) use ($cleanQuery) {
-                    // Cari by nomor HP
-                    $q->where('no_telp', 'like', '%' . $cleanQuery . '%')
-                    // Atau by ID laporan (jika input angka)
-                      ->orWhere(function ($q2) use ($cleanQuery) {
-                          if (is_numeric($cleanQuery)) {
-                              $q2->where('id', (int) $cleanQuery);
-                          }
-                      });
-                })
-                ->orderBy('waktu_laporan', 'desc')
-                ->get();
+            if ($digits === '') {
+                $inputError = 'Masukkan ID laporan atau nomor HP pelapor yang valid.';
+                $results = collect();
+            } else {
+                // Format ID yang diterima: 11, #11, ID 11, ID-11, id:11.
+                $isExplicitId = preg_match('/^\s*(?:#|id\s*[:\-]?)\s*\d+\s*$/i', $query) === 1;
+
+                // Nomor HP Indonesia umumnya panjang; input angka pendek dianggap ID, bukan nomor HP.
+                $isLikelyPhone = strlen($digits) >= 8;
+
+                if ($isExplicitId || !$isLikelyPhone) {
+                    $searchMode = 'id';
+
+                    $results = LaporanBanjir::where('id', (int) $digits)
+                        ->orderBy('waktu_laporan', 'desc')
+                        ->get();
+                } else {
+                    $searchMode = 'phone';
+
+                    $phoneCandidates = [$digits];
+
+                    // Variasi awalan nomor Indonesia: 08xxx, 628xxx, dan 8xxx.
+                    if (str_starts_with($digits, '62')) {
+                        $phoneCandidates[] = '0' . substr($digits, 2);
+                        $phoneCandidates[] = substr($digits, 2);
+                    } elseif (str_starts_with($digits, '0')) {
+                        $phoneCandidates[] = '62' . substr($digits, 1);
+                        $phoneCandidates[] = substr($digits, 1);
+                    } elseif (str_starts_with($digits, '8')) {
+                        $phoneCandidates[] = '0' . $digits;
+                        $phoneCandidates[] = '62' . $digits;
+                    }
+
+                    $phoneCandidates = array_values(array_unique(array_filter($phoneCandidates)));
+
+                    // Normalisasi kolom no_telp di sisi database agar format 0812-xxxx, 0812 xxxx, atau +62812 tetap bisa cocok.
+                    // Penting: menggunakan operator "=" bukan LIKE agar input seperti "11" tidak mengambil data lain secara parsial.
+                    $normalizedPhoneColumn = "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(no_telp, ' ', ''), '-', ''), '+', ''), '.', ''), '(', ''), ')', '')";
+
+                    $results = LaporanBanjir::where(function ($q) use ($phoneCandidates, $normalizedPhoneColumn) {
+                            foreach ($phoneCandidates as $phone) {
+                                $q->orWhereRaw($normalizedPhoneColumn . ' = ?', [$phone]);
+                            }
+                        })
+                        ->orderBy('waktu_laporan', 'desc')
+                        ->get();
+                }
+            }
         }
 
         return view('public.status', [
-            'title'   => 'Cek Status Laporan',
-            'query'   => $query,
-            'results' => $results,
+            'title'      => 'Cek Status Laporan',
+            'query'      => $query,
+            'results'    => $results,
+            'inputError' => $inputError,
+            'searchMode' => $searchMode,
         ]);
     }
 
