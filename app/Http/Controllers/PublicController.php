@@ -272,6 +272,47 @@ public function route(Request $request)
             ];
         }
 
+        // ✅ FIX 2: Hitung kecamatanCount PER TAHUN agar JS bisa filter per tahun
+        $kecamatanByYear = []; // [ year => [ kecamatan => count ] ]
+
+        foreach ($historisFeatures as $titik) {
+            $props = $titik['properties'] ?? [];
+            $geometry = $titik['geometry'] ?? [];
+            $coords = $geometry['coordinates'] ?? null;
+            $tanggal = $props['Tanggal'] ?? '';
+            if (!$coords || count($coords) < 2) continue;
+            $lon = $coords[0];
+            $lat = $coords[1];
+            $kecamatanName = $this->findKecamatanByPoint($lat, $lon, $kecamatanPolygons);
+            if (!$kecamatanName) continue;
+            if (!empty($tanggal)) {
+                $parsedDate = $this->parseIndonesianDate($tanggal);
+                if ($parsedDate) {
+                    $yr = $parsedDate['year'];
+                    if (!isset($kecamatanByYear[$yr])) $kecamatanByYear[$yr] = [];
+                    if (!isset($kecamatanByYear[$yr][$kecamatanName])) $kecamatanByYear[$yr][$kecamatanName] = 0;
+                    $kecamatanByYear[$yr][$kecamatanName]++;
+                }
+            }
+        }
+
+        foreach ($laporanVerified as $laporan) {
+            $kecamatanName = trim($laporan->kecamatan);
+            $waktu = $laporan->waktu_laporan;
+            if (!empty($kecamatanName) && $waktu) {
+                $yr = $waktu->year;
+                if (!isset($kecamatanByYear[$yr])) $kecamatanByYear[$yr] = [];
+                if (!isset($kecamatanByYear[$yr][$kecamatanName])) $kecamatanByYear[$yr][$kecamatanName] = 0;
+                $kecamatanByYear[$yr][$kecamatanName]++;
+            }
+        }
+
+        // Sort setiap tahun descending
+        foreach ($kecamatanByYear as $yr => &$kecArr) {
+            arsort($kecArr);
+        }
+        unset($kecArr);
+
         // Available years (sorted descending)
         $availableYears = array_keys($yearlyData);
         rsort($availableYears);
@@ -304,7 +345,8 @@ public function route(Request $request)
             'totalVerified' => $totalVerified,
             'kecamatanStats' => $kecamatanStats,
             'laporanPerBulan' => $laporanPerBulan,
-            'yearlyData' => $yearlyData, // ⭐ BARU: untuk AJAX
+            'yearlyData' => $yearlyData,
+            'kecamatanByYear' => $kecamatanByYear, // ✅ FIX 2: per-tahun per-kecamatan
             'availableYears' => $availableYears,
             'selectedYear' => $selectedYear
         ]);
@@ -517,5 +559,40 @@ private function parseIndonesianDate($dateString)
         ]);
     }
 
+
+
+    /**
+     * ✅ FIX 3: Cek status laporan oleh pelapor (publik)
+     * Route: GET /laporan/status?q=0812xxx atau ?q=46
+     */
+    public function cekStatusLaporan(Request $request)
+    {
+        $query = trim($request->get('q', ''));
+        $results = null;
+
+        if ($query !== '') {
+            // Bersihkan prefix # jika user ketik "#46"
+            $cleanQuery = ltrim($query, '#');
+
+            $results = \App\Models\LaporanBanjir::where(function ($q) use ($cleanQuery) {
+                    // Cari by nomor HP
+                    $q->where('no_telp', 'like', '%' . $cleanQuery . '%')
+                    // Atau by ID laporan (jika input angka)
+                      ->orWhere(function ($q2) use ($cleanQuery) {
+                          if (is_numeric($cleanQuery)) {
+                              $q2->where('id', (int) $cleanQuery);
+                          }
+                      });
+                })
+                ->orderBy('waktu_laporan', 'desc')
+                ->get();
+        }
+
+        return view('public.status', [
+            'title'   => 'Cek Status Laporan',
+            'query'   => $query,
+            'results' => $results,
+        ]);
+    }
 
 }

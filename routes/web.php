@@ -21,6 +21,7 @@ Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/peta', [PublicController::class, 'peta'])->name('peta');
 Route::get('/laporan', [PublicController::class, 'laporan'])->name('laporan');
 Route::post('/laporan/submit', [PublicController::class, 'submitLaporan'])->name('laporan.submit');
+Route::get('/laporan/status', [PublicController::class, 'cekStatusLaporan'])->name('laporan.status');
 Route::get('/statistik', [PublicController::class, 'statistik'])->name('statistik');
 Route::get('/berita', [PublicController::class, 'berita'])->name('berita');
 Route::get('/kontak', [PublicController::class, 'kontak'])->name('kontak');

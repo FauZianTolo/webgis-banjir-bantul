@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
 @section('styles')
-<link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&display=swap' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap' rel='stylesheet'>
 <style>
 * { font-family: 'Plus Jakarta Sans', sans-serif; }
 
@@ -171,7 +171,7 @@
 .donut-legend-dot { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
 .donut-legend-name { font-size:12px; font-weight:700; color:#334155; flex:1; }
 .donut-legend-val  { font-size:12px; font-weight:800; color:#0891b2; }
-.donut-legend-pct  { font-size:10px; font-weight:700; color:#94a3b8; }
+.donut-legend-pct  { font-size:10px; font-weight:600; color:#94a3b8; }
 
 /* ══════════════════════════════════════════════════════
    TABLE
@@ -271,17 +271,6 @@
 @endsection
 
 @section('content')
-{{--
-    ✅ OPTIMASI CACHE: Data statistik di-cache 1 jam di PublicController@statistik.
-    Tambahkan di PublicController.php:
-
-    $result = Cache::remember('statistik_data', 3600, function () {
-        // ... seluruh logika baca GeoJSON + spatial join di sini
-        return compact('kecamatanStats', 'yearlyData', 'laporanPerBulan',
-                       'availableYears', 'selectedYear', 'totalLaporan', 'totalVerified');
-    });
-    return view('public.statistik', $result + ['title' => 'Statistik Banjir']);
---}}
 
 {{-- ── HERO ── --}}
 <div class="statistik-hero">
@@ -361,7 +350,7 @@
                     <div class="chart-card-title mb-0">
                         <i class="fas fa-chart-line"></i>
                         Tren Bulanan
-                        <span style="font-size:13px;font-weight:700;color:#64748b;">
+                        <span style="font-size:13px;font-weight:600;color:#64748b;">
                             (<span id="current-year">{{ $selectedYear }}</span>)
                         </span>
                     </div>
@@ -488,6 +477,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
 const kecamatanStats = @json($kecamatanStats);
+const kecamatanByYear = @json($kecamatanByYear ?? []); // ✅ FIX 2: per-tahun
 let yearlyData   = @json($yearlyData);
 let selectedYear = {{ $selectedYear }};
 let trendChart   = null;
@@ -499,8 +489,54 @@ const PALETTE = [
 ];
 
 /* ── DONUT CHART ── */
-function initDonutChart() {
-    const top10 = kecamatanStats.slice(0, 10);
+// ✅ FIX 2: Update donut chart dari data per-tahun
+function getKecamatanForYear(year) {
+    const yearData = kecamatanByYear[year];
+    if (!yearData || Object.keys(yearData).length === 0) {
+        // fallback ke data total jika tahun tidak ada datanya
+        return kecamatanStats;
+    }
+    // Ubah object {kec: count} menjadi array [{kecamatan, total}] sorted desc, top 10
+    return Object.entries(yearData)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([kecamatan, total]) => ({ kecamatan, total }));
+}
+
+// ✅ FIX 2: Re-render tabel detail per kecamatan
+function updateKecamatanTable(data) {
+    const tbody = document.getElementById('kecamatan-detail-tbody');
+    if (!tbody) return;
+    const totalAll = data.reduce((s, d) => s + d.total, 0);
+    tbody.innerHTML = data.map((item, idx) => {
+        const pct = totalAll > 0 ? ((item.total / totalAll) * 100).toFixed(1) : 0;
+        const rankColors = ['#fbbf24','#94a3b8','#b45309','#10b981','#6366f1'];
+        const rankColor = rankColors[idx] || '#94a3b8';
+        return \`<tr>
+            <td><span style="background:\${rankColor};color:white;
+                padding:2px 8px;border-radius:12px;font-weight:700;font-size:11px;">
+                \${idx + 1}</span></td>
+            <td><strong style="color:#0c4a6e;">\${item.kecamatan}</strong></td>
+            <td><strong style="color:#0891b2;">\${item.total}</strong></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;overflow:hidden;">
+                        <div class="prog-fill" style="height:100%;background:linear-gradient(90deg,#0891b2,#06b6d4);
+                            border-radius:4px;width:\${pct}%;transition:width .8s ease;"></div>
+                    </div>
+                    <span style="font-size:11px;color:#64748b;min-width:35px;">\${pct}%</span>
+                </div>
+            </td>
+        </tr>\`;
+    }).join('');
+}
+
+// ✅ FIX 2: Re-render donut chart dengan data baru
+let donutChart = null; // track chart instance
+
+function initDonutChart(data) {
+    if (!data) data = kecamatanStats;
+    const top10 = data.slice(0, 10);
     const total = top10.reduce((s, k) => s + k.total, 0);
     const labels = top10.map(k => k.kecamatan);
     const vals   = top10.map(k => k.total);
@@ -638,34 +674,35 @@ function changeYear(year) {
         btn.classList.toggle('active', parseInt(btn.dataset.year) === year);
     });
     initTrendChart(year);
+
+    // ✅ FIX 2: Update semua statistik kecamatan mengikuti tahun
+    const yearKecData = getKecamatanForYear(year);
+    initDonutChart(yearKecData);
+    updateKecamatanTable(yearKecData);
+
+    // Update total counter di hero card
+    const totalEl = document.querySelector('.dc-num');
+    if (totalEl) {
+        const total = yearKecData.reduce((s, d) => s + d.total, 0);
+        totalEl.textContent = total;
+    }
 }
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
     initTrendChart(selectedYear);
-    initDonutChart();
+    const initData = getKecamatanForYear(selectedYear);
+    initDonutChart(initData);
+    updateKecamatanTable(initData);
 
-    /* ✅ OPTIMASI: Animate progress bars dengan IntersectionObserver agar hanya
-       dianimasikan saat elemen terlihat di viewport */
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const el = entry.target;
-                const w = el.getAttribute('data-width') || el.style.width;
-                el.setAttribute('data-width', w);
-                el.style.width = '0';
-                requestAnimationFrame(() => {
-                    setTimeout(() => { el.style.width = w; }, 80);
-                });
-                observer.unobserve(el);
-            }
+    /* Animate progress bars */
+    setTimeout(() => {
+        document.querySelectorAll('.prog-fill').forEach(el => {
+            const w = el.style.width;
+            el.style.width = '0';
+            requestAnimationFrame(() => setTimeout(() => { el.style.width = w; }, 80));
         });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.prog-fill').forEach(el => {
-        el.setAttribute('data-width', el.style.width);
-        observer.observe(el);
-    });
+    }, 300);
 });
 </script>
 @endsection
