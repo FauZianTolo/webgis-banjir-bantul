@@ -666,214 +666,61 @@
     </div>
 
     @push('scripts')
-        <!-- Chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            function getFotoUrl(f) {
-                if (!f) return '';
-                return f.startsWith('http') ? f : '/uploads/laporan/' + f;
-            }
-            // Chart Laporan Per Bulan
-            const bulanNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-            const laporanData = @json($laporanPerBulan);
-            const dataPerBulan = Array(12).fill(0);
-
-            laporanData.forEach(item => {
-                dataPerBulan[item.bulan - 1] = item.total;
-            });
-
-            new Chart(document.getElementById('chartLaporanBulan'), {
-                type: 'line',
-                data: {
-                    labels: bulanNames,
-                    datasets: [{
-                        label: 'Jumlah Laporan',
-                        data: dataPerBulan,
-                        borderColor: '#0891b2',
-                        backgroundColor: 'rgba(8, 145, 178, 0.1)',
-                        borderWidth: 4,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 6,
-                        pointHoverRadius: 9,
-                        pointBackgroundColor: '#0891b2',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    size: 14,
-                                    weight: 'bold',
-                                    family: 'Inter'
-                                },
-                                color: '#0c4a6e'
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(12, 74, 110, 0.95)',
-                            padding: 15,
-                            titleFont: {
-                                size: 15,
-                                weight: 'bold'
-                            },
-                            bodyFont: {
-                                size: 14
-                            },
-                            borderColor: '#0891b2',
-                            borderWidth: 2
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1,
-                                font: {
-                                    size: 13,
-                                    weight: '600'
-                                },
-                                color: '#64748b'
-                            },
-                            grid: {
-                                color: 'rgba(0,0,0,0.05)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 13,
-                                    weight: '600'
-                                },
-                                color: '#64748b'
-                            },
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Chart Per Kecamatan
-            const kecamatanData = @json($laporanPerKecamatan);
-
-            new Chart(document.getElementById('chartKecamatan'), {
-                type: 'bar',
-                data: {
-                    labels: kecamatanData.map(k => k.kecamatan),
-                    datasets: [{
-                        label: 'Jumlah Kejadian',
-                        data: kecamatanData.map(k => k.total),
-                        backgroundColor: [
-                            'rgba(239, 68, 68, 0.8)',
-                            'rgba(245, 158, 11, 0.8)',
-                            'rgba(8, 145, 178, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(139, 92, 246, 0.8)'
-                        ],
-                        borderColor: [
-                            '#ef4444',
-                            '#f59e0b',
-                            '#0891b2',
-                            '#10b981',
-                            '#8b5cf6'
-                        ],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(12, 74, 110, 0.95)',
-                            padding: 15,
-                            titleFont: {
-                                size: 15,
-                                weight: 'bold'
-                            },
-                            bodyFont: {
-                                size: 14
-                            },
-                            borderColor: '#0891b2',
-                            borderWidth: 2
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1,
-                                font: {
-                                    size: 13,
-                                    weight: '600'
-                                },
-                                color: '#64748b'
-                            },
-                            grid: {
-                                color: 'rgba(0,0,0,0.05)'
-                            }
-                        },
-                        y: {
-                            ticks: {
-                                font: {
-                                    size: 13,
-                                    weight: '700'
-                                },
-                                color: '#0c4a6e'
-                            },
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-
             // Modal Functions
             function openImageModal(src) {
-                event.stopPropagation();
-                event.preventDefault();
-                document.getElementById('modalImage').src = src;
-                document.getElementById('imageModal').style.display = 'block';
-                document.body.style.overflow = 'hidden';
+                if (window.event) {
+                    window.event.stopPropagation();
+                    window.event.preventDefault();
+                }
+
+                const modalImage = document.getElementById('modalImage');
+                const imageModal = document.getElementById('imageModal');
+
+                if (modalImage && imageModal) {
+                    modalImage.src = src;
+                    imageModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
             }
 
             function closeImageModal() {
-                document.getElementById('imageModal').style.display = 'none';
-                document.body.style.overflow = '';
+                const imageModal = document.getElementById('imageModal');
+
+                if (imageModal) {
+                    imageModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
             }
 
-            // Close on ESC
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') closeImageModal();
+            document.addEventListener('DOMContentLoaded', function() {
+                // Close modal on ESC
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        closeImageModal();
+                    }
+                });
+
+                // Jam Digital Berjalan
+                function updateClock() {
+                    const now = new Date();
+
+                    const h = String(now.getHours()).padStart(2, '0');
+                    const m = String(now.getMinutes()).padStart(2, '0');
+                    const s = String(now.getSeconds()).padStart(2, '0');
+
+                    const el = document.getElementById('live-clock');
+
+                    if (el) {
+                        el.textContent = h + ':' + m + ':' + s;
+                    }
+                }
+
+                updateClock();
+                setInterval(updateClock, 1000);
+
+                console.log('✅ Dashboard loaded successfully');
             });
-
-            console.log('✅ Dashboard loaded successfully');
-
-            // ── JAM DIGITAL BERJALAN ──────────────────────────────────────
-            function updateClock() {
-                var now = new Date();
-                var h = String(now.getHours()).padStart(2, '0');
-                var m = String(now.getMinutes()).padStart(2, '0');
-                var s = String(now.getSeconds()).padStart(2, '0');
-                var el = document.getElementById('live-clock');
-                if (el) el.textContent = h + ':' + m + ':' + s;
-            }
-            updateClock();
-            setInterval(updateClock, 1000);
         </script>
     @endpush
 </x-app-layout>
