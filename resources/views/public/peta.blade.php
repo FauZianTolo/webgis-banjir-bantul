@@ -1425,36 +1425,36 @@
                                 </div>
                                 <div class="tematik-item-body" id="acc-slope"> <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">Makin datar
                                         = makin rawan genangan</div>
-                                    <div style="font-size:9px;font-weight:800;color:#10b981;margin-top:4px;">● Skor 1 —
+                                    <div style="font-size:9px;font-weight:800;color:#ff0000;margin-top:4px;">● Skor 1 —
                                         Sangat Rendah</div>
                                     <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#a8d5a2;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:10px;height:10px;background:#ff0000;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">&gt;40°</span></div>
                                     </div>
-                                    <div style="font-size:9px;font-weight:800;color:#84cc16;">● Skor 2 — Rendah</div>
+                                    <div style="font-size:9px;font-weight:800;color:#ff8000;">● Skor 2 — Rendah</div>
                                     <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#7dba5f;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:10px;height:10px;background:#ff8000;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">25–40°</span></div>
                                     </div>
-                                    <div style="font-size:9px;font-weight:800;color:#f59e0b;">● Skor 3 — Sedang</div>
+                                    <div style="font-size:9px;font-weight:800;color:#ffff00;">● Skor 3 — Sedang</div>
                                     <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#f59e0b;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:10px;height:10px;background:#ffff00;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">15–25°</span></div>
                                     </div>
-                                    <div style="font-size:9px;font-weight:800;color:#ef4444;">● Skor 4 — Tinggi</div>
+                                    <div style="font-size:9px;font-weight:800;color:#8bd100;">● Skor 4 — Tinggi</div>
                                     <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#ef4444;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:10px;height:10px;background:#8bd100;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">2–15°</span></div>
                                     </div>
-                                    <div style="font-size:9px;font-weight:800;color:#991b1b;">● Skor 5 — Sangat Tinggi
+                                    <div style="font-size:9px;font-weight:800;color:#38a800;">● Skor 5 — Sangat Tinggi
                                     </div>
                                     <div style="padding-left:4px;margin-top:2px;margin-bottom:4px;">
                                         <div style="display:flex;align-items:center;gap:3px;"><span
-                                                style="width:10px;height:10px;background:#991b1b;border-radius:2px;flex-shrink:0;"></span><span
+                                                style="width:10px;height:10px;background:#38a800;border-radius:2px;flex-shrink:0;"></span><span
                                                 style="font-size:8px;color:#475569;">0–2° (Datar)</span></div>
                                     </div>
                                     <div style="font-size:8px;color:#94a3b8;font-style:italic;margin-top:2px;">Sumber:DEMNAS</div>

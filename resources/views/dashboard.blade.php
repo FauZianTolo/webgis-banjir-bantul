@@ -416,7 +416,7 @@
 
         <!-- Statistics Cards -->
         <div class="stats-grid">
-            <div class="stats-card blue">
+            <div class="stats-card yellow">
                 <div class="stats-icon">
                     <i class="fas fa-clock"></i>
                 </div>
@@ -432,15 +432,15 @@
                 <div class="stats-label">Laporan Verified</div>
             </div>
 
-            <div class="stats-card yellow">
+            <div class="stats-card red">
                 <div class="stats-icon">
-                    <i class="fas fa-map-pin"></i>
+                    <i class="fas fa-times-circle"></i>
                 </div>
-                <div class="stats-number">{{ $totalPoints ?? 0 }}</div>
+                <div class="stats-number">{{ $LaporanRejected ?? 0 }}</div>
                 <div class="stats-label">Total Data Points</div>
             </div>
 
-            <div class="stats-card red">
+            <div class="stats-card blue">
                 <div class="stats-icon">
                     <i class="fas fa-database"></i>
                 </div>
@@ -488,100 +488,6 @@
                 </a>
             </div>
         </div>
-
-
-
-
-
-        <!-- Charts Section -->
-        <div class="charts-grid">
-            <div class="chart-card">
-                <h5 class="chart-title">
-                    <i class="fas fa-chart-line" style="color:#0891b2;"></i>
-                    Tren Laporan Per Bulan ({{ now()->year }})
-                </h5>
-                <canvas id="chartLaporanBulan"></canvas>
-            </div>
-            <div class="chart-card">
-                <h5 class="chart-title">
-                    <i class="fas fa-map-marked-alt" style="color:#8b5cf6;"></i>
-                    Top 5 Kecamatan Terdampak
-                </h5>
-                <canvas id="chartKecamatan"></canvas>
-            </div>
-        </div>
-
-        <!-- Recent Reports Table -->
-        <div class="table-card">
-            <h4 class="table-title">
-                <i class="fas fa-table" style="color: #8b5cf6;"></i>
-                Data Kejadian Banjir Terbaru (Verified)
-            </h4>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Foto</th>
-                            <th>Waktu</th>
-                            <th>Lokasi</th>
-                            <th>Kedalaman</th>
-                            <th>Pelapor</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($laporanTerbaru as $index => $item)
-                            <tr>
-                                <td><strong>{{ $index + 1 }}</strong></td>
-
-                                <td>
-                                    @if ($item->foto)
-                                        @php $fotoUrl = str_starts_with($item->foto, 'http') ? $item->foto : asset('uploads/laporan/' . $item->foto); @endphp
-                                        <img src="{{ $fotoUrl }}" alt="Foto" class="rounded"
-                                            style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
-                                            onclick="openImageModal('{{ $fotoUrl }}')"
-                                            title="Klik untuk memperbesar" onerror="this.style.display='none'">
-                                    @else
-                                        <span class="text-muted small">Tidak ada foto</span>
-                                    @endif
-                                </td>
-
-                                <td>{{ $item->waktu_laporan->format('d/m/Y H:i') }}</td>
-                                <td>
-                                    <strong>{{ $item->kecamatan }}</strong><br>
-                                    <small class="text-muted">{{ $item->desa }}</small>
-                                </td>
-                                <td>
-                                    <span
-                                        class="badge
-                                    @if ($item->kedalaman_cm >= 70) bg-danger
-                                    @elseif($item->kedalaman_cm >= 40) bg-warning
-                                    @else bg-info @endif">
-                                        {{ $item->kedalaman_cm }} cm
-                                    </span>
-                                </td>
-                                <td>{{ $item->nama_pelapor }}</td>
-                                <td>
-                                    <a href="{{ route('admin.peta') }}?lat={{ $item->latitude }}&lng={{ $item->longitude }}"
-                                        class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-map-marker-alt"></i> Lihat di Peta
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center text-muted py-5">
-                                    <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
-                                    Belum ada laporan terverifikasi
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 
     <!-- Modal Image Viewer -->
