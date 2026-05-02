@@ -2939,15 +2939,15 @@
                 },
                 colors: {
                     // Skor 1 - Sangat Rendah (lereng >40°, sangat curam)
-                    '>40': '#a8d5a2',
+                    '>40': '#ff0000',
                     // Skor 2 - Rendah (lereng 25-40°, curam)
-                    '25-40': '#7dba5f',
+                    '25-40': '#ff8000',
                     // Skor 3 - Sedang (lereng 15-25°)
-                    '15-25': '#f59e0b',
+                    '15-25': '#ffff00',
                     // Skor 4 - Tinggi (lereng 2-15°, agak landai)
-                    '2-15': '#ef4444',
+                    '2-15': '#8bd100',
                     // Skor 5 - Sangat Tinggi (lereng 0-2°, hampir datar = rawan genangan)
-                    '0-2': '#991b1b',
+                    '0-2': '#38a800',
                 },
                 def: '#d9d9d9'
             },

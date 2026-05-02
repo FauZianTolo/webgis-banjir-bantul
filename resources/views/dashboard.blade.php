@@ -4,12 +4,14 @@
             <h2 style="color: #0c4a6e; font-weight: 900; font-size: 2rem; margin: 0;">
                 <i class="fas fa-tachometer-alt"></i> Dashboard Admin BPBD Bantul
             </h2>
-            <p style="color: #64748b; margin: 0.5rem 0 0 0; font-weight: 600; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
+            <p
+                style="color: #64748b; margin: 0.5rem 0 0 0; font-weight: 600; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
                 <span>
                     <i class="fas fa-calendar"></i>
                     {{ now()->isoFormat('dddd, D MMMM YYYY') }}
                 </span>
-                <span style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0891b2,#06b6d4);color:white;padding:4px 14px;border-radius:20px;font-size:0.95rem;font-weight:700;box-shadow:0 3px 10px rgba(8,145,178,0.3);">
+                <span
+                    style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0891b2,#06b6d4);color:white;padding:4px 14px;border-radius:20px;font-size:0.95rem;font-weight:700;box-shadow:0 3px 10px rgba(8,145,178,0.3);">
                     <i class="fas fa-clock"></i>
                     <span id="live-clock" style="font-family:monospace;letter-spacing:1px;">--:--:--</span>
                     <span style="font-size:0.75rem;opacity:0.85;">WIB</span>
@@ -122,10 +124,21 @@
                 color: #0891b2;
             }
 
-            .stats-card.blue .stats-number  { color: #2563eb; }
-            .stats-card.green .stats-number  { color: #059669; }
-            .stats-card.yellow .stats-number { color: #d97706; }
-            .stats-card.red .stats-number    { color: #dc2626; }
+            .stats-card.blue .stats-number {
+                color: #2563eb;
+            }
+
+            .stats-card.green .stats-number {
+                color: #059669;
+            }
+
+            .stats-card.yellow .stats-number {
+                color: #d97706;
+            }
+
+            .stats-card.red .stats-number {
+                color: #dc2626;
+            }
 
             .stats-label {
                 font-size: 1rem;
@@ -373,41 +386,123 @@
 
             /* ==================== RESPONSIVE ==================== */
             @media (max-width: 767px) {
+
                 /* Stats - 2 kolom di HP */
                 .stats-grid {
                     grid-template-columns: repeat(2, 1fr);
                     gap: 0.75rem;
                     margin-bottom: 1.25rem;
                 }
-                .stats-card { padding: 1.25rem 1rem; border-radius: 14px; }
-                .stats-icon { width: 50px; height: 50px; font-size: 1.4rem; margin-bottom: 1rem; border-radius: 12px; }
-                .stats-number { font-size: 2rem; }
-                .stats-label { font-size: 0.78rem; letter-spacing: 0; }
+
+                .stats-card {
+                    padding: 1.25rem 1rem;
+                    border-radius: 14px;
+                }
+
+                .stats-icon {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 1.4rem;
+                    margin-bottom: 1rem;
+                    border-radius: 12px;
+                }
+
+                .stats-number {
+                    font-size: 2rem;
+                }
+
+                .stats-label {
+                    font-size: 0.78rem;
+                    letter-spacing: 0;
+                }
 
                 /* Quick actions - 2 kolom */
-                .quick-actions-card { padding: 1.25rem; border-radius: 16px; margin-bottom: 1.25rem; }
-                .quick-actions-title { font-size: 1.2rem; margin-bottom: 1rem; }
-                .quick-actions-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-                .quick-action-item { padding: 1.25rem 0.75rem; border-radius: 12px; }
-                .quick-action-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
-                .quick-action-title { font-size: 0.88rem; margin-bottom: 0.25rem; }
-                .quick-action-subtitle { font-size: 0.75rem; }
+                .quick-actions-card {
+                    padding: 1.25rem;
+                    border-radius: 16px;
+                    margin-bottom: 1.25rem;
+                }
+
+                .quick-actions-title {
+                    font-size: 1.2rem;
+                    margin-bottom: 1rem;
+                }
+
+                .quick-actions-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 0.75rem;
+                }
+
+                .quick-action-item {
+                    padding: 1.25rem 0.75rem;
+                    border-radius: 12px;
+                }
+
+                .quick-action-icon {
+                    font-size: 1.8rem;
+                    margin-bottom: 0.75rem;
+                }
+
+                .quick-action-title {
+                    font-size: 0.88rem;
+                    margin-bottom: 0.25rem;
+                }
+
+                .quick-action-subtitle {
+                    font-size: 0.75rem;
+                }
 
                 /* Charts - 1 kolom */
-                .charts-grid { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.25rem; }
-                .chart-card { padding: 1.25rem; border-radius: 14px; }
-                .chart-title { font-size: 1rem; margin-bottom: 1rem; }
+                .charts-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
+                    margin-bottom: 1.25rem;
+                }
+
+                .chart-card {
+                    padding: 1.25rem;
+                    border-radius: 14px;
+                }
+
+                .chart-title {
+                    font-size: 1rem;
+                    margin-bottom: 1rem;
+                }
 
                 /* Table */
-                .table-card { padding: 1.25rem; border-radius: 14px; }
-                .table-title { font-size: 1.1rem; margin-bottom: 1rem; }
-                .table thead th { padding: 0.65rem 0.5rem; font-size: 0.75rem; }
-                .table tbody td { padding: 0.65rem 0.5rem; font-size: 0.82rem; }
+                .table-card {
+                    padding: 1.25rem;
+                    border-radius: 14px;
+                }
+
+                .table-title {
+                    font-size: 1.1rem;
+                    margin-bottom: 1rem;
+                }
+
+                .table thead th {
+                    padding: 0.65rem 0.5rem;
+                    font-size: 0.75rem;
+                }
+
+                .table tbody td {
+                    padding: 0.65rem 0.5rem;
+                    font-size: 0.82rem;
+                }
             }
+
             @media (max-width: 420px) {
-                .stats-number { font-size: 1.75rem; }
-                .quick-action-item { padding: 1rem 0.5rem; }
-                .quick-action-icon { font-size: 1.5rem; }
+                .stats-number {
+                    font-size: 1.75rem;
+                }
+
+                .quick-action-item {
+                    padding: 1rem 0.5rem;
+                }
+
+                .quick-action-icon {
+                    font-size: 1.5rem;
+                }
             }
         </style>
     @endpush
@@ -436,8 +531,8 @@
                 <div class="stats-icon">
                     <i class="fas fa-times-circle"></i>
                 </div>
-                <div class="stats-number">{{ $LaporanRejected ?? 0 }}</div>
-                <div class="stats-label">Total Data Points</div>
+                <div class="stats-number" data-stat="rejected">{{ $laporanRejected ?? 0 }}</div>
+                <div class="stats-label">Laporan Ditolak</div>
             </div>
 
             <div class="stats-card blue">
@@ -488,6 +583,78 @@
                 </a>
             </div>
         </div>
+
+        <!-- Recent Reports Table -->
+        <div class="table-card">
+            <h4 class="table-title">
+                <i class="fas fa-table" style="color: #8b5cf6;"></i>
+                Data Kejadian Banjir Terbaru (Verified)
+            </h4>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Foto</th>
+                            <th>Waktu</th>
+                            <th>Lokasi</th>
+                            <th>Kedalaman</th>
+                            <th>Pelapor</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($laporanTerbaru as $index => $item)
+                            <tr>
+                                <td><strong>{{ $index + 1 }}</strong></td>
+
+                                <td>
+                                    @if ($item->foto)
+                                        @php $fotoUrl = str_starts_with($item->foto, 'http') ? $item->foto : asset('uploads/laporan/' . $item->foto); @endphp
+                                        <img src="{{ $fotoUrl }}" alt="Foto" class="rounded"
+                                            style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
+                                            onclick="openImageModal('{{ $fotoUrl }}')"
+                                            title="Klik untuk memperbesar" onerror="this.style.display='none'">
+                                    @else
+                                        <span class="text-muted small">Tidak ada foto</span>
+                                    @endif
+                                </td>
+
+                                <td>{{ $item->waktu_laporan->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    <strong>{{ $item->kecamatan }}</strong><br>
+                                    <small class="text-muted">{{ $item->desa }}</small>
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge
+                                    @if ($item->kedalaman_cm >= 70) bg-danger
+                                    @elseif($item->kedalaman_cm >= 40) bg-warning
+                                    @else bg-info @endif">
+                                        {{ $item->kedalaman_cm }} cm
+                                    </span>
+                                </td>
+                                <td>{{ $item->nama_pelapor }}</td>
+                                <td>
+                                    <a href="{{ route('admin.peta') }}?lat={{ $item->latitude }}&lng={{ $item->longitude }}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-map-marker-alt"></i> Lihat di Peta
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-5">
+                                    <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                    Belum ada laporan terverifikasi
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <!-- Modal Image Viewer -->
@@ -699,10 +866,10 @@
             // ── JAM DIGITAL BERJALAN ──────────────────────────────────────
             function updateClock() {
                 var now = new Date();
-                var h   = String(now.getHours()).padStart(2, '0');
-                var m   = String(now.getMinutes()).padStart(2, '0');
-                var s   = String(now.getSeconds()).padStart(2, '0');
-                var el  = document.getElementById('live-clock');
+                var h = String(now.getHours()).padStart(2, '0');
+                var m = String(now.getMinutes()).padStart(2, '0');
+                var s = String(now.getSeconds()).padStart(2, '0');
+                var el = document.getElementById('live-clock');
                 if (el) el.textContent = h + ':' + m + ':' + s;
             }
             updateClock();

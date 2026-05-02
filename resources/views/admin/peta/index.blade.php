@@ -102,22 +102,52 @@
             top: 20px; left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
-            width: 290px;
+            width: 320px;
         }
+
+        /* Tab switcher */
+        .search-tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+            border: 2px solid rgba(8,145,178,0.25);
+            border-bottom: none;
+            overflow: hidden;
+        }
+        .search-tab-btn {
+            flex: 1; border: none; outline: none; cursor: pointer;
+            padding: 8px 6px; font-size: 11px; font-weight: 700;
+            color: #64748b; background: #f8fafc;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 4px;
+        }
+        .search-tab-btn:first-child { border-right: 1px solid #e2e8f0; }
+        .search-tab-btn.active {
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            color: white;
+        }
+        .search-tab-btn:hover:not(.active) { background: #e0f2fe; color: #0891b2; }
+
+        /* Search input row */
         .search-inner {
             display: flex;
             background: white;
-            border-radius: 12px;
+            border-radius: 0 0 12px 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
             border: 2px solid rgba(8, 145, 178, 0.25);
+            border-top: none;
             overflow: hidden;
         }
-        .search-inner select {
+        .search-inner select,
+        .search-inner input[type="text"] {
             flex: 1; border: none; outline: none;
             padding: 10px 12px;
             font-size: 13px; font-weight: 600;
             color: #0c4a6e; background: transparent; cursor: pointer;
+            font-family: inherit;
         }
+        .search-inner input[type="text"]::placeholder { color: #94a3b8; font-weight: 500; }
         .search-inner select option { color: #334155; font-weight: 600; }
         .search-btn {
             background: linear-gradient(135deg, #0891b2, #06b6d4);
@@ -144,6 +174,34 @@
             backdrop-filter: blur(6px);
         }
         .search-result-badge.visible { display: block; }
+
+        /* Autocomplete dropdown desa */
+        .desa-dropdown {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: white;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 2px solid rgba(8,145,178,0.25);
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1100;
+            display: none;
+            scrollbar-width: thin;
+            scrollbar-color: #0891b2 #f0f9ff;
+        }
+        .desa-dropdown.open { display: block; }
+        .desa-option {
+            padding: 9px 14px; font-size: 12px; font-weight: 600;
+            color: #334155; cursor: pointer; border-bottom: 1px solid #f1f5f9;
+            transition: background 0.15s;
+        }
+        .desa-option:hover, .desa-option.active { background: #e0f2fe; color: #0891b2; }
+        .desa-option:last-child { border-bottom: none; }
+        .desa-option small { display: block; font-size: 10px; color: #94a3b8; font-weight: 500; }
+        .search-pane { display: none; }
+        .search-pane.active { display: contents; }
 
         /* ==================== LAYER PANEL (kanan atas) ==================== */
         .layer-panel {
@@ -377,15 +435,16 @@
         @media (max-width: 768px) {
             #map { height: 480px; border-radius: 15px; }
             .layer-panel { top:10px; right:10px; width:190px; }
-            .search-panel { width:200px; }
+            .search-panel { width:220px; }
             .map-toolbar { top:10px; left:10px; }
         }
         @media (max-width: 767px) {
             #map { height: 420px; border-radius: 14px; }
             .map-toolbar { top:8px; left:8px; gap:6px; }
             .toolbar-btn { width:36px; height:36px; font-size:13px; }
-            .search-panel { top:8px; left:52px; transform:none; width:calc(100% - 175px); min-width:130px; }
-            .search-inner select { padding:8px 7px; font-size:11px; }
+            .search-panel { top:8px; left:52px; transform:none; width:calc(100% - 180px); min-width:140px; }
+            .search-tab-btn { padding:6px 4px; font-size:10px; }
+            .search-inner select, .search-inner input[type="text"] { padding:8px 7px; font-size:11px; }
             .search-btn { padding:8px 10px; font-size:11px; }
             .layer-panel { top:8px; right:8px; width:148px; }
             .layer-panel-toggle { padding:8px 10px; }
@@ -403,7 +462,7 @@
             .info-box { padding:1rem; border-radius:12px; margin-bottom:1rem; }
         }
         @media (max-width: 420px) {
-            .search-panel { width:calc(100% - 165px); min-width:110px; }
+            .search-panel { width:calc(100% - 170px); min-width:130px; }
             .layer-panel { width:130px; }
         }
     </style>
@@ -464,22 +523,54 @@
                     </button>
                 </div>
 
-                <!-- ── SEARCH KECAMATAN (tengah atas) ── -->
-                <div class="search-panel">
-                    <div class="search-inner">
-                        <select id="searchKecamatan" onchange="doSearch()">
-                            <option value="">🔍 Cari Kecamatan...</option>
-                            @foreach (['Banguntapan','Bantul','Bambanglipuro','Dlingo','Imogiri','Jetis','Kasihan','Kretek','Pajangan','Pandak','Piyungan','Pleret','Pundong','Sanden','Sedayu','Sewon','Srandakan'] as $kec)
-                                <option value="{{ $kec }}">{{ $kec }}</option>
-                            @endforeach
-                        </select>
-                        <button class="search-clear" id="searchClearBtn" onclick="clearSearch()" title="Reset">
-                            <i class="fas fa-times"></i>
+                <!-- ── SEARCH PANEL (tengah atas) ── -->
+                <div class="search-panel" id="searchPanel">
+                    <!-- Tab buttons -->
+                    <div class="search-tabs">
+                        <button class="search-tab-btn active" id="tabKec" onclick="switchSearchTab('kec')">
+                            <i class="fas fa-map-marker-alt"></i> Kecamatan
                         </button>
-                        <button class="search-btn" onclick="doSearch()">
-                            <i class="fas fa-search"></i>
+                        <button class="search-tab-btn" id="tabDesa" onclick="switchSearchTab('desa')">
+                            <i class="fas fa-home"></i> Desa / Kelurahan
                         </button>
                     </div>
+
+                    <!-- Tab: Kecamatan -->
+                    <div id="paneKec" style="position:relative;">
+                        <div class="search-inner">
+                            <select id="searchKecamatan" onchange="doSearchKec()">
+                                <option value="">🔍 Pilih Kecamatan...</option>
+                                @foreach (['Banguntapan','Bantul','Bambanglipuro','Dlingo','Imogiri','Jetis','Kasihan','Kretek','Pajangan','Pandak','Piyungan','Pleret','Pundong','Sanden','Sedayu','Sewon','Srandakan'] as $kec)
+                                    <option value="{{ $kec }}">{{ $kec }}</option>
+                                @endforeach
+                            </select>
+                            <button class="search-clear" id="clearKec" onclick="clearSearchKec()" title="Reset">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button class="search-btn" onclick="doSearchKec()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Desa -->
+                    <div id="paneDesa" style="display:none;position:relative;">
+                        <div class="search-inner">
+                            <input type="text" id="searchDesaInput"
+                                placeholder="🔍 Ketik nama desa..."
+                                oninput="onDesaInput(this.value)"
+                                onkeydown="onDesaKeydown(event)"
+                                autocomplete="off">
+                            <button class="search-clear" id="clearDesa" onclick="clearSearchDesa()" title="Reset">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button class="search-btn" onclick="doSearchDesa()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="desa-dropdown" id="desaDropdown"></div>
+                    </div>
+
                     <div class="search-result-badge" id="searchResultBadge"></div>
                 </div>
 
@@ -665,32 +756,28 @@
         // ── DATA LAPORAN ──────────────────────────────────────────────────
         const laporanData = @json($laporan->keyBy('id'));
 
-        // ── KOORDINAT PUSAT KECAMATAN ─────────────────────────────────────
+        // ── KOORDINAT PUSAT KECAMATAN (fallback) ─────────────────────────
         const kecamatanCenter = {
-            'Banguntapan': [-7.8283, 110.4167],
-            'Bantul':      [-7.8900, 110.3300],
-            'Bambanglipuro':[-7.9667,110.3167],
-            'Dlingo':      [-7.9500, 110.4667],
-            'Imogiri':     [-7.9333, 110.4000],
-            'Jetis':       [-7.8667, 110.3500],
-            'Kasihan':     [-7.8333, 110.3333],
-            'Kretek':      [-8.0000, 110.2833],
-            'Pajangan':    [-7.8833, 110.2833],
-            'Pandak':      [-7.9167, 110.3167],
-            'Piyungan':    [-7.8667, 110.4500],
-            'Pleret':      [-7.8833, 110.4000],
-            'Pundong':     [-7.9833, 110.3500],
-            'Sanden':      [-7.9833, 110.2833],
-            'Sedayu':      [-7.8167, 110.2833],
-            'Sewon':       [-7.8500, 110.3667],
-            'Srandakan':   [-7.9667, 110.2667],
+            'Banguntapan': [-7.8283, 110.4167], 'Bantul': [-7.8900, 110.3300],
+            'Bambanglipuro': [-7.9667, 110.3167], 'Dlingo': [-7.9500, 110.4667],
+            'Imogiri': [-7.9333, 110.4000], 'Jetis': [-7.8667, 110.3500],
+            'Kasihan': [-7.8333, 110.3333], 'Kretek': [-8.0000, 110.2833],
+            'Pajangan': [-7.8833, 110.2833], 'Pandak': [-7.9167, 110.3167],
+            'Piyungan': [-7.8667, 110.4500], 'Pleret': [-7.8833, 110.4000],
+            'Pundong': [-7.9833, 110.3500], 'Sanden': [-7.9833, 110.2833],
+            'Sedayu': [-7.8167, 110.2833], 'Sewon': [-7.8500, 110.3667],
+            'Srandakan': [-7.9667, 110.2667],
         };
 
         // ── MAP VARS ───────────────────────────────────────────────────────
         let map, layerGroups = {}, basemaps = {}, currentBasemap = 'streets';
         let isFullscreen = false;
         let allBounds = null;
-        let searchHighlightLayer = null;
+        let bantulGeoJSON = null;       // simpan GeoJSON setelah load
+        let highlightLayer = null;      // highlight kecamatan/desa
+        let desaList = [];              // [{desa, kecamatan, feature}, ...]
+        let desaDropdownIdx = -1;       // keyboard nav index
+        let activeSearchTab = 'kec';
 
         // ── HELPERS ───────────────────────────────────────────────────────
         function getFotoUrl(f) {
@@ -719,14 +806,10 @@
             setTimeout(() => { if (map) map.invalidateSize(); }, 350);
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && isFullscreen) toggleFullscreen();
-        });
-
         // ── ZOOM TO EXTENT ────────────────────────────────────────────────
         function zoomToExtent() {
             if (allBounds && allBounds.isValid()) {
-                map.fitBounds(allBounds, { padding: [50, 50], maxZoom: 14 });
+                map.fitBounds(allBounds, { padding:[50,50], maxZoom:14 });
             } else {
                 map.setView([-7.8700, 110.3300], 11);
             }
@@ -735,21 +818,14 @@
         // ── LAYER TOGGLE ──────────────────────────────────────────────────
         function toggleLayer(name, visible) {
             if (!layerGroups[name]) return;
-            if (visible) {
-                layerGroups[name].addTo(map);
-            } else {
-                map.removeLayer(layerGroups[name]);
-            }
+            visible ? layerGroups[name].addTo(map) : map.removeLayer(layerGroups[name]);
         }
 
-        // ── LAYER PANEL TOGGLE ────────────────────────────────────────────
+        // ── LAYER PANEL ───────────────────────────────────────────────────
         function toggleLayerPanel() {
-            const body   = document.getElementById('layerPanelBody');
-            const toggle = document.getElementById('layerPanelToggle');
-            body.classList.toggle('open');
-            toggle.classList.toggle('open');
+            document.getElementById('layerPanelBody').classList.toggle('open');
+            document.getElementById('layerPanelToggle').classList.toggle('open');
         }
-
         function toggleSection(bodyId, hdrId) {
             document.getElementById(bodyId).classList.toggle('open');
             document.getElementById(hdrId).classList.toggle('open');
@@ -766,44 +842,166 @@
             currentBasemap = name;
         }
 
-        // ── SEARCH KECAMATAN ──────────────────────────────────────────────
-        function doSearch() {
-            const sel   = document.getElementById('searchKecamatan');
+        // ── SEARCH TAB SWITCH ─────────────────────────────────────────────
+        function switchSearchTab(tab) {
+            activeSearchTab = tab;
+            document.getElementById('paneKec').style.display  = tab === 'kec'  ? '' : 'none';
+            document.getElementById('paneDesa').style.display = tab === 'desa' ? '' : 'none';
+            document.getElementById('tabKec').classList.toggle('active',  tab === 'kec');
+            document.getElementById('tabDesa').classList.toggle('active', tab === 'desa');
+            clearHighlight();
+            document.getElementById('searchResultBadge').classList.remove('visible');
+        }
+
+        // ── HIGHLIGHT HELPER ──────────────────────────────────────────────
+        function clearHighlight() {
+            if (highlightLayer) { map.removeLayer(highlightLayer); highlightLayer = null; }
+        }
+
+        function highlightFeatures(features, label) {
+            clearHighlight();
+            if (!features || features.length === 0) return;
+            const fc = { type: 'FeatureCollection', features };
+            highlightLayer = L.geoJSON(fc, {
+                style: {
+                    fillColor: '#0891b2', fillOpacity: 0.22,
+                    color: '#0891b2', weight: 3, opacity: 1
+                }
+            }).addTo(map);
+            map.fitBounds(highlightLayer.getBounds(), { padding:[40,40], maxZoom:14 });
             const badge = document.getElementById('searchResultBadge');
-            const clear = document.getElementById('searchClearBtn');
-            const kec   = sel.value;
+            badge.textContent = label;
+            badge.classList.add('visible');
+        }
 
-            if (searchHighlightLayer) { map.removeLayer(searchHighlightLayer); searchHighlightLayer = null; }
-
-            if (!kec) {
-                badge.classList.remove('visible');
-                clear.classList.remove('visible');
-                return;
-            }
-
+        // ── SEARCH KECAMATAN ──────────────────────────────────────────────
+        function doSearchKec() {
+            const kec   = document.getElementById('searchKecamatan').value;
+            const clear = document.getElementById('clearKec');
+            clearHighlight();
+            document.getElementById('searchResultBadge').classList.remove('visible');
+            if (!kec) { clear.classList.remove('visible'); return; }
             clear.classList.add('visible');
+
+            if (bantulGeoJSON) {
+                const matched = bantulGeoJSON.features.filter(f => {
+                    const p = f.properties;
+                    const name = (p.WADMKC || p.KECAMATAN || p.Kecamatan || p.NAME || '').trim();
+                    return name.toLowerCase() === kec.toLowerCase();
+                });
+                if (matched.length > 0) {
+                    highlightFeatures(matched, '📍 Kec. ' + kec + ' (' + matched.length + ' desa)');
+                    return;
+                }
+            }
+            // Fallback: zoom ke koordinat pusat
             const center = kecamatanCenter[kec];
             if (center) {
                 map.setView(center, 13, { animate: true });
+                const badge = document.getElementById('searchResultBadge');
                 badge.textContent = '📍 Kecamatan ' + kec;
                 badge.classList.add('visible');
             }
         }
 
-        function clearSearch() {
-            const sel   = document.getElementById('searchKecamatan');
-            const badge = document.getElementById('searchResultBadge');
-            const clear = document.getElementById('searchClearBtn');
-            sel.value = '';
-            badge.classList.remove('visible');
-            clear.classList.remove('visible');
-            if (searchHighlightLayer) { map.removeLayer(searchHighlightLayer); searchHighlightLayer = null; }
+        function clearSearchKec() {
+            document.getElementById('searchKecamatan').value = '';
+            document.getElementById('clearKec').classList.remove('visible');
+            clearHighlight();
+            document.getElementById('searchResultBadge').classList.remove('visible');
         }
+
+        // ── SEARCH DESA ───────────────────────────────────────────────────
+        function onDesaInput(val) {
+            const clear = document.getElementById('clearDesa');
+            const dd    = document.getElementById('desaDropdown');
+            desaDropdownIdx = -1;
+            val = val.trim();
+            clear.classList.toggle('visible', val.length > 0);
+
+            if (val.length < 2) { dd.classList.remove('open'); return; }
+
+            const q = val.toLowerCase();
+            const hits = desaList.filter(d => d.desa.toLowerCase().includes(q)).slice(0, 12);
+
+            if (hits.length === 0) { dd.classList.remove('open'); return; }
+
+            dd.innerHTML = hits.map((d, i) =>
+                `<div class="desa-option" data-idx="${i}" onclick="selectDesa(${i})" onmouseover="setDDIdx(${i})">
+                    ${d.desa}
+                    <small>${d.kecamatan}</small>
+                </div>`
+            ).join('');
+            dd._hits = hits;
+            dd.classList.add('open');
+        }
+
+        function setDDIdx(i) { desaDropdownIdx = i; }
+
+        function onDesaKeydown(e) {
+            const dd   = document.getElementById('desaDropdown');
+            const opts = dd.querySelectorAll('.desa-option');
+            if (!dd.classList.contains('open') || opts.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                desaDropdownIdx = Math.min(desaDropdownIdx + 1, opts.length - 1);
+                opts.forEach((o, i) => o.classList.toggle('active', i === desaDropdownIdx));
+                e.preventDefault();
+            } else if (e.key === 'ArrowUp') {
+                desaDropdownIdx = Math.max(desaDropdownIdx - 1, 0);
+                opts.forEach((o, i) => o.classList.toggle('active', i === desaDropdownIdx));
+                e.preventDefault();
+            } else if (e.key === 'Enter') {
+                if (desaDropdownIdx >= 0) { selectDesa(desaDropdownIdx); }
+                else { doSearchDesa(); }
+                e.preventDefault();
+            } else if (e.key === 'Escape') {
+                dd.classList.remove('open');
+            }
+        }
+
+        function selectDesa(idx) {
+            const dd   = document.getElementById('desaDropdown');
+            const hits = dd._hits || [];
+            if (!hits[idx]) return;
+            const d = hits[idx];
+            document.getElementById('searchDesaInput').value = d.desa;
+            dd.classList.remove('open');
+            document.getElementById('clearDesa').classList.add('visible');
+            highlightFeatures([d.feature], '🏠 ' + d.desa + ' — Kec. ' + d.kecamatan);
+        }
+
+        function doSearchDesa() {
+            const val = document.getElementById('searchDesaInput').value.trim();
+            document.getElementById('desaDropdown').classList.remove('open');
+            if (!val) return;
+            const q = val.toLowerCase();
+            const hit = desaList.find(d => d.desa.toLowerCase() === q)
+                     || desaList.find(d => d.desa.toLowerCase().includes(q));
+            if (hit) {
+                highlightFeatures([hit.feature], '🏠 ' + hit.desa + ' — Kec. ' + hit.kecamatan);
+                document.getElementById('clearDesa').classList.add('visible');
+            }
+        }
+
+        function clearSearchDesa() {
+            document.getElementById('searchDesaInput').value = '';
+            document.getElementById('clearDesa').classList.remove('visible');
+            document.getElementById('desaDropdown').classList.remove('open');
+            clearHighlight();
+            document.getElementById('searchResultBadge').classList.remove('visible');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#paneDesa')) {
+                document.getElementById('desaDropdown')?.classList.remove('open');
+            }
+        });
 
         // ── IMAGE MODAL ───────────────────────────────────────────────────
         function openImageModal(src) {
-            event.stopPropagation();
-            event.preventDefault();
+            event.stopPropagation(); event.preventDefault();
             document.getElementById('modalImage').src = src;
             document.getElementById('imageModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -819,17 +1017,16 @@
             const laporan = laporanData[laporanId];
             if (!laporan) { alert('Data laporan tidak ditemukan'); return; }
 
-            document.getElementById('detail-id').textContent     = laporan.id;
-            document.getElementById('detail-waktu').textContent  = formatDateTime(laporan.waktu_laporan);
+            document.getElementById('detail-id').textContent    = laporan.id;
+            document.getElementById('detail-waktu').textContent = formatDateTime(laporan.waktu_laporan);
 
             let statusBadge = '';
-            if (laporan.status === 'pending') {
+            if (laporan.status === 'pending')
                 statusBadge = '<span class="badge-status badge-pending"><i class="fas fa-clock"></i> Pending</span>';
-            } else if (laporan.status === 'verified') {
+            else if (laporan.status === 'verified')
                 statusBadge = '<span class="badge-status badge-verified"><i class="fas fa-check-circle"></i> Verified</span>';
-            } else {
+            else
                 statusBadge = '<span class="badge-status badge-rejected"><i class="fas fa-times-circle"></i> Rejected</span>';
-            }
             document.getElementById('detail-status').innerHTML = statusBadge;
 
             document.getElementById('detail-pelapor').textContent   = laporan.nama_pelapor || '-';
@@ -874,7 +1071,11 @@
         }
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') { closeImageModal(); closeDetailModal(); }
+            if (e.key === 'Escape') {
+                if (isFullscreen) toggleFullscreen();
+                closeImageModal();
+                closeDetailModal();
+            }
         });
         document.getElementById('imageModal').addEventListener('click', function(e) {
             if (e.target === this) closeImageModal();
