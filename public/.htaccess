@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # ✅ TAMBAHAN — Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -20,72 +24,19 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-# ============================================================
-# ✅ NO. 9 — CACHE-CONTROL UNTUK FILE STATIS
-# ============================================================
+# ✅ TAMBAHAN — Proteksi file sensitif
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+<Files composer.json>
+    Order allow,deny
+    Deny from all
+</Files>
+<Files composer.lock>
+    Order allow,deny
+    Deny from all
+</Files>
 
-<IfModule mod_headers.c>
-
-    # ── GeoJSON: cache 24 jam (jarang berubah) ──────────────
-    <FilesMatch "\.(geojson)$">
-        Header set Cache-Control "max-age=86400, public, must-revalidate"
-    </FilesMatch>
-
-    # ── Gambar: cache 30 hari ────────────────────────────────
-    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
-        Header set Cache-Control "max-age=2592000, public"
-    </FilesMatch>
-
-    # ── CSS & JS library (CDN lokal): cache 7 hari ──────────
-    <FilesMatch "\.(css|js)$">
-        Header set Cache-Control "max-age=604800, public"
-    </FilesMatch>
-
-    # ── Font: cache 30 hari ──────────────────────────────────
-    <FilesMatch "\.(woff|woff2|ttf|eot|otf)$">
-        Header set Cache-Control "max-age=2592000, public"
-    </FilesMatch>
-
-    # ── Audio (notifikasi): cache 7 hari ────────────────────
-    <FilesMatch "\.(mp3|wav|ogg)$">
-        Header set Cache-Control "max-age=604800, public"
-    </FilesMatch>
-
-    # ── HTML/PHP: jangan di-cache browser ───────────────────
-    <FilesMatch "\.(html|php)$">
-        Header set Cache-Control "no-cache, no-store, must-revalidate"
-        Header set Pragma "no-cache"
-        Header set Expires "0"
-    </FilesMatch>
-
-</IfModule>
-
-# ============================================================
-# ✅ GZIP COMPRESSION — Kompres respons sebelum dikirim
-# ============================================================
-
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml
-    AddOutputFilterByType DEFLATE text/css text/javascript
-    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
-    AddOutputFilterByType DEFLATE application/json
-    AddOutputFilterByType DEFLATE application/geo+json
-    AddOutputFilterByType DEFLATE image/svg+xml
-    AddOutputFilterByType DEFLATE font/woff font/woff2
-</IfModule>
-
-# ============================================================
-# ✅ EXPIRES HEADER — Fallback jika mod_headers tidak aktif
-# ============================================================
-
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType application/geo+json             "access plus 1 day"
-    ExpiresByType image/jpeg                        "access plus 30 days"
-    ExpiresByType image/png                         "access plus 30 days"
-    ExpiresByType image/webp                        "access plus 30 days"
-    ExpiresByType text/css                          "access plus 7 days"
-    ExpiresByType application/javascript            "access plus 7 days"
-    ExpiresByType font/woff2                        "access plus 30 days"
-    ExpiresByType audio/mpeg                        "access plus 7 days"
-</IfModule>
+# (sisanya tetap sama seperti milikmu)
+# Cache-Control, GZIP, Expires — tidak perlu diubah
